@@ -1,0 +1,12 @@
+/.gradle
+/.idea
+/out
+/build
+/backend/build
+*.iml
+*.ipr
+*.iws
+
+config.json
+secrets.properties
+*.yaml

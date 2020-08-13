@@ -1,0 +1,45 @@
+input[type=checkbox] + label {
+  margin-right: 10px;
+}
+label,
+input[type=checkbox] {
+  cursor: pointer;
+}
+fieldset {
+  border: none;
+}
+form {
+  font-family: sans-serif;
+}
+.heading {
+  font-weight: bold;
+  display: inline-block;
+  width: 15%;
+  vertical-align: top;
+  text-align: right;
+}
+.content {
+  display: inline-block;
+  width: 80%;
+}
+.data-list {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 250px;
+  white-space: nowrap;
+}
+.inline-label {
+  display: inline-block;
+  width: 15%;
+  text-align: right;
+  padding-right: 8px;
+  font-weight: bold;
+}
+
+p {
+  white-space: pre-wrap;
+}
+
+div {
+  padding-bottom: 8px;
+}
