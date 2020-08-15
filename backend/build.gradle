@@ -15,7 +15,7 @@ apply plugin: "application"
 apply plugin: 'jacoco'
 
 jacoco {
-    toolVersion = "0.8.2"
+    toolVersion = "0.8.5"
 }
 
 mainClassName = "io.ktor.server.netty.EngineMain"
@@ -86,15 +86,12 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-task unitCodeCoverageReport(type: JacocoReport) {
-    executionData(files('build/jacoco/test.exec'))
+jacocoTestReport {
+    dependsOn test
 
     reports {
-        xml.setEnabled(true)
-        xml.destination new File("${buildDir}/reports/jacoco/report.xml")
-        html.setEnabled(false)
-        csv.setEnabled(false)
+        csv.enabled false
+        html.enabled true
+        xml.enabled true
     }
-
-    dependsOn(':backend:test')
 }
