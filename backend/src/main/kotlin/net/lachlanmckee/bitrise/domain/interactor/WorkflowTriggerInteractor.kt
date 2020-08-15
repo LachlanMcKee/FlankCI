@@ -2,19 +2,19 @@ package net.lachlanmckee.bitrise.domain.interactor
 
 import io.ktor.application.ApplicationCall
 import io.ktor.response.respondRedirect
-import io.ktor.response.respondTextWriter
 import net.lachlanmckee.bitrise.data.datasource.remote.BitriseDataSource
 import net.lachlanmckee.bitrise.domain.entity.ConfirmModel
-import net.lachlanmckee.bitrise.domain.ktor.handleMultipart
+import net.lachlanmckee.bitrise.domain.ktor.MultipartCallFactory
 import net.lachlanmckee.bitrise.domain.mapper.ConfirmDataMapper
 import net.lachlanmckee.bitrise.presentation.ErrorScreen
 
 class WorkflowTriggerInteractor(
+    private val multipartCallFactory: MultipartCallFactory,
     private val bitriseDataSource: BitriseDataSource,
     private val confirmDataMapper: ConfirmDataMapper
 ) {
     suspend fun execute(call: ApplicationCall) {
-        call.handleMultipart { multipart ->
+        multipartCallFactory.handleMultipart(call) { multipart ->
             confirmDataMapper
                 .mapToConfirmModel(multipart)
                 .onSuccess { confirmModel -> triggerWorkflow(call, confirmModel) }
@@ -35,15 +35,19 @@ class WorkflowTriggerInteractor(
                 if (it.status == "ok") {
                     call.respondRedirect(it.buildUrl)
                 } else {
-                    call.respondTextWriter {
-                        appendln("Bitrise rejected build")
-                    }
+                    ErrorScreen().respondHtml(
+                        call = call,
+                        title = "Error",
+                        body = "Bitrise rejected build"
+                    )
                 }
             }
             .onFailure {
-                call.respondTextWriter {
-                    appendln("Failed to submit build. Message: ${it.message}")
-                }
+                ErrorScreen().respondHtml(
+                    call = call,
+                    title = "Error",
+                    body = "Failed to submit build. Message: ${it.message}"
+                )
             }
     }
 }
