@@ -4,21 +4,26 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:6.0.0'
+        classpath "com.github.jengelman.gradle.plugins:shadow:6.0.0"
     }
 }
 
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'kotlin'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'application'
+apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: "kotlin"
+apply plugin: "kotlin-kapt"
+apply plugin: "application"
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.8.2"
+}
 
 mainClassName = "io.ktor.server.netty.EngineMain"
 
 repositories {
     maven { url "https://dl.bintray.com/kotlin/ktor" }
     maven { url "https://dl.bintray.com/kotlin/kotlinx" }
-    maven { url 'https://kotlin.bintray.com/kotlin-js-wrappers' }
+    maven { url "https://kotlin.bintray.com/kotlin-js-wrappers" }
 }
 
 dependencies {
@@ -38,14 +43,21 @@ dependencies {
     implementation "io.ktor:ktor-client-logging:$ktor_version"
     implementation "io.ktor:ktor-client-logging-jvm:$ktor_version"
 
-    implementation 'com.linkedin.dextestparser:parser:2.2.1'
+    implementation "com.linkedin.dextestparser:parser:2.2.1"
 
     implementation "org.yaml:snakeyaml:1.26"
 
-    implementation 'net.lachlanmckee:gsonpath:4.0.0'
-    kapt 'net.lachlanmckee:gsonpath-compiler:4.0.0'
+    implementation "net.lachlanmckee:gsonpath:4.0.0"
+    kapt "net.lachlanmckee:gsonpath-compiler:4.0.0"
 
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:5.4.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.4.2"
+    testImplementation "io.mockk:mockk:1.10.0"
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+}
+
+test {
+    useJUnitPlatform()
 }
 
 kapt {
@@ -56,7 +68,7 @@ kapt {
 
 shadowJar {
     manifest {
-        attributes 'Main-Class': mainClassName
+        attributes "Main-Class": mainClassName
     }
 }
 
@@ -72,4 +84,17 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+task unitCodeCoverageReport(type: JacocoReport) {
+    executionData(files('build/jacoco/test.exec'))
+
+    reports {
+        xml.setEnabled(true)
+        xml.destination new File("${buildDir}/reports/jacoco/report.xml")
+        html.setEnabled(false)
+        csv.setEnabled(false)
+    }
+
+    dependsOn(':backend:test')
 }
