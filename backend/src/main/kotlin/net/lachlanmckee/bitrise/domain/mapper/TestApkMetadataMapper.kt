@@ -10,16 +10,16 @@ class TestApkMetadataMapper(private val configDataSource: ConfigDataSource) {
     suspend fun mapTestApkMetadata(originalTestMethods: List<TestMethod>): TestApkMetadata {
         val config = configDataSource.getConfig()
         val testMethods: List<TestMethod> = getValidTestMethods(config, originalTestMethods)
-        val packages: List<String> = getPackages(testMethods)
 
-        val rootPackage: String = findRootPackage(packages)
+        val rootPackage: String = findRootPackage(testMethods)
         val classNamesWithAnnotations: List<PathWithAnnotationGroups> =
             getClassNamesWithAnnotations(config, testMethods, rootPackage)
 
+        val packages: List<String> = getPackages(testMethods, rootPackage)
+
         val packagesWithAnnotations: List<PathWithAnnotationGroups> = getPackagesWithAnnotations(
             packages,
-            classNamesWithAnnotations,
-            rootPackage
+            classNamesWithAnnotations
         )
 
         val annotations: List<String> = classNamesWithAnnotations
@@ -48,18 +48,31 @@ class TestApkMetadataMapper(private val configDataSource: ConfigDataSource) {
             }
     }
 
-    private fun getPackages(testMethods: List<TestMethod>): List<String> {
-        return testMethods
-            .map { method ->
+    private fun getPackages(
+        testMethods: List<TestMethod>,
+        rootPackage: String
+    ): List<String> {
+        val packages = testMethods
+            .flatMap { method ->
                 val testNameSplit = method
                     .testName
+                    .removePrefix("$rootPackage.")
                     .split(".")
 
-                testNameSplit
-                    .take(testNameSplit.lastIndex)
-                    .joinToString(separator = ".")
+                (1..testNameSplit.lastIndex).map {
+                    testNameSplit
+                        .take(it)
+                        .joinToString(separator = ".")
+                }
             }
             .distinct()
+
+
+        return if (testMethods.isNotEmpty()) {
+            listOf("").plus(packages)
+        } else {
+            emptyList()
+        }
     }
 
     private fun getClassNamesWithAnnotations(
@@ -87,7 +100,7 @@ class TestApkMetadataMapper(private val configDataSource: ConfigDataSource) {
 
                         PathWithAnnotationGroups(
                             path = path,
-                            annotationGroups = annotationGroups
+                            annotationGroups = annotationGroups.takeIf { it.isNotEmpty() }
                         )
                     }
             )
@@ -95,16 +108,9 @@ class TestApkMetadataMapper(private val configDataSource: ConfigDataSource) {
 
     private fun getPackagesWithAnnotations(
         packagesWithPrefix: List<String>,
-        classNamesWithAnnotations: List<PathWithAnnotationGroups>,
-        rootPackage: String
+        classNamesWithAnnotations: List<PathWithAnnotationGroups>
     ): List<PathWithAnnotationGroups> {
-        return packagesWithPrefix.map { pathWithAnnotation ->
-            val packagePath = if (pathWithAnnotation != rootPackage) {
-                pathWithAnnotation.removeRange(0, rootPackage.length + 1)
-            } else {
-                ""
-            }
-
+        return packagesWithPrefix.map { packagePath ->
             // Find all classes within this package and collate their annotations.
             val annotations = classNamesWithAnnotations
                 .flatMap {
@@ -123,7 +129,14 @@ class TestApkMetadataMapper(private val configDataSource: ConfigDataSource) {
         }
     }
 
-    private fun findRootPackage(sortedPackages: List<String>): String {
+    private fun findRootPackage(testMethods: List<TestMethod>): String {
+        val sortedPackages = testMethods.map {
+            val testNameSplit = it.testName.split(".")
+
+            testNameSplit
+                .take(testNameSplit.lastIndex)
+                .joinToString(separator = ".")
+        }
         val size: Int = sortedPackages.size
 
         if (size == 0) return ""
