@@ -33,15 +33,23 @@ class BuildsMapperTest {
                     branch = "dev",
                     statusText = "status-text-dev-2",
                     commitHash = "commit-hash-dev-2",
-                    commitMessage = "commit-message-dev-2",
+                    commitMessage = "commit-message-dev-2\nSecond Line",
                     buildNumber = 2,
                     slug = "slug-dev-2"
+                ),
+                BuildsResponse.BuildData(
+                    branch = "dev",
+                    statusText = "status-text-dev-3",
+                    commitHash = "commit-hash-dev-3",
+                    commitMessage = null,
+                    buildNumber = 3,
+                    slug = "slug-dev-3"
                 ),
                 BuildsResponse.BuildData(
                     branch = "feature1",
                     statusText = "status-text-feature-1",
                     commitHash = "commit-hash-feature-1",
-                    commitMessage = "commit-message-feature-1",
+                    commitMessage = "commit-message-feature-1-that-will-exceed-50-characters",
                     buildNumber = 3,
                     slug = "slug-feature-1"
                 )
@@ -50,6 +58,13 @@ class BuildsMapperTest {
                 branches = listOf("dev", "feature1"),
                 branchBuilds = mapOf(
                     "dev" to listOf(
+                        BuildsData.Build(
+                            status = "status-text-dev-3",
+                            commitHash = "commit-hash-dev-3",
+                            commitMessage = null,
+                            buildNumber = 3,
+                            buildSlug = "slug-dev-3"
+                        ),
                         BuildsData.Build(
                             status = "status-text-dev-2",
                             commitHash = "commit-hash-dev-2",
@@ -69,7 +84,7 @@ class BuildsMapperTest {
                         BuildsData.Build(
                             status = "status-text-feature-1",
                             commitHash = "commit-hash-feature-1",
-                            commitMessage = "commit-message-feature-1",
+                            commitMessage = "commit-message-feature-1-that-will-exceed-50-chara...",
                             buildNumber = 3,
                             buildSlug = "slug-feature-1"
                         )
