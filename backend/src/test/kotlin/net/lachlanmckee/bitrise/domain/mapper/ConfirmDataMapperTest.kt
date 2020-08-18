@@ -17,7 +17,7 @@ class ConfirmDataMapperTest {
     }
 
     @Test
-    fun givenNoYaml_whenMap_thenExpectFailureResult() = runBlocking {
+    fun givenNoJobName_whenMap_thenExpectFailureResult() = runBlocking {
         val confirmModel = testMapToConfirmModel(
             listOf(
                 "branch" to "dev"
@@ -25,14 +25,15 @@ class ConfirmDataMapperTest {
         )
 
         assertTrue(confirmModel.isFailure)
-        assertEquals("Flank Base64 must exist", confirmModel.exceptionOrNull()!!.message)
+        assertEquals("Job name must exist", confirmModel.exceptionOrNull()!!.message)
     }
 
     @Test
-    fun givenBranchAndYaml_whenMap_thenAssertConfirmModel() = runBlocking {
+    fun givenBranchAndJobNameAndYaml_whenMap_thenAssertConfirmModel() = runBlocking {
         val confirmModel = testMapToConfirmModel(
             listOf(
                 "branch" to "dev",
+                "job-name" to "job",
                 "yaml-base64" to "config"
             )
         )
@@ -40,6 +41,7 @@ class ConfirmDataMapperTest {
         assertEquals(
             ConfirmModel(
                 branch = "dev",
+                jobName = "job",
                 flankConfigBase64 = "config"
             ),
             confirmModel.getOrThrow()

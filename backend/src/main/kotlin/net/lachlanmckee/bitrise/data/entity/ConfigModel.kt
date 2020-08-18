@@ -21,36 +21,38 @@ data class ConfigModel(
         val hiddenAnnotations: List<String>,
         val ignoreTestsWithAnnotations: List<String>,
         val allowTestingWithoutFilters: Boolean,
-        val flankConfig: FlankConfig,
+        val commonYamlFiles: List<String>,
+        val annotationBasedYaml: AnnotationBasedYaml,
         val options: List<Option>
     )
 
     @AutoGsonAdapter
-    data class FlankConfig(
-        val commonYamlFiles: List<String>,
-        val annotationBasedYaml: AnnotationBasedYaml
-    ) {
-        @AutoGsonAdapter
-        data class AnnotationBasedYaml(
-            val options: List<AnnotationAndYaml>,
-            val fallbackYamlFiles: List<String>
-        )
+    data class AnnotationBasedYaml(
+        val options: List<AnnotationAndYaml>,
+        val fallbackYamlFiles: List<String>
+    )
 
-        @AutoGsonAdapter
-        data class AnnotationAndYaml(
-            val annotation: String,
-            val yamlFiles: List<String>
-        )
-    }
+    @AutoGsonAdapter
+    data class AnnotationAndYaml(
+        val annotation: String,
+        val jobLabel: String,
+        val yamlFiles: List<String>
+    )
 
     @GsonSubtype(jsonKeys = ["type"])
     sealed class Option {
         @AutoGsonAdapter
         data class Checkbox(
             val label: String,
-            val checkedYamlFiles: List<String>,
-            val uncheckedYamlFiles: List<String>
-        ) : Option()
+            val checkedCheckBoxContent: CheckBoxContent,
+            val uncheckedCheckBoxContent: CheckBoxContent
+        ) : Option() {
+            @AutoGsonAdapter
+            data class CheckBoxContent(
+                val jobLabel: String,
+                val yamlFiles: List<String>
+            )
+        }
 
         @AutoGsonAdapter
         data class DropDown(
@@ -60,6 +62,7 @@ data class ConfigModel(
             @AutoGsonAdapter
             data class Value(
                 val label: String,
+                val jobLabel: String,
                 val yamlFiles: List<String>
             )
         }

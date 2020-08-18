@@ -5,35 +5,51 @@
     "testTriggerWorkflow": ""
   },
   "testData": {
-    "hiddenAnnotations" : [
+    "hiddenAnnotations": [
       "org.junit.runner.RunWith"
     ],
-    "ignoreTestsWithAnnotations" : [
+    "ignoreTestsWithAnnotations": [
       "org.junit.Ignore"
     ],
     "allowTestingWithoutFilters": false,
-    "flankConfig": {
-      "commonYamlFiles": ["flank-template.yaml"],
-      "annotationBasedYaml": {
-        "options": [
-          {
-            "annotation": "com.example.SmokeTest",
-            "yamlFiles": ["flank-smoke-devices.yaml"]
-          },
-          {
-            "annotation": "com.example.LeakTest",
-            "yamlFiles": ["flank-leak-devices.yaml"]
-          }
-        ],
-        "fallbackYamlFiles": ["flank-generic-devices.yaml"]
-      }
+    "commonYamlFiles": [
+      "flank-template.yaml"
+    ],
+    "annotationBasedYaml": {
+      "options": [
+        {
+          "annotation": "com.example.SmokeTest",
+          "jobLabel": "smoke",
+          "yamlFiles": [
+            "flank-smoke-devices.yaml"
+          ]
+        },
+        {
+          "annotation": "com.example.LeakTest",
+          "jobLabel": "leak",
+          "yamlFiles": [
+            "flank-leak-devices.yaml"
+          ]
+        }
+      ],
+      "fallbackYamlFiles": [
+        "flank-generic-devices.yaml"
+      ]
     },
     "options": [
       {
         "type": "checkbox",
         "label": "Feature1",
-        "checkedYamlFiles": ["flank-feature1.yaml"],
-        "uncheckedYamlFiles": []
+        "checkedCheckBoxContent": {
+          "jobLabel": "feature1",
+          "yamlFiles": [
+            "flank-feature1.yaml"
+          ]
+        },
+        "uncheckedCheckBoxContent": {
+          "jobLabel": "",
+          "yamlFiles": []
+        }
       },
       {
         "type": "drop-down",
@@ -41,11 +57,16 @@
         "values": [
           {
             "label": "",
+            "jobLabel": "",
             "yamlFiles": []
           },
           {
             "label": "Smoke",
-            "yamlFiles": ["flank-smoke-devices.yaml", "flank-smoke-preset.yaml"]
+            "jobLabel": "smoke",
+            "yamlFiles": [
+              "flank-smoke-devices.yaml",
+              "flank-smoke-preset.yaml"
+            ]
           }
         ]
       }

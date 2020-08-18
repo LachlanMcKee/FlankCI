@@ -24,6 +24,7 @@ interface BitriseService {
 
     suspend fun triggerWorkflow(
         branch: String,
+        jobName: String,
         workflowId: String,
         flankConfigBase64: String
     ): Result<BitriseTriggerResponse>
@@ -76,6 +77,7 @@ class BitriseServiceImpl(
 
     override suspend fun triggerWorkflow(
         branch: String,
+        jobName: String,
         workflowId: String,
         flankConfigBase64: String
     ): Result<BitriseTriggerResponse> = kotlin.runCatching {
@@ -89,6 +91,10 @@ class BitriseServiceImpl(
                         BitriseTriggerRequest.BuildParams.EnvironmentValue(
                             mappedTo = "FLANK_CONFIG",
                             value = flankConfigBase64
+                        ),
+                        BitriseTriggerRequest.BuildParams.EnvironmentValue(
+                            mappedTo = "JOB_NAME",
+                            value = jobName
                         )
                     ),
                     branch = branch,
