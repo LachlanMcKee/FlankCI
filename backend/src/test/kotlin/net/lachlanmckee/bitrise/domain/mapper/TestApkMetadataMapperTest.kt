@@ -13,13 +13,6 @@ import org.junit.jupiter.api.Test
 import java.util.*
 
 class TestApkMetadataMapperTest {
-    private val emptyFlankConfig = ConfigModel.FlankConfig(
-        commonYamlFiles = emptyList(),
-        annotationBasedYaml = ConfigModel.FlankConfig.AnnotationBasedYaml(
-            options = emptyList(),
-            fallbackYamlFiles = emptyList()
-        )
-    )
 
     @Test
     fun givenNoTestMethods_whenMap_thenReturnEmptyMetadata() = runBlocking {
@@ -27,7 +20,11 @@ class TestApkMetadataMapperTest {
             hiddenAnnotations = emptyList(),
             ignoreTestsWithAnnotations = emptyList(),
             allowTestingWithoutFilters = true,
-            flankConfig = emptyFlankConfig,
+            commonYamlFiles = emptyList(),
+            annotationBasedYaml = ConfigModel.AnnotationBasedYaml(
+                options = emptyList(),
+                fallbackYamlFiles = emptyList()
+            ),
             options = emptyList()
         )
         val metadata = testMapper(testData, emptyList())
@@ -48,7 +45,11 @@ class TestApkMetadataMapperTest {
             hiddenAnnotations = emptyList(),
             ignoreTestsWithAnnotations = emptyList(),
             allowTestingWithoutFilters = true,
-            flankConfig = emptyFlankConfig,
+            commonYamlFiles = emptyList(),
+            annotationBasedYaml = ConfigModel.AnnotationBasedYaml(
+                options = emptyList(),
+                fallbackYamlFiles = emptyList()
+            ),
             options = emptyList()
         )
         val metadata = testMapper(
@@ -90,26 +91,34 @@ class TestApkMetadataMapperTest {
             hiddenAnnotations = emptyList(),
             ignoreTestsWithAnnotations = emptyList(),
             allowTestingWithoutFilters = true,
-            flankConfig = emptyFlankConfig,
+            commonYamlFiles = emptyList(),
+            annotationBasedYaml = ConfigModel.AnnotationBasedYaml(
+                options = emptyList(),
+                fallbackYamlFiles = emptyList()
+            ),
             options = emptyList()
         )
         val metadata = testMapper(
             testData, listOf(
                 TestMethod(
                     testName = "com.example.integration.path1.TestClass1#test1",
-                    annotations = listOf(TestAnnotation(
-                        name = "IntegrationAnnotation",
-                        values = emptyMap(),
-                        inherited = false
-                    ))
+                    annotations = listOf(
+                        TestAnnotation(
+                            name = "IntegrationAnnotation",
+                            values = emptyMap(),
+                            inherited = false
+                        )
+                    )
                 ),
                 TestMethod(
                     testName = "com.example.e2e.path2.TestClass2#test2",
-                    annotations = listOf(TestAnnotation(
-                        name = "E2eAnnotation",
-                        values = emptyMap(),
-                        inherited = false
-                    ))
+                    annotations = listOf(
+                        TestAnnotation(
+                            name = "E2eAnnotation",
+                            values = emptyMap(),
+                            inherited = false
+                        )
+                    )
                 )
             )
         )
@@ -187,18 +196,24 @@ class TestApkMetadataMapperTest {
             hiddenAnnotations = emptyList(),
             ignoreTestsWithAnnotations = listOf("Ignore"),
             allowTestingWithoutFilters = true,
-            flankConfig = emptyFlankConfig,
+            commonYamlFiles = emptyList(),
+            annotationBasedYaml = ConfigModel.AnnotationBasedYaml(
+                options = emptyList(),
+                fallbackYamlFiles = emptyList()
+            ),
             options = emptyList()
         )
         val metadata = testMapper(
             testData, listOf(
                 TestMethod(
                     testName = "com.example.integration.TestClass1#test1",
-                    annotations = listOf(TestAnnotation(
-                        name = "Ignore",
-                        values = emptyMap(),
-                        inherited = false
-                    ))
+                    annotations = listOf(
+                        TestAnnotation(
+                            name = "Ignore",
+                            values = emptyMap(),
+                            inherited = false
+                        )
+                    )
                 )
             )
         )
@@ -219,18 +234,24 @@ class TestApkMetadataMapperTest {
             hiddenAnnotations = listOf("HiddenAnnotation"),
             ignoreTestsWithAnnotations = emptyList(),
             allowTestingWithoutFilters = true,
-            flankConfig = emptyFlankConfig,
+            commonYamlFiles = emptyList(),
+            annotationBasedYaml = ConfigModel.AnnotationBasedYaml(
+                options = emptyList(),
+                fallbackYamlFiles = emptyList()
+            ),
             options = emptyList()
         )
         val metadata = testMapper(
             testData, listOf(
                 TestMethod(
                     testName = "com.example.integration.TestClass1#test1",
-                    annotations = listOf(TestAnnotation(
-                        name = "HiddenAnnotation",
-                        values = emptyMap(),
-                        inherited = false
-                    ))
+                    annotations = listOf(
+                        TestAnnotation(
+                            name = "HiddenAnnotation",
+                            values = emptyMap(),
+                            inherited = false
+                        )
+                    )
                 )
             )
         )

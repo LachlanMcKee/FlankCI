@@ -12,19 +12,19 @@ class FlankConfigMapper(
 ) {
     suspend fun mapToFlankYaml(flankDataModel: FlankDataModel): Result<GeneratedFlankConfig> = kotlin.runCatching {
         val config = configDataSource.getConfig()
-        val flankConfig = config.testData.flankConfig
+        val testData = config.testData
 
-        val annotationBasedYamlFileNames: List<String> = (flankConfig.annotationBasedYaml.options
+        val annotationBasedYamlFileNames: List<String> = (testData.annotationBasedYaml.options
             .firstOrNull {
                 flankDataModel.annotations.contains(it.annotation)
             }
             ?.yamlFiles
-            ?: flankConfig.annotationBasedYaml.fallbackYamlFiles)
+            ?: testData.annotationBasedYaml.fallbackYamlFiles)
 
         val yaml = Yaml()
         val mergedYaml = mutableMapOf<String, Any>()
 
-        addYaml(yaml, mergedYaml, flankConfig.commonYamlFiles)
+        addYaml(yaml, mergedYaml, testData.commonYamlFiles)
         addYaml(yaml, mergedYaml, annotationBasedYamlFileNames)
 
         flankDataModel.checkboxOptions.forEach { (indexKey, isChecked) ->

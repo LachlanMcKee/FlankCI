@@ -5,34 +5,42 @@
     "testTriggerWorkflow": ""
   },
   "testData": {
-    "hiddenAnnotations" : [
+    "hiddenAnnotations": [
       "org.junit.runner.RunWith"
     ],
-    "ignoreTestsWithAnnotations" : [
+    "ignoreTestsWithAnnotations": [
       "org.junit.Ignore"
     ],
     "allowTestingWithoutFilters": false,
-    "flankConfig": {
-      "commonYamlFiles": ["flank-template.yaml"],
-      "annotationBasedYaml": {
-        "options": [
-          {
-            "annotation": "com.example.SmokeTest",
-            "yamlFiles": ["flank-smoke-devices.yaml"]
-          },
-          {
-            "annotation": "com.example.LeakTest",
-            "yamlFiles": ["flank-leak-devices.yaml"]
-          }
-        ],
-        "fallbackYamlFiles": ["flank-generic-devices.yaml"]
-      }
+    "commonYamlFiles": [
+      "flank-template.yaml"
+    ],
+    "annotationBasedYaml": {
+      "options": [
+        {
+          "annotation": "com.example.SmokeTest",
+          "yamlFiles": [
+            "flank-smoke-devices.yaml"
+          ]
+        },
+        {
+          "annotation": "com.example.LeakTest",
+          "yamlFiles": [
+            "flank-leak-devices.yaml"
+          ]
+        }
+      ],
+      "fallbackYamlFiles": [
+        "flank-generic-devices.yaml"
+      ]
     },
     "options": [
       {
         "type": "checkbox",
         "label": "Feature1",
-        "checkedYamlFiles": ["flank-feature1.yaml"],
+        "checkedYamlFiles": [
+          "flank-feature1.yaml"
+        ],
         "uncheckedYamlFiles": []
       },
       {
@@ -45,7 +53,10 @@
           },
           {
             "label": "Smoke",
-            "yamlFiles": ["flank-smoke-devices.yaml", "flank-smoke-preset.yaml"]
+            "yamlFiles": [
+              "flank-smoke-devices.yaml",
+              "flank-smoke-preset.yaml"
+            ]
           }
         ]
       }
