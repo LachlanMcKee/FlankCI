@@ -3,7 +3,9 @@ package net.lachlanmckee.bitrise.domain.mapper
 import io.ktor.http.content.MultiPartData
 import net.lachlanmckee.bitrise.domain.entity.FlankDataModel
 
-class FlankDataMapper {
+class FlankDataMapper(
+    private val formDataCollector: FormDataCollector
+) {
     suspend fun mapToFlankData(multipart: MultiPartData): FlankDataModel {
         var branch: String? = null
         var commitHash: String? = null
@@ -14,7 +16,7 @@ class FlankDataMapper {
         val checkboxOptions = mutableMapOf<Int, Boolean>()
         val dropDownOptions = mutableMapOf<Int, Int>()
 
-        FormDataCollector.collectData(multipart) { name, value ->
+        formDataCollector.collectData(multipart) { name, value ->
             when {
                 name == "branch-select" -> branch = value
                 name == "commitHash" -> commitHash = value

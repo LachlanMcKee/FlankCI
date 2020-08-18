@@ -12,7 +12,10 @@ class WorkflowConfirmationScreen {
                 link(rel = "stylesheet", href = "/static/styles.css", type = "text/css")
             }
             body {
-                h1 { +"Confirm Test YAML" }
+                h1 { +"Confirm Test Details" }
+                h3 { +"Branch" }
+                p { +branch }
+                h3 { +"YAML" }
                 p {
                     yaml
                         .split("\n")

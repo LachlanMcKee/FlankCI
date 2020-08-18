@@ -31,16 +31,24 @@ class DomainDi {
         MultipartCallFactoryImpl()
     }
 
+    private val formDataCollector: FormDataCollector by lazy {
+        FormDataCollectorImpl()
+    }
+
     val workflowConfirmationInteractor: WorkflowConfirmationInteractor by lazy {
         WorkflowConfirmationInteractor(
             multipartCallFactory,
             GeneratedFlankConfigValidator(dataDi.configDataSource),
-            FlankDataMapper(),
+            FlankDataMapper(formDataCollector),
             FlankConfigMapper(dataDi.configDataSource)
         )
     }
 
     val workflowTriggerInteractor: WorkflowTriggerInteractor by lazy {
-        WorkflowTriggerInteractor(multipartCallFactory, dataDi.bitriseDataSource, ConfirmDataMapper())
+        WorkflowTriggerInteractor(
+            multipartCallFactory,
+            dataDi.bitriseDataSource,
+            ConfirmDataMapper(formDataCollector)
+        )
     }
 }

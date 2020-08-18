@@ -83,6 +83,9 @@ compileKotlin {
     kotlinOptions.freeCompilerArgs = ["-Xallow-result-return-type"]
 }
 compileTestKotlin {
+    kotlinOptions.freeCompilerArgs = ["-Xallow-result-return-type"]
+}
+compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 

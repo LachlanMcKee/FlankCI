@@ -3,12 +3,14 @@ package net.lachlanmckee.bitrise.domain.mapper
 import io.ktor.http.content.MultiPartData
 import net.lachlanmckee.bitrise.domain.entity.ConfirmModel
 
-class ConfirmDataMapper {
+class ConfirmDataMapper(
+    private val formDataCollector: FormDataCollector
+) {
     suspend fun mapToConfirmModel(multipart: MultiPartData): Result<ConfirmModel> = kotlin.runCatching {
         var branch: String? = null
         var flankConfigBase64: String? = null
 
-        FormDataCollector.collectData(multipart) { name, value ->
+        formDataCollector.collectData(multipart) { name, value ->
             when (name) {
                 "branch" -> branch = value
                 "yaml-base64" -> flankConfigBase64 = value
