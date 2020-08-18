@@ -35,6 +35,7 @@ data class ConfigModel(
     @AutoGsonAdapter
     data class AnnotationAndYaml(
         val annotation: String,
+        val jobLabel: String,
         val yamlFiles: List<String>
     )
 
@@ -43,9 +44,15 @@ data class ConfigModel(
         @AutoGsonAdapter
         data class Checkbox(
             val label: String,
-            val checkedYamlFiles: List<String>,
-            val uncheckedYamlFiles: List<String>
-        ) : Option()
+            val checkedCheckBoxContent: CheckBoxContent,
+            val uncheckedCheckBoxContent: CheckBoxContent
+        ) : Option() {
+            @AutoGsonAdapter
+            data class CheckBoxContent(
+                val jobLabel: String,
+                val yamlFiles: List<String>
+            )
+        }
 
         @AutoGsonAdapter
         data class DropDown(
@@ -55,6 +62,7 @@ data class ConfigModel(
             @AutoGsonAdapter
             data class Value(
                 val label: String,
+                val jobLabel: String,
                 val yamlFiles: List<String>
             )
         }

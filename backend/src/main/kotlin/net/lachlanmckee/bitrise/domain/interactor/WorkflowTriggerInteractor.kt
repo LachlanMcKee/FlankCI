@@ -30,7 +30,7 @@ class WorkflowTriggerInteractor(
 
     private suspend fun triggerWorkflow(call: ApplicationCall, confirmModel: ConfirmModel) {
         bitriseDataSource
-            .triggerWorkflow(confirmModel.branch, confirmModel.flankConfigBase64)
+            .triggerWorkflow(confirmModel.branch, confirmModel.jobName, confirmModel.flankConfigBase64)
             .onSuccess {
                 if (it.status == "ok") {
                     call.respondRedirect(it.buildUrl)

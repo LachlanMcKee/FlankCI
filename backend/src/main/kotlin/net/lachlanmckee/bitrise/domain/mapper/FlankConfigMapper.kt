@@ -21,6 +21,13 @@ class FlankConfigMapper(
             ?.yamlFiles
             ?: testData.annotationBasedYaml.fallbackYamlFiles)
 
+        val jobNames: MutableList<String> = testData.annotationBasedYaml.options
+            .filter {
+                flankDataModel.annotations.contains(it.annotation)
+            }
+            .map { it.jobLabel }
+            .toMutableList()
+
         val yaml = Yaml()
         val mergedYaml = mutableMapOf<String, Any>()
 
@@ -30,15 +37,19 @@ class FlankConfigMapper(
         flankDataModel.checkboxOptions.forEach { (indexKey, isChecked) ->
             val checkboxOption = config.testData.options[indexKey] as ConfigModel.Option.Checkbox
             if (isChecked) {
-                addYaml(yaml, mergedYaml, checkboxOption.checkedYamlFiles)
+                addYaml(yaml, mergedYaml, checkboxOption.checkedCheckBoxContent.yamlFiles)
+                jobNames.add(checkboxOption.checkedCheckBoxContent.jobLabel)
             } else {
-                addYaml(yaml, mergedYaml, checkboxOption.uncheckedYamlFiles)
+                addYaml(yaml, mergedYaml, checkboxOption.uncheckedCheckBoxContent.yamlFiles)
+                jobNames.add(checkboxOption.uncheckedCheckBoxContent.jobLabel)
             }
         }
 
         flankDataModel.dropDownOptions.forEach { (indexKey, optionIndex) ->
             val dropDownOption = config.testData.options[indexKey] as ConfigModel.Option.DropDown
-            addYaml(yaml, mergedYaml, dropDownOption.values[optionIndex].yamlFiles)
+            val dropDownValue = dropDownOption.values[optionIndex]
+            addYaml(yaml, mergedYaml, dropDownValue.yamlFiles)
+            jobNames.add(dropDownValue.jobLabel)
         }
 
         // Replace any special values with their correct data.
@@ -48,7 +59,10 @@ class FlankConfigMapper(
 
         GeneratedFlankConfig(
             contentAsMap = mergedYaml,
-            contentAsString = yaml.dumpAsMap(mergedYaml)
+            contentAsString = yaml.dumpAsMap(mergedYaml),
+            jobName = jobNames
+                .filter { it.isNotEmpty() }
+                .joinToString(separator = "-")
         )
     }
 

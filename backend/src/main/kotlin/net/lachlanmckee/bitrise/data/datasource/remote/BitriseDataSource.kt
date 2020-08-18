@@ -15,7 +15,11 @@ interface BitriseDataSource {
 
     suspend fun getTestApkTestMethods(testApkUrl: String): Result<List<TestMethod>>
 
-    suspend fun triggerWorkflow(branch: String, flankConfigBase64: String): Result<BitriseTriggerResponse>
+    suspend fun triggerWorkflow(
+        branch: String,
+        jobName: String,
+        flankConfigBase64: String
+    ): Result<BitriseTriggerResponse>
 }
 
 class BitriseDataSourceImpl(
@@ -39,8 +43,12 @@ class BitriseDataSourceImpl(
         return bitriseService.getTestApkTestMethods(testApkUrl)
     }
 
-    override suspend fun triggerWorkflow(branch: String, flankConfigBase64: String): Result<BitriseTriggerResponse> {
+    override suspend fun triggerWorkflow(
+        branch: String,
+        jobName: String,
+        flankConfigBase64: String
+    ): Result<BitriseTriggerResponse> {
         val flankWorkflowId = configDataSource.getConfig().bitrise.testTriggerWorkflow
-        return bitriseService.triggerWorkflow(branch, flankWorkflowId, flankConfigBase64)
+        return bitriseService.triggerWorkflow(branch, jobName, flankWorkflowId, flankConfigBase64)
     }
 }

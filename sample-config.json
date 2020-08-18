@@ -19,12 +19,14 @@
       "options": [
         {
           "annotation": "com.example.SmokeTest",
+          "jobLabel": "smoke",
           "yamlFiles": [
             "flank-smoke-devices.yaml"
           ]
         },
         {
           "annotation": "com.example.LeakTest",
+          "jobLabel": "leak",
           "yamlFiles": [
             "flank-leak-devices.yaml"
           ]
@@ -38,10 +40,16 @@
       {
         "type": "checkbox",
         "label": "Feature1",
-        "checkedYamlFiles": [
-          "flank-feature1.yaml"
-        ],
-        "uncheckedYamlFiles": []
+        "checkedCheckBoxContent": {
+          "jobLabel": "feature1",
+          "yamlFiles": [
+            "flank-feature1.yaml"
+          ]
+        },
+        "uncheckedCheckBoxContent": {
+          "jobLabel": "",
+          "yamlFiles": []
+        }
       },
       {
         "type": "drop-down",
@@ -49,10 +57,12 @@
         "values": [
           {
             "label": "",
+            "jobLabel": "",
             "yamlFiles": []
           },
           {
             "label": "Smoke",
+            "jobLabel": "smoke",
             "yamlFiles": [
               "flank-smoke-devices.yaml",
               "flank-smoke-preset.yaml"

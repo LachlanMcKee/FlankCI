@@ -8,17 +8,20 @@ class ConfirmDataMapper(
 ) {
     suspend fun mapToConfirmModel(multipart: MultiPartData): Result<ConfirmModel> = kotlin.runCatching {
         var branch: String? = null
+        var jobName: String? = null
         var flankConfigBase64: String? = null
 
         formDataCollector.collectData(multipart) { name, value ->
             when (name) {
                 "branch" -> branch = value
+                "job-name" -> jobName = value
                 "yaml-base64" -> flankConfigBase64 = value
             }
         }
 
         ConfirmModel(
             branch = requireNotNull(branch) { "Branch must exist" },
+            jobName = requireNotNull(jobName) { "Job name must exist" },
             flankConfigBase64 = requireNotNull(flankConfigBase64) { "Flank Base64 must exist" }
         )
     }
