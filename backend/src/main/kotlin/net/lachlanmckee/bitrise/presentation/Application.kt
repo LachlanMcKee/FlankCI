@@ -43,7 +43,13 @@ fun Application.module(testing: Boolean = false) {
 
     routing {
         get("/") {
+            HomeScreen().respondHtml(call)
+        }
+        get("/test-runner") {
             TestRunnerScreen(domainDi.configDataSource).respondHtml(call)
+        }
+        get("/test-results") {
+            TestResultsScreen().respondHtml(call)
         }
         get("/bitrise-data") {
             domainDi.branchesInteractor.execute(call)
