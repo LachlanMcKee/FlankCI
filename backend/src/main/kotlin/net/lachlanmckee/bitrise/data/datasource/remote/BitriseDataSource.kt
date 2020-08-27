@@ -17,6 +17,7 @@ interface BitriseDataSource {
 
     suspend fun triggerWorkflow(
         branch: String,
+        commitHash: String,
         jobName: String,
         flankConfigBase64: String
     ): Result<BitriseTriggerResponse>
@@ -45,10 +46,11 @@ class BitriseDataSourceImpl(
 
     override suspend fun triggerWorkflow(
         branch: String,
+        commitHash: String,
         jobName: String,
         flankConfigBase64: String
     ): Result<BitriseTriggerResponse> {
         val flankWorkflowId = configDataSource.getConfig().bitrise.testTriggerWorkflow
-        return bitriseService.triggerWorkflow(branch, jobName, flankWorkflowId, flankConfigBase64)
+        return bitriseService.triggerWorkflow(branch, commitHash, jobName, flankWorkflowId, flankConfigBase64)
     }
 }

@@ -58,6 +58,7 @@ class WorkflowConfirmationInteractor(
         WorkflowConfirmationScreen().respondHtml(
             call = call,
             branch = flankDataModel.branch,
+            commitHash = flankDataModel.commitHash,
             jobName = generatedConfig.jobName,
             yaml = generatedConfig.contentAsString
         )
