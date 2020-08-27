@@ -18,6 +18,7 @@ data class BitriseTriggerRequest(
     data class BuildParams(
         val environments: List<EnvironmentValue>,
         val branch: String,
+        val commitHash: String,
         val workflowId: String
     ) {
         @AutoGsonAdapter(fieldNamingPolicy = [FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES])

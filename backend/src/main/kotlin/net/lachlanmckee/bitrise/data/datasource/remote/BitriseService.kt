@@ -24,6 +24,7 @@ interface BitriseService {
 
     suspend fun triggerWorkflow(
         branch: String,
+        commitHash: String,
         jobName: String,
         workflowId: String,
         flankConfigBase64: String
@@ -77,6 +78,7 @@ class BitriseServiceImpl(
 
     override suspend fun triggerWorkflow(
         branch: String,
+        commitHash: String,
         jobName: String,
         workflowId: String,
         flankConfigBase64: String
@@ -98,6 +100,7 @@ class BitriseServiceImpl(
                         )
                     ),
                     branch = branch,
+                    commitHash = commitHash,
                     workflowId = workflowId
                 )
             )

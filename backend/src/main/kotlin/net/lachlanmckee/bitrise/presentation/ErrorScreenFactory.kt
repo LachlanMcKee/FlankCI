@@ -4,7 +4,7 @@ import io.ktor.application.ApplicationCall
 import io.ktor.html.respondHtml
 import kotlinx.html.*
 
-class ErrorScreen {
+class ErrorScreenFactory {
     suspend fun respondHtml(call: ApplicationCall, title: String, body: String) {
         call.respondHtml {
             head {

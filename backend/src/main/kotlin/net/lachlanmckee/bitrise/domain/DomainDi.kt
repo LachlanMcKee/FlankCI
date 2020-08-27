@@ -7,6 +7,7 @@ import net.lachlanmckee.bitrise.domain.ktor.MultipartCallFactory
 import net.lachlanmckee.bitrise.domain.ktor.MultipartCallFactoryImpl
 import net.lachlanmckee.bitrise.domain.mapper.*
 import net.lachlanmckee.bitrise.domain.validation.GeneratedFlankConfigValidator
+import net.lachlanmckee.bitrise.presentation.ErrorScreenFactory
 
 class DomainDi {
     private val dataDi = DataDi()
@@ -31,6 +32,10 @@ class DomainDi {
         MultipartCallFactoryImpl()
     }
 
+    private val errorScreenFactory: ErrorScreenFactory by lazy {
+        ErrorScreenFactory()
+    }
+
     private val formDataCollector: FormDataCollector by lazy {
         FormDataCollectorImpl()
     }
@@ -38,6 +43,7 @@ class DomainDi {
     val workflowConfirmationInteractor: WorkflowConfirmationInteractor by lazy {
         WorkflowConfirmationInteractor(
             multipartCallFactory,
+            errorScreenFactory,
             GeneratedFlankConfigValidator(dataDi.configDataSource),
             FlankDataMapper(formDataCollector),
             FlankConfigMapper(dataDi.configDataSource)
@@ -47,6 +53,7 @@ class DomainDi {
     val workflowTriggerInteractor: WorkflowTriggerInteractor by lazy {
         WorkflowTriggerInteractor(
             multipartCallFactory,
+            errorScreenFactory,
             dataDi.bitriseDataSource,
             ConfirmDataMapper(formDataCollector)
         )
