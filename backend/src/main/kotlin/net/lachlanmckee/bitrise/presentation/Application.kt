@@ -52,7 +52,7 @@ fun Application.module(testing: Boolean = false) {
             TestResultsScreen().respondHtml(call)
         }
         get("/bitrise-data") {
-            domainDi.branchesInteractor.execute(call)
+            domainDi.triggerBranchesInteractor.execute(call)
         }
         get("/artifact-data/{build-slug}") {
             val buildSlug: String = call.parameters["build-slug"]!!

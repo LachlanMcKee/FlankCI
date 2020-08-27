@@ -14,7 +14,7 @@ import net.lachlanmckee.bitrise.data.entity.BitriseTriggerResponse
 import net.lachlanmckee.bitrise.data.entity.BuildsResponse
 
 interface BitriseService {
-    suspend fun getBuilds(): Result<List<BuildsResponse.BuildData>>
+    suspend fun getBuilds(workflow: String): Result<List<BuildsResponse.BuildData>>
 
     suspend fun getArtifactDetails(buildSlug: String): Result<JsonElement>
 
@@ -40,9 +40,9 @@ class BitriseServiceImpl(
         return "https://api.bitrise.io/v0.1/apps/${configDataSource.getConfig().bitrise.appId}"
     }
 
-    override suspend fun getBuilds(): Result<List<BuildsResponse.BuildData>> = kotlin.runCatching {
+    override suspend fun getBuilds(workflow: String): Result<List<BuildsResponse.BuildData>> = kotlin.runCatching {
         client
-            .get<BuildsResponse>("${createAppUrl()}/builds?workflow=${configDataSource.getConfig().bitrise.testApkSourceWorkflow}&sort_by=created_at") {
+            .get<BuildsResponse>("${createAppUrl()}/builds?workflow=$workflow&sort_by=created_at") {
                 auth()
             }
             .data

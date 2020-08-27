@@ -7,7 +7,7 @@ import net.lachlanmckee.bitrise.data.entity.BitriseTriggerResponse
 import net.lachlanmckee.bitrise.data.entity.BuildsResponse
 
 interface BitriseDataSource {
-    suspend fun getBuilds(): Result<List<BuildsResponse.BuildData>>
+    suspend fun getBuilds(workflow: String): Result<List<BuildsResponse.BuildData>>
 
     suspend fun getArtifactDetails(buildSlug: String): Result<JsonElement>
 
@@ -28,8 +28,8 @@ class BitriseDataSourceImpl(
     private val configDataSource: ConfigDataSource
 ) : BitriseDataSource {
 
-    override suspend fun getBuilds(): Result<List<BuildsResponse.BuildData>> {
-        return bitriseService.getBuilds()
+    override suspend fun getBuilds(workflow: String): Result<List<BuildsResponse.BuildData>> {
+        return bitriseService.getBuilds(workflow)
     }
 
     override suspend fun getArtifactDetails(buildSlug: String): Result<JsonElement> {

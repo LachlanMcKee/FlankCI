@@ -12,8 +12,8 @@ import net.lachlanmckee.bitrise.presentation.ErrorScreenFactory
 class DomainDi {
     private val dataDi = DataDi()
 
-    val branchesInteractor: BranchesInteractor by lazy {
-        BranchesInteractor(dataDi.bitriseDataSource, BuildsMapper())
+    val triggerBranchesInteractor: TriggerBranchesInteractor by lazy {
+        TriggerBranchesInteractor(dataDi.bitriseDataSource, configDataSource, BuildsMapper())
     }
 
     val configDataSource: ConfigDataSource by lazy {
