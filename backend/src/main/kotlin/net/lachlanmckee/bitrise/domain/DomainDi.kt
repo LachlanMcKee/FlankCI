@@ -16,6 +16,10 @@ class DomainDi {
         TriggerBranchesInteractor(dataDi.bitriseDataSource, configDataSource, BuildsMapper())
     }
 
+    val testResultsInteractor: TestResultsInteractor by lazy {
+        TestResultsInteractor(dataDi.bitriseDataSource, configDataSource, BuildsMapper())
+    }
+
     val configDataSource: ConfigDataSource by lazy {
         dataDi.configDataSource
     }

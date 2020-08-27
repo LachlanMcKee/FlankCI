@@ -49,7 +49,7 @@ fun Application.module(testing: Boolean = false) {
             TestRunnerScreen(domainDi.configDataSource).respondHtml(call)
         }
         get("/test-results") {
-            TestResultsScreen().respondHtml(call)
+            TestResultsScreen(domainDi.testResultsInteractor).respondHtml(call)
         }
         get("/bitrise-data") {
             domainDi.triggerBranchesInteractor.execute(call)

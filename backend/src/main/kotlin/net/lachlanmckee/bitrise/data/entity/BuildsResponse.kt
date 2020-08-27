@@ -1,12 +1,11 @@
 package net.lachlanmckee.bitrise.data.entity
 
 import com.google.gson.FieldNamingPolicy
-import gsonpath.GsonSafeList
 import gsonpath.annotation.AutoGsonAdapter
 
 @AutoGsonAdapter(fieldNamingPolicy = [FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES])
 data class BuildsResponse(
-    val data: GsonSafeList<BuildData>,
+    val data: List<BuildData>,
     val paging: Paging
 ) {
     @AutoGsonAdapter(fieldNamingPolicy = [FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES])
