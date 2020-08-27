@@ -6,10 +6,11 @@ import net.lachlanmckee.bitrise.data.datasource.remote.BitriseDataSource
 import net.lachlanmckee.bitrise.domain.entity.ConfirmModel
 import net.lachlanmckee.bitrise.domain.ktor.MultipartCallFactory
 import net.lachlanmckee.bitrise.domain.mapper.ConfirmDataMapper
-import net.lachlanmckee.bitrise.presentation.ErrorScreen
+import net.lachlanmckee.bitrise.presentation.ErrorScreenFactory
 
 class WorkflowTriggerInteractor(
     private val multipartCallFactory: MultipartCallFactory,
+    private val errorScreenFactory: ErrorScreenFactory,
     private val bitriseDataSource: BitriseDataSource,
     private val confirmDataMapper: ConfirmDataMapper
 ) {
@@ -19,7 +20,7 @@ class WorkflowTriggerInteractor(
                 .mapToConfirmModel(multipart)
                 .onSuccess { confirmModel -> triggerWorkflow(call, confirmModel) }
                 .onFailure {
-                    ErrorScreen().respondHtml(
+                    errorScreenFactory.respondHtml(
                         call = call,
                         title = "Error",
                         body = it.message!!
@@ -40,7 +41,7 @@ class WorkflowTriggerInteractor(
                 if (it.status == "ok") {
                     call.respondRedirect(it.buildUrl)
                 } else {
-                    ErrorScreen().respondHtml(
+                    errorScreenFactory.respondHtml(
                         call = call,
                         title = "Error",
                         body = "Bitrise rejected build"
@@ -48,7 +49,7 @@ class WorkflowTriggerInteractor(
                 }
             }
             .onFailure {
-                ErrorScreen().respondHtml(
+                errorScreenFactory.respondHtml(
                     call = call,
                     title = "Error",
                     body = "Failed to submit build. Message: ${it.message}"

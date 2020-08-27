@@ -8,10 +8,11 @@ import net.lachlanmckee.bitrise.domain.mapper.FlankConfigMapper
 import net.lachlanmckee.bitrise.domain.mapper.FlankDataMapper
 import net.lachlanmckee.bitrise.domain.validation.GeneratedFlankConfigValidator
 import net.lachlanmckee.bitrise.presentation.WorkflowConfirmationScreen
-import net.lachlanmckee.bitrise.presentation.ErrorScreen
+import net.lachlanmckee.bitrise.presentation.ErrorScreenFactory
 
 class WorkflowConfirmationInteractor(
     private val multipartCallFactory: MultipartCallFactory,
+    private val errorScreenFactory: ErrorScreenFactory,
     private val generatedFlankConfigValidator: GeneratedFlankConfigValidator,
     private val flankDataMapper: FlankDataMapper,
     private val flankConfigMapper: FlankConfigMapper
@@ -27,7 +28,7 @@ class WorkflowConfirmationInteractor(
                     }
                 }
                 .onFailure {
-                    ErrorScreen().respondHtml(
+                    errorScreenFactory.respondHtml(
                         call = call,
                         title = "Error",
                         body = it.message!!
@@ -39,7 +40,7 @@ class WorkflowConfirmationInteractor(
     private suspend fun validationErrorHandled(call: ApplicationCall, generatedConfig: GeneratedFlankConfig): Boolean {
         val error = generatedFlankConfigValidator.getValidationErrorMessage(generatedConfig)
         return if (error != null) {
-            ErrorScreen().respondHtml(
+            errorScreenFactory.respondHtml(
                 call = call,
                 title = error,
                 body = generatedConfig.contentAsString
