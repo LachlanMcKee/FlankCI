@@ -1,7 +1,7 @@
 package net.lachlanmckee.bitrise.presentation
 
 import gsonpath.GsonPath
-import gsonpath.GsonPathTypeAdapterFactory
+import gsonpath.GsonPathTypeAdapterFactoryKt
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -29,7 +29,7 @@ fun Application.module(testing: Boolean = false) {
     install(CallLogging)
     install(ContentNegotiation) {
         gson {
-            registerTypeAdapterFactory(GsonPathTypeAdapterFactory())
+            registerTypeAdapterFactory(GsonPathTypeAdapterFactoryKt())
             registerTypeAdapterFactory(
                 GsonPath.createTypeAdapterFactory(BitriseGsonTypeFactory::class.java)
             )
@@ -49,7 +49,7 @@ fun Application.module(testing: Boolean = false) {
             TestRunnerScreen(domainDi.configDataSource).respondHtml(call)
         }
         get("/test-results") {
-            TestResultsScreen(domainDi.testResultsInteractor).respondHtml(call)
+            TestResultsScreen(domainDi.testResultsInteractor, domainDi.errorScreenFactory).respondHtml(call)
         }
         get("/bitrise-data") {
             domainDi.triggerBranchesInteractor.execute(call)

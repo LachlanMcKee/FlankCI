@@ -36,7 +36,7 @@ class DomainDi {
         MultipartCallFactoryImpl()
     }
 
-    private val errorScreenFactory: ErrorScreenFactory by lazy {
+    val errorScreenFactory: ErrorScreenFactory by lazy {
         ErrorScreenFactory()
     }
 

@@ -1,7 +1,7 @@
 package net.lachlanmckee.bitrise.data
 
 import gsonpath.GsonPath
-import gsonpath.GsonPathTypeAdapterFactory
+import gsonpath.GsonPathTypeAdapterFactoryKt
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
 import io.ktor.client.features.json.GsonSerializer
@@ -27,7 +27,7 @@ class DataDi {
                     serializer = GsonSerializer {
                         serializeNulls()
                         setLenient()
-                        registerTypeAdapterFactory(GsonPathTypeAdapterFactory())
+                        registerTypeAdapterFactory(GsonPathTypeAdapterFactoryKt())
                         registerTypeAdapterFactory(
                             GsonPath.createTypeAdapterFactory(BitriseGsonTypeFactory::class.java)
                         )

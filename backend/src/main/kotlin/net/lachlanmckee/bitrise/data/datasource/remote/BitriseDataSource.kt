@@ -2,6 +2,7 @@ package net.lachlanmckee.bitrise.data.datasource.remote
 
 import com.google.gson.JsonElement
 import com.linkedin.dex.parser.TestMethod
+import gsonpath.GsonResult
 import net.lachlanmckee.bitrise.data.datasource.local.ConfigDataSource
 import net.lachlanmckee.bitrise.data.entity.BitriseTriggerResponse
 import net.lachlanmckee.bitrise.data.entity.BuildsResponse
@@ -30,6 +31,17 @@ class BitriseDataSourceImpl(
 
     override suspend fun getBuilds(workflow: String): Result<List<BuildsResponse.BuildData>> {
         return bitriseService.getBuilds(workflow)
+            .map { buildsList ->
+                buildsList.flatMap {
+                    when (it) {
+                        is GsonResult.Success -> listOf(it.value)
+                        is GsonResult.Failure -> {
+                            println("Filtering out build due to: ${it.exception}")
+                            emptyList()
+                        }
+                    }
+                }
+            }
     }
 
     override suspend fun getArtifactDetails(buildSlug: String): Result<JsonElement> {

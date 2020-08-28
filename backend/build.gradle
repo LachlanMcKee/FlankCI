@@ -51,6 +51,7 @@ dependencies {
     implementation "org.yaml:snakeyaml:1.26"
 
     implementation "net.lachlanmckee:gsonpath:4.0.0"
+    implementation "net.lachlanmckee:gsonpath-kt:4.0.0"
     kapt "net.lachlanmckee:gsonpath-compiler:4.0.0"
 
     testImplementation "org.junit.jupiter:junit-jupiter-engine:5.4.2"

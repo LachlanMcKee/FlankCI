@@ -2,7 +2,7 @@ package net.lachlanmckee.bitrise.data.datasource.local
 
 import com.google.gson.GsonBuilder
 import gsonpath.GsonPath
-import gsonpath.GsonPathTypeAdapterFactory
+import gsonpath.GsonPathTypeAdapterFactoryKt
 import net.lachlanmckee.bitrise.data.entity.Config
 import net.lachlanmckee.bitrise.data.entity.ConfigModel
 import net.lachlanmckee.bitrise.data.serialization.BitriseGsonTypeFactory
@@ -17,7 +17,7 @@ class ConfigDataSourceImpl : ConfigDataSource {
     private val config: Config by lazy {
         Config(
             configModel = GsonBuilder()
-                .registerTypeAdapterFactory(GsonPathTypeAdapterFactory())
+                .registerTypeAdapterFactory(GsonPathTypeAdapterFactoryKt())
                 .registerTypeAdapterFactory(GsonPath.createTypeAdapterFactory(BitriseGsonTypeFactory::class.java))
                 .create()
                 .fromJson(FileInputStream("config.json").bufferedReader(), ConfigModel::class.java),

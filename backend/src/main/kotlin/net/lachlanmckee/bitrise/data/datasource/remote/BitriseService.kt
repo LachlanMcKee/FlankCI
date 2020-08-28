@@ -3,6 +3,7 @@ package net.lachlanmckee.bitrise.data.datasource.remote
 import com.google.gson.JsonElement
 import com.linkedin.dex.parser.DexParser
 import com.linkedin.dex.parser.TestMethod
+import gsonpath.GsonResultList
 import io.ktor.client.HttpClient
 import io.ktor.client.request.*
 import io.ktor.http.ContentType
@@ -14,7 +15,7 @@ import net.lachlanmckee.bitrise.data.entity.BitriseTriggerResponse
 import net.lachlanmckee.bitrise.data.entity.BuildsResponse
 
 interface BitriseService {
-    suspend fun getBuilds(workflow: String): Result<List<BuildsResponse.BuildData>>
+    suspend fun getBuilds(workflow: String): Result<GsonResultList<BuildsResponse.BuildData>>
 
     suspend fun getArtifactDetails(buildSlug: String): Result<JsonElement>
 
@@ -40,7 +41,7 @@ class BitriseServiceImpl(
         return "https://api.bitrise.io/v0.1/apps/${configDataSource.getConfig().bitrise.appId}"
     }
 
-    override suspend fun getBuilds(workflow: String): Result<List<BuildsResponse.BuildData>> = kotlin.runCatching {
+    override suspend fun getBuilds(workflow: String): Result<GsonResultList<BuildsResponse.BuildData>> = kotlin.runCatching {
         client
             .get<BuildsResponse>("${createAppUrl()}/builds?workflow=$workflow&sort_by=created_at") {
                 auth()
