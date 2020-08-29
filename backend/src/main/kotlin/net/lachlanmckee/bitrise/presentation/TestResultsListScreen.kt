@@ -6,12 +6,12 @@ import kotlinx.html.*
 import net.lachlanmckee.bitrise.data.entity.BuildsData
 import net.lachlanmckee.bitrise.domain.interactor.TestResultsInteractor
 
-class TestResultsScreen(
+class TestResultsListScreen(
     private val testResultsInteractor: TestResultsInteractor,
     private val errorScreenFactory: ErrorScreenFactory
 ) {
     suspend fun respondHtml(call: ApplicationCall) {
-       testResultsInteractor
+        testResultsInteractor
             .execute(call)
             .onSuccess { render(call, it) }
             .onFailure { errorScreenFactory.respondHtml(call, "Failed to parse content", it.message!!) }
@@ -30,12 +30,18 @@ class TestResultsScreen(
                 div {
                     p {
                         classes = setOf("heading")
-                        text("Jobs:")
                     }
-                    p {
-                        classes = setOf("content")
-                        id = "artifact-details"
-                        text(buildsData.branchBuilds.map { it.value.toString() }.joinToString(separator = "<br/>"))
+                    buildsData.branchBuilds.values.forEach { builds: List<BuildsData.Build> ->
+                        builds.forEach { build ->
+                            p {
+                                classes = setOf("content")
+                                id = "artifact-details"
+
+                                a(href = "/test-result/${build.buildSlug}") {
+                                    text(build.toString())
+                                }
+                            }
+                        }
                     }
                 }
             }

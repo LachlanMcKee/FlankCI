@@ -48,8 +48,12 @@ fun Application.module(testing: Boolean = false) {
         get("/test-runner") {
             TestRunnerScreen(domainDi.configDataSource).respondHtml(call)
         }
-        get("/test-results") {
-            TestResultsScreen(domainDi.testResultsInteractor, domainDi.errorScreenFactory).respondHtml(call)
+        get("/test-results-list") {
+            TestResultsListScreen(domainDi.testResultsInteractor, domainDi.errorScreenFactory).respondHtml(call)
+        }
+        get("/test-result/{build-slug}") {
+            val buildSlug: String = call.parameters["build-slug"]!!
+            domainDi.artifactsInteractor.execute(call, buildSlug)
         }
         get("/bitrise-data") {
             domainDi.triggerBranchesInteractor.execute(call)
