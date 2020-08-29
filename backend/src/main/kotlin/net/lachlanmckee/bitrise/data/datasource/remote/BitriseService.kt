@@ -78,9 +78,7 @@ class BitriseServiceImpl(
 
     override suspend fun getArtifactText(url: String): Result<String> =
         kotlin.runCatching {
-            client.withTempFile(url) {
-                it.readText()
-            }
+            client.get<String>(url)
         }
 
     override suspend fun triggerWorkflow(
