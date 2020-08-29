@@ -4,14 +4,14 @@ import io.ktor.application.ApplicationCall
 import io.ktor.html.respondHtml
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.data.entity.BuildsData
-import net.lachlanmckee.bitrise.domain.interactor.TestResultsInteractor
+import net.lachlanmckee.bitrise.domain.interactor.TestResultsListInteractor
 
 class TestResultsListScreen(
-    private val testResultsInteractor: TestResultsInteractor,
+    private val testResultsListInteractor: TestResultsListInteractor,
     private val errorScreenFactory: ErrorScreenFactory
 ) {
     suspend fun respondHtml(call: ApplicationCall) {
-        testResultsInteractor
+        testResultsListInteractor
             .execute(call)
             .onSuccess { render(call, it) }
             .onFailure { errorScreenFactory.respondHtml(call, "Failed to parse content", it.message!!) }

@@ -1,6 +1,5 @@
 package net.lachlanmckee.bitrise.data.datasource.remote
 
-import com.google.gson.JsonElement
 import com.linkedin.dex.parser.DexParser
 import com.linkedin.dex.parser.TestMethod
 import gsonpath.GsonResultList
@@ -10,18 +9,18 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import net.lachlanmckee.bitrise.data.api.withTempFile
 import net.lachlanmckee.bitrise.data.datasource.local.ConfigDataSource
-import net.lachlanmckee.bitrise.data.entity.BitriseTriggerRequest
-import net.lachlanmckee.bitrise.data.entity.BitriseTriggerResponse
-import net.lachlanmckee.bitrise.data.entity.BuildsResponse
+import net.lachlanmckee.bitrise.data.entity.*
 
 interface BitriseService {
     suspend fun getBuilds(workflow: String): Result<GsonResultList<BuildsResponse.BuildData>>
 
-    suspend fun getArtifactDetails(buildSlug: String): Result<JsonElement>
+    suspend fun getArtifactDetails(buildSlug: String): Result<BitriseArtifactsListResponse>
 
-    suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<JsonElement>
+    suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<BitriseArtifactResponse>
 
     suspend fun getTestApkTestMethods(testApkUrl: String): Result<List<TestMethod>>
+
+    suspend fun getArtifactText(url: String): Result<String>
 
     suspend fun triggerWorkflow(
         branch: String,
@@ -49,17 +48,17 @@ class BitriseServiceImpl(
             .data
     }
 
-    override suspend fun getArtifactDetails(buildSlug: String): Result<JsonElement> = kotlin.runCatching {
+    override suspend fun getArtifactDetails(buildSlug: String): Result<BitriseArtifactsListResponse> = kotlin.runCatching {
         client
-            .get<JsonElement>("${createAppUrl()}/builds/$buildSlug/artifacts") {
+            .get<BitriseArtifactsListResponse>("${createAppUrl()}/builds/$buildSlug/artifacts") {
                 auth()
             }
     }
 
-    override suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<JsonElement> =
+    override suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<BitriseArtifactResponse> =
         kotlin.runCatching {
             client
-                .get<JsonElement>("${createAppUrl()}/builds/$buildSlug/artifacts/$artifactSlug") {
+                .get<BitriseArtifactResponse>("${createAppUrl()}/builds/$buildSlug/artifacts/$artifactSlug") {
                     auth()
                 }
         }
@@ -76,6 +75,13 @@ class BitriseServiceImpl(
             }
         }
     }
+
+    override suspend fun getArtifactText(url: String): Result<String> =
+        kotlin.runCatching {
+            client.withTempFile(url) {
+                it.readText()
+            }
+        }
 
     override suspend fun triggerWorkflow(
         branch: String,

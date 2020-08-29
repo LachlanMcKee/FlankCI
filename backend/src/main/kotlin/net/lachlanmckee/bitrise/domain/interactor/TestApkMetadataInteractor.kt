@@ -19,12 +19,7 @@ class TestApkMetadataInteractor(
 
         bitriseDataSource
             .getArtifact(buildSlug, artifactSlug)
-            .onSuccess { artifactData ->
-                fetchTestData(
-                    call,
-                    (artifactData as JsonObject).getAsJsonObject("data").get("expiring_download_url").asString
-                )
-            }
+            .onSuccess { artifactData -> fetchTestData(call, artifactData.expiringDownloadUrl) }
             .onFailure { println("Failure: $it") }
     }
 

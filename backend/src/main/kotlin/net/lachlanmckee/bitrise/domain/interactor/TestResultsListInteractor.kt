@@ -1,13 +1,12 @@
 package net.lachlanmckee.bitrise.domain.interactor
 
 import io.ktor.application.ApplicationCall
-import io.ktor.response.respond
 import net.lachlanmckee.bitrise.data.datasource.local.ConfigDataSource
 import net.lachlanmckee.bitrise.data.datasource.remote.BitriseDataSource
 import net.lachlanmckee.bitrise.data.entity.BuildsData
 import net.lachlanmckee.bitrise.domain.mapper.BuildsMapper
 
-class TestResultsInteractor(
+class TestResultsListInteractor(
     private val bitriseDataSource: BitriseDataSource,
     private val configDataSource: ConfigDataSource,
     private val buildsMapper: BuildsMapper

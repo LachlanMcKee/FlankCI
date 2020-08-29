@@ -1,20 +1,23 @@
 package net.lachlanmckee.bitrise.data.datasource.remote
 
-import com.google.gson.JsonElement
 import com.linkedin.dex.parser.TestMethod
 import gsonpath.GsonResult
 import net.lachlanmckee.bitrise.data.datasource.local.ConfigDataSource
+import net.lachlanmckee.bitrise.data.entity.BitriseArtifactResponse
+import net.lachlanmckee.bitrise.data.entity.BitriseArtifactsListResponse
 import net.lachlanmckee.bitrise.data.entity.BitriseTriggerResponse
 import net.lachlanmckee.bitrise.data.entity.BuildsResponse
 
 interface BitriseDataSource {
     suspend fun getBuilds(workflow: String): Result<List<BuildsResponse.BuildData>>
 
-    suspend fun getArtifactDetails(buildSlug: String): Result<JsonElement>
+    suspend fun getArtifactDetails(buildSlug: String): Result<BitriseArtifactsListResponse>
 
-    suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<JsonElement>
+    suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<BitriseArtifactResponse>
 
     suspend fun getTestApkTestMethods(testApkUrl: String): Result<List<TestMethod>>
+
+    suspend fun getArtifactText(url: String): Result<String>
 
     suspend fun triggerWorkflow(
         branch: String,
@@ -44,16 +47,20 @@ class BitriseDataSourceImpl(
             }
     }
 
-    override suspend fun getArtifactDetails(buildSlug: String): Result<JsonElement> {
+    override suspend fun getArtifactDetails(buildSlug: String): Result<BitriseArtifactsListResponse> {
         return bitriseService.getArtifactDetails(buildSlug)
     }
 
-    override suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<JsonElement> {
+    override suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<BitriseArtifactResponse> {
         return bitriseService.getArtifact(buildSlug, artifactSlug)
     }
 
     override suspend fun getTestApkTestMethods(testApkUrl: String): Result<List<TestMethod>> {
         return bitriseService.getTestApkTestMethods(testApkUrl)
+    }
+
+    override suspend fun getArtifactText(url: String): Result<String> {
+        return bitriseService.getArtifactText(url)
     }
 
     override suspend fun triggerWorkflow(
