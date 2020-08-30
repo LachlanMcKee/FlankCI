@@ -48,11 +48,17 @@ dependencies {
 
     implementation "com.linkedin.dextestparser:parser:2.2.1"
 
+    // Yaml parsing
     implementation "org.yaml:snakeyaml:1.26"
 
+    // Json parsing
     implementation "net.lachlanmckee:gsonpath:4.0.0"
     implementation "net.lachlanmckee:gsonpath-kt:4.0.0"
     kapt "net.lachlanmckee:gsonpath-compiler:4.0.0"
+
+    // XML parsing
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.11.2"
 
     testImplementation "org.junit.jupiter:junit-jupiter-engine:5.4.2"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.4.2"

@@ -18,7 +18,7 @@ class HomeScreen {
                 }
 
                 div {
-                    a(href = "/test-results-list") { +"Test Results" }
+                    a(href = "/test-results") { +"Test Results" }
                 }
             }
         }

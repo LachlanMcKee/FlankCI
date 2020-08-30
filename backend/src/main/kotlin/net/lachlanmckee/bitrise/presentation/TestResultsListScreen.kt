@@ -35,9 +35,7 @@ class TestResultsListScreen(
                         builds.forEach { build ->
                             p {
                                 classes = setOf("content")
-                                id = "artifact-details"
-
-                                a(href = "/test-result/${build.buildSlug}") {
+                                a(href = "/test-results/${build.buildSlug}") {
                                     text(build.toString())
                                 }
                             }

@@ -48,10 +48,10 @@ fun Application.module(testing: Boolean = false) {
         get("/test-runner") {
             TestRunnerScreen(domainDi.configDataSource).respondHtml(call)
         }
-        get("/test-results-list") {
+        get("/test-results") {
             TestResultsListScreen(domainDi.testResultsListInteractor, domainDi.errorScreenFactory).respondHtml(call)
         }
-        get("/test-result/{build-slug}") {
+        get("/test-results/{build-slug}") {
             val buildSlug: String = call.parameters["build-slug"]!!
             TestResultScreen(domainDi.testResultInteractor, domainDi.errorScreenFactory).respondHtml(call, buildSlug)
         }
