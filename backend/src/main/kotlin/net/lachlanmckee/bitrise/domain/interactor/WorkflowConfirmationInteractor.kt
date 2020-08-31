@@ -7,7 +7,7 @@ import net.lachlanmckee.bitrise.domain.ktor.MultipartCallFactory
 import net.lachlanmckee.bitrise.domain.mapper.FlankConfigMapper
 import net.lachlanmckee.bitrise.domain.mapper.FlankDataMapper
 import net.lachlanmckee.bitrise.domain.validation.GeneratedFlankConfigValidator
-import net.lachlanmckee.bitrise.presentation.WorkflowConfirmationScreen
+import net.lachlanmckee.bitrise.presentation.runner.WorkflowConfirmationScreen
 import net.lachlanmckee.bitrise.presentation.ErrorScreenFactory
 
 class WorkflowConfirmationInteractor(

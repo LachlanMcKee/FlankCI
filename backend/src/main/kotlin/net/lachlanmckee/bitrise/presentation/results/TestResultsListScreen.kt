@@ -1,10 +1,11 @@
-package net.lachlanmckee.bitrise.presentation
+package net.lachlanmckee.bitrise.presentation.results
 
 import io.ktor.application.ApplicationCall
 import io.ktor.html.respondHtml
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.data.entity.BuildsData
 import net.lachlanmckee.bitrise.domain.interactor.TestResultsListInteractor
+import net.lachlanmckee.bitrise.presentation.ErrorScreenFactory
 
 class TestResultsListScreen(
     private val testResultsListInteractor: TestResultsListInteractor,

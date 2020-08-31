@@ -17,6 +17,9 @@ import io.ktor.routing.post
 import io.ktor.routing.routing
 import net.lachlanmckee.bitrise.data.serialization.BitriseGsonTypeFactory
 import net.lachlanmckee.bitrise.domain.DomainDi
+import net.lachlanmckee.bitrise.presentation.runner.TestRunnerScreen
+import net.lachlanmckee.bitrise.presentation.results.TestResultScreen
+import net.lachlanmckee.bitrise.presentation.results.TestResultsListScreen
 import java.text.DateFormat
 
 // Referenced in application.conf
@@ -46,14 +49,21 @@ fun Application.module(testing: Boolean = false) {
             HomeScreen().respondHtml(call)
         }
         get("/test-runner") {
-            TestRunnerScreen(domainDi.configDataSource).respondHtml(call)
+            TestRunnerScreen(domainDi.configDataSource)
+                .respondHtml(call)
         }
         get("/test-results") {
-            TestResultsListScreen(domainDi.testResultsListInteractor, domainDi.errorScreenFactory).respondHtml(call)
+            TestResultsListScreen(
+                domainDi.testResultsListInteractor,
+                domainDi.errorScreenFactory
+            ).respondHtml(call)
         }
         get("/test-results/{build-slug}") {
             val buildSlug: String = call.parameters["build-slug"]!!
-            TestResultScreen(domainDi.testResultInteractor, domainDi.errorScreenFactory).respondHtml(call, buildSlug)
+            TestResultScreen(
+                domainDi.testResultInteractor,
+                domainDi.errorScreenFactory
+            ).respondHtml(call, buildSlug)
         }
         get("/bitrise-data") {
             domainDi.triggerBranchesInteractor.execute(call)

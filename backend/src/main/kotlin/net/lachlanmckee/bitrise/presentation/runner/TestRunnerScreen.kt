@@ -1,4 +1,4 @@
-package net.lachlanmckee.bitrise.presentation
+package net.lachlanmckee.bitrise.presentation.runner
 
 import io.ktor.application.ApplicationCall
 import io.ktor.html.respondHtml

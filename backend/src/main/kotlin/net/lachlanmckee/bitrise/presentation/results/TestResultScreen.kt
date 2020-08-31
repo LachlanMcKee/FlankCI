@@ -1,4 +1,4 @@
-package net.lachlanmckee.bitrise.presentation
+package net.lachlanmckee.bitrise.presentation.results
 
 import io.ktor.application.ApplicationCall
 import io.ktor.html.respondHtml
@@ -11,6 +11,7 @@ import io.ktor.utils.io.ByteWriteChannel
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.domain.entity.TestResultModel
 import net.lachlanmckee.bitrise.domain.interactor.TestResultInteractor
+import net.lachlanmckee.bitrise.presentation.ErrorScreenFactory
 
 class HtmlContent(private val htmlText: String) : OutgoingContent.WriteChannelContent() {
 
