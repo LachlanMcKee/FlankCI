@@ -2,7 +2,7 @@
 /.idea
 /out
 /build
-/backend/build
+/*/build
 *.iml
 *.ipr
 *.iws
