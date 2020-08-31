@@ -19,6 +19,7 @@ interface BitriseService {
 
     suspend fun triggerWorkflow(
         branch: String,
+        buildSlug: String,
         commitHash: String,
         jobName: String,
         workflowId: String,

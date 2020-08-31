@@ -73,6 +73,7 @@ internal class BitriseServiceImpl(
 
     override suspend fun triggerWorkflow(
         branch: String,
+        buildSlug: String,
         commitHash: String,
         jobName: String,
         workflowId: String,
@@ -92,6 +93,10 @@ internal class BitriseServiceImpl(
                         BitriseTriggerRequest.BuildParams.EnvironmentValue(
                             mappedTo = "JOB_NAME",
                             value = jobName
+                        ),
+                        BitriseTriggerRequest.BuildParams.EnvironmentValue(
+                            mappedTo = "JOB_BUILD_SLUG",
+                            value = buildSlug
                         )
                     ),
                     branch = branch,

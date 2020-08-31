@@ -60,6 +60,7 @@ internal class WorkflowConfirmationInteractor @Inject constructor(
         WorkflowConfirmationScreen().respondHtml(
             call = call,
             branch = flankDataModel.branch,
+            buildSlug = flankDataModel.buildSlug,
             commitHash = flankDataModel.commitHash,
             jobName = generatedConfig.jobName,
             yaml = generatedConfig.contentAsString

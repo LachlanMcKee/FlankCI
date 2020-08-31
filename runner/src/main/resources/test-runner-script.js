@@ -50,8 +50,12 @@ async function onBuildChanged(buildsData) {
     let buildSlug = buildSelectDropDown.value;
 
     let buildData = buildsData.find(x => x.buildSlug === buildSlug);
+
     let commitHashInput = document.getElementById('commit-hash');
     commitHashInput.value = buildData.commitHash;
+
+    let buildSlugInput = document.getElementById('build-slug');
+    buildSlugInput.value = buildData.buildSlug;
 
     let artifactData = await (await fetch('http://127.0.0.1:8080/artifact-data/' + buildSlug)).json();
     console.log("Artifact data:");

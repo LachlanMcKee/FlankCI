@@ -10,6 +10,7 @@ internal class FlankDataMapper @Inject constructor(
 ) {
     suspend fun mapToFlankData(multipart: MultiPartData): FlankDataModel {
         var branch: String? = null
+        var buildSlug: String? = null
         var commitHash: String? = null
         var rootPackage: String? = null
         val annotations = mutableListOf<String>()
@@ -21,6 +22,7 @@ internal class FlankDataMapper @Inject constructor(
         formDataCollector.collectData(multipart) { name, value ->
             when {
                 name == "branch-select" -> branch = value
+                name == "buildSlug" -> buildSlug = value
                 name == "commitHash" -> commitHash = value
                 name == "rootPackage" -> rootPackage = value
                 name == "annotation" -> annotations.add(value)
@@ -48,6 +50,7 @@ internal class FlankDataMapper @Inject constructor(
 
         return FlankDataModel(
             branch = requireNotNull(branch) { "Branch must exist" },
+            buildSlug = requireNotNull(buildSlug) { "Build slug must exist" },
             commitHash = requireNotNull(commitHash) { "Commit hash must exist" },
             rootPackage = requireNotNull(rootPackage) { "Root package must exist" },
             annotations = annotations,

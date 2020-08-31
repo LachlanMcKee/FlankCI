@@ -34,6 +34,7 @@ internal class WorkflowTriggerInteractor @Inject constructor(
         bitriseDataSource
             .triggerWorkflow(
                 branch = confirmModel.branch,
+                buildSlug = confirmModel.buildSlug,
                 commitHash = confirmModel.commitHash,
                 jobName = confirmModel.jobName,
                 flankConfigBase64 = confirmModel.flankConfigBase64

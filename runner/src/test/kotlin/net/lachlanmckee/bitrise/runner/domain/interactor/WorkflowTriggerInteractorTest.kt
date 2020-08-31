@@ -57,6 +57,7 @@ class WorkflowTriggerInteractorTest {
             Result.success(
                 ConfirmModel(
                     branch = "branch",
+                    buildSlug = "slug",
                     commitHash = "hash",
                     jobName = "job",
                     flankConfigBase64 = "config"
@@ -71,6 +72,7 @@ class WorkflowTriggerInteractorTest {
             confirmDataMapper.mapToConfirmModel(any())
             bitriseDataSource.triggerWorkflow(
                 branch = "branch",
+                buildSlug = "slug",
                 commitHash = "hash",
                 jobName = "job",
                 flankConfigBase64 = "config"
@@ -89,6 +91,7 @@ class WorkflowTriggerInteractorTest {
             Result.success(
                 ConfirmModel(
                     branch = "branch",
+                    buildSlug = "slug",
                     commitHash = "hash",
                     jobName = "job",
                     flankConfigBase64 = "config"
@@ -103,6 +106,7 @@ class WorkflowTriggerInteractorTest {
             confirmDataMapper.mapToConfirmModel(any())
             bitriseDataSource.triggerWorkflow(
                 branch = "branch",
+                buildSlug = "slug",
                 commitHash = "hash",
                 jobName = "job",
                 flankConfigBase64 = "config"
@@ -121,6 +125,7 @@ class WorkflowTriggerInteractorTest {
             Result.success(
                 ConfirmModel(
                     branch = "branch",
+                    buildSlug = "slug",
                     commitHash = "hash",
                     jobName = "job",
                     flankConfigBase64 = "config"
@@ -135,6 +140,7 @@ class WorkflowTriggerInteractorTest {
             confirmDataMapper.mapToConfirmModel(any())
             bitriseDataSource.triggerWorkflow(
                 branch = "branch",
+                buildSlug = "slug",
                 commitHash = "hash",
                 jobName = "job",
                 flankConfigBase64 = "config"
@@ -151,6 +157,7 @@ class WorkflowTriggerInteractorTest {
         coEvery {
             bitriseDataSource.triggerWorkflow(
                 branch = "branch",
+                buildSlug = "slug",
                 commitHash = "hash",
                 jobName = "job",
                 flankConfigBase64 = "config"

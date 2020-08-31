@@ -30,11 +30,19 @@ internal class BitriseDataSourceImpl @Inject constructor(
 
     override suspend fun triggerWorkflow(
         branch: String,
+        buildSlug: String,
         commitHash: String,
         jobName: String,
         flankConfigBase64: String
     ): Result<BitriseTriggerResponse> {
         val flankWorkflowId = configDataSource.getConfig().bitrise.testTriggerWorkflow
-        return bitriseService.triggerWorkflow(branch, commitHash, jobName, flankWorkflowId, flankConfigBase64)
+        return bitriseService.triggerWorkflow(
+            branch = branch,
+            buildSlug = buildSlug,
+            commitHash = commitHash,
+            jobName = jobName,
+            workflowId = flankWorkflowId,
+            flankConfigBase64 = flankConfigBase64
+        )
     }
 }

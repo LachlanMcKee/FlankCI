@@ -81,6 +81,12 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                     }
 
                     input {
+                        id = "build-slug"
+                        name = "buildSlug"
+                        type = InputType.hidden
+                    }
+
+                    input {
                         id = "commit-hash"
                         name = "commitHash"
                         type = InputType.hidden

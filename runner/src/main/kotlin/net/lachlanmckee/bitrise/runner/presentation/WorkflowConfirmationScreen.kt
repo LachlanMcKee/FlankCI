@@ -6,7 +6,14 @@ import kotlinx.html.*
 import java.util.*
 
 internal class WorkflowConfirmationScreen {
-    suspend fun respondHtml(call: ApplicationCall, branch: String, commitHash: String, jobName: String, yaml: String) {
+    suspend fun respondHtml(
+        call: ApplicationCall,
+        branch: String,
+        buildSlug: String,
+        commitHash: String,
+        jobName: String,
+        yaml: String
+    ) {
         call.respondHtml {
             head {
                 link(rel = "stylesheet", href = "/static/styles.css", type = "text/css")
@@ -31,6 +38,11 @@ internal class WorkflowConfirmationScreen {
                         id = "branch"
                         name = "branch"
                         value = branch
+                    }
+                    hiddenInput {
+                        id = "build-slug"
+                        name = "build-slug"
+                        value = buildSlug
                     }
                     hiddenInput {
                         id = "commit-hash"

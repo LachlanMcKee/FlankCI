@@ -16,6 +16,7 @@ interface BitriseDataSource {
 
     suspend fun triggerWorkflow(
         branch: String,
+        buildSlug: String,
         commitHash: String,
         jobName: String,
         flankConfigBase64: String
