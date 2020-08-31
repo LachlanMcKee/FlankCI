@@ -4,7 +4,7 @@ import net.lachlanmckee.bitrise.core.data.entity.BuildsData
 import net.lachlanmckee.bitrise.core.data.entity.BuildsResponse
 import javax.inject.Inject
 
-class BuildsMapperImpl @Inject constructor() : BuildsMapper {
+internal class BuildsMapperImpl @Inject constructor() : BuildsMapper {
     override fun mapBuilds(data: List<BuildsResponse.BuildData>): BuildsData {
         return BuildsData(
             branches = data

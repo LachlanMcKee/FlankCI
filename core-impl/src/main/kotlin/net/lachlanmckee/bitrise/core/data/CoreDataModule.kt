@@ -25,11 +25,11 @@ import javax.inject.Singleton
 internal abstract class CoreDataModule {
     @Binds
     @Singleton
-    internal abstract fun bindConfigDataSource(impl: ConfigDataSourceImpl): ConfigDataSource
+    abstract fun bindConfigDataSource(impl: ConfigDataSourceImpl): ConfigDataSource
 
     @Binds
     @Singleton
-    internal abstract fun bindBitriseDataSource(impl: BitriseDataSourceImpl): BitriseDataSource
+    abstract fun bindBitriseDataSource(impl: BitriseDataSourceImpl): BitriseDataSource
 
     companion object {
         @Provides

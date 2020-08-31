@@ -9,25 +9,19 @@ import net.lachlanmckee.bitrise.core.domain.mapper.BuildsMapper
 import net.lachlanmckee.bitrise.core.domain.mapper.BuildsMapperImpl
 import net.lachlanmckee.bitrise.core.domain.mapper.FormDataCollector
 import net.lachlanmckee.bitrise.core.domain.mapper.FormDataCollectorImpl
-import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
-import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactoryImpl
 import javax.inject.Singleton
 
 @Module(includes = [CoreDataModule::class])
 internal abstract class CoreDomainModule {
     @Binds
     @Singleton
-    internal abstract fun bindMultipartCallFactory(impl: MultipartCallFactoryImpl): MultipartCallFactory
+    abstract fun bindMultipartCallFactory(impl: MultipartCallFactoryImpl): MultipartCallFactory
 
     @Binds
     @Singleton
-    internal abstract fun bindErrorScreenFactory(impl: ErrorScreenFactoryImpl): ErrorScreenFactory
+    abstract fun bindFormDataCollector(impl: FormDataCollectorImpl): FormDataCollector
 
     @Binds
     @Singleton
-    internal abstract fun bindFormDataCollector(impl: FormDataCollectorImpl): FormDataCollector
-
-    @Binds
-    @Singleton
-    internal abstract fun bindBuildsMapper(impl: BuildsMapperImpl): BuildsMapper
+    abstract fun bindBuildsMapper(impl: BuildsMapperImpl): BuildsMapper
 }

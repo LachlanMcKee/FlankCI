@@ -10,5 +10,5 @@ import javax.inject.Singleton
 internal abstract class TestRunnerDataModule {
     @Binds
     @Singleton
-    internal abstract fun bindApkDataSource(impl: ApkDataSourceImpl): ApkDataSource
+    abstract fun bindApkDataSource(impl: ApkDataSourceImpl): ApkDataSource
 }

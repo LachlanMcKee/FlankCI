@@ -5,7 +5,7 @@ import io.ktor.html.respondHtml
 import kotlinx.html.*
 import javax.inject.Inject
 
-class ErrorScreenFactoryImpl @Inject constructor() : ErrorScreenFactory {
+internal class ErrorScreenFactoryImpl @Inject constructor() : ErrorScreenFactory {
     override suspend fun respondHtml(call: ApplicationCall, title: String, body: String) {
         call.respondHtml {
             head {
