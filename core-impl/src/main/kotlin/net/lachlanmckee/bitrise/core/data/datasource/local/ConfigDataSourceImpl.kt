@@ -29,5 +29,3 @@ internal class ConfigDataSourceImpl @Inject constructor(
         return config
     }
 }
-
-

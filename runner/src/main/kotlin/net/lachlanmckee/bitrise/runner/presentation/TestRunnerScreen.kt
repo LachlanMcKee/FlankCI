@@ -20,7 +20,6 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                     target = "_blank"
 
                     div {
-                        classes = setOf("test-runner-group")
                         label {
                             classes = setOf("inline-label")
                             htmlFor = "branch-select"
@@ -33,7 +32,6 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                     }
 
                     div {
-                        classes = setOf("test-runner-group")
                         label {
                             classes = setOf("inline-label")
                             htmlFor = "build-select"
@@ -46,7 +44,6 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                     }
 
                     div {
-                        classes = setOf("test-runner-group")
                         p {
                             classes = setOf("heading")
                             text("Artifacts:")
@@ -60,7 +57,6 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                     this@body.addOptions(options)
 
                     div {
-                        classes = setOf("test-runner-group")
                         p {
                             classes = setOf("heading")
                         }
@@ -92,7 +88,7 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                     }
 
                     div {
-                        classes = setOf("test-runner-group", "annotations", "data-list", "content")
+                        classes = setOf("annotations", "data-list", "content")
                         fieldSet {
                             id = "annotations-field-set"
                         }
@@ -105,7 +101,7 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                     }
 
                     div {
-                        classes = setOf("test-runner-group", "packages", "data-list", "content")
+                        classes = setOf("packages", "data-list", "content")
                         fieldSet {
                             id = "packages-field-set"
                         }
@@ -118,7 +114,7 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                     }
 
                     div {
-                        classes = setOf("test-runner-group", "classes", "data-list", "content")
+                        classes = setOf("classes", "data-list", "content")
                         fieldSet {
                             id = "classes-field-set"
                         }
@@ -126,7 +122,7 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
 
                     div {
                         p {
-                            classes = setOf("test-runner-group", "heading")
+                            classes = setOf("heading")
                         }
                         p {
                             classes = setOf("content")
@@ -134,7 +130,7 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                         }
                     }
                 }
-                script(src = "/static/test-runner-script.js") {
+                script(src = "/static/script.js") {
                 }
             }
         }
@@ -145,7 +141,6 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
             when (option) {
                 is ConfigModel.Option.Checkbox -> {
                     div {
-                        classes = setOf("test-runner-group")
                         label {
                             classes = setOf("inline-label")
                             htmlFor = "option-checkbox-$index"
@@ -164,7 +159,6 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                 }
                 is ConfigModel.Option.DropDown -> {
                     div {
-                        classes = setOf("test-runner-group")
                         label {
                             classes = setOf("inline-label")
                             htmlFor = "option-drop-down-$index"

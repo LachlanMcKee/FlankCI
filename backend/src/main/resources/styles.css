@@ -17,7 +17,6 @@ form {
   width: 15%;
   vertical-align: top;
   text-align: right;
-  padding-right: 12px;
 }
 .content {
   display: inline-block;
@@ -36,20 +35,11 @@ form {
   padding-right: 8px;
   font-weight: bold;
 }
-.test-runner-group {
-  padding-bottom: 8px;
-}
-.test-success {
-  color: white;
-  background-color: green;
-  padding: 12px;
-}
-.test-failure {
-  color: white;
-  background-color: red;
-  padding: 12px;
-}
 
 p {
   white-space: pre-wrap;
+}
+
+div {
+  padding-bottom: 8px;
 }

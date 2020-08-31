@@ -6,4 +6,3 @@ import io.ktor.http.content.MultiPartData
 interface MultipartCallFactory {
     suspend fun handleMultipart(call: ApplicationCall, multiPartDataFunc: suspend (MultiPartData) -> Unit)
 }
-
