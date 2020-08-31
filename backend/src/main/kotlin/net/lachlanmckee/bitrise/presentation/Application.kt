@@ -1,7 +1,5 @@
 package net.lachlanmckee.bitrise.presentation
 
-import gsonpath.GsonPath
-import gsonpath.GsonPathTypeAdapterFactoryKt
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -14,41 +12,41 @@ import io.ktor.http.content.resource
 import io.ktor.http.content.static
 import io.ktor.routing.get
 import io.ktor.routing.routing
-import net.lachlanmckee.bitrise.core.data.serialization.BitriseGsonTypeFactory
-import net.lachlanmckee.bitrise.core.presentation.RouteProvider
 import java.text.DateFormat
 
 // Referenced in application.conf
 @Suppress("unused")
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+    val applicationComponent: ApplicationComponent = DaggerApplicationComponent.create()
 
     install(DefaultHeaders)
     install(Compression)
     install(CallLogging)
     install(ContentNegotiation) {
         gson {
-            registerTypeAdapterFactory(GsonPathTypeAdapterFactoryKt())
-            registerTypeAdapterFactory(
-                GsonPath.createTypeAdapterFactory(BitriseGsonTypeFactory::class.java)
-            )
+            applicationComponent
+                .typeAdapterFactories()
+                .forEach {
+                    registerTypeAdapterFactory(it)
+                }
             setDateFormat(DateFormat.LONG)
             setPrettyPrinting()
             setLenient()
         }
     }
 
-    val routeProviders: Set<RouteProvider> = DaggerApplicationComponent
-        .create()
-        .routeProviders()
-
     routing {
         get("/") {
             HomeScreen().respondHtml(call)
         }
-        routeProviders.forEach {
-            it.provideRoute().invoke(this)
-        }
+
+        applicationComponent
+            .routeProviders()
+            .forEach {
+                it.provideRoute().invoke(this)
+            }
+
         static("/static") {
             resource("styles.css")
         }

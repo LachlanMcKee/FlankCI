@@ -7,4 +7,4 @@ import gsonpath.annotation.AutoGsonAdapterFactory
 @AutoGsonAdapterFactory(
     fieldValidationType = GsonFieldValidationType.VALIDATE_EXPLICIT_NON_NULL
 )
-interface BitriseGsonTypeFactory : TypeAdapterFactory
+internal interface BitriseGsonTypeFactory : TypeAdapterFactory

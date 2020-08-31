@@ -1,5 +1,6 @@
 package net.lachlanmckee.bitrise.presentation
 
+import com.google.gson.TypeAdapterFactory
 import dagger.Component
 import net.lachlanmckee.bitrise.core.presentation.CorePresentationModule
 import net.lachlanmckee.bitrise.core.presentation.RouteProvider
@@ -15,4 +16,5 @@ import javax.inject.Singleton
 )
 interface ApplicationComponent {
     fun routeProviders(): Set<RouteProvider>
+    fun typeAdapterFactories(): Set<@JvmSuppressWildcards TypeAdapterFactory>
 }
