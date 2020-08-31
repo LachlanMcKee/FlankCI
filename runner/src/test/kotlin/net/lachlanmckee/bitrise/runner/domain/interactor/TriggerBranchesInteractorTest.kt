@@ -9,6 +9,7 @@ import net.lachlanmckee.bitrise.core.data.entity.BuildsData
 import net.lachlanmckee.bitrise.core.data.entity.Config
 import net.lachlanmckee.bitrise.core.data.entity.ConfigModel
 import net.lachlanmckee.bitrise.core.domain.mapper.BuildsMapper
+import net.lachlanmckee.bitrise.data.datasource.local.TestConfigDataSource
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
@@ -17,17 +18,19 @@ class TriggerBranchesInteractorTest {
     private val buildsMapper: BuildsMapper = mockk()
     private val interactor = TriggerBranchesInteractor(
         bitriseDataSource,
-        TestConfigDataSource(Config(
-            configModel = ConfigModel(
-                bitrise = ConfigModel.Bitrise(
-                    appId = "",
-                    testApkSourceWorkflow = "source-workflow",
-                    testTriggerWorkflow = ""
+        TestConfigDataSource(
+            Config(
+                configModel = ConfigModel(
+                    bitrise = ConfigModel.Bitrise(
+                        appId = "",
+                        testApkSourceWorkflow = "source-workflow",
+                        testTriggerWorkflow = ""
+                    ),
+                    testData = mockk()
                 ),
-                testData = mockk()
-            ),
-            secretProperties = mockk()
-        )),
+                secretProperties = mockk()
+            )
+        ),
         buildsMapper
     )
 

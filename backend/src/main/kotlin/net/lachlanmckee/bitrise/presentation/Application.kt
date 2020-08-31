@@ -15,8 +15,7 @@ import io.ktor.http.content.static
 import io.ktor.routing.get
 import io.ktor.routing.routing
 import net.lachlanmckee.bitrise.core.data.serialization.BitriseGsonTypeFactory
-import net.lachlanmckee.bitrise.results.presentation.TestResultsRouter
-import net.lachlanmckee.bitrise.runner.presentation.TestRunnerRouter
+import net.lachlanmckee.bitrise.core.presentation.RouteProvider
 import java.text.DateFormat
 
 // Referenced in application.conf
@@ -39,12 +38,17 @@ fun Application.module(testing: Boolean = false) {
         }
     }
 
+    val routeProviders: Set<RouteProvider> = DaggerApplicationComponent
+        .create()
+        .routeProviders()
+
     routing {
         get("/") {
             HomeScreen().respondHtml(call)
         }
-        TestRunnerRouter.setupRoutes().invoke(this)
-        TestResultsRouter.setupRoutes().invoke(this)
+        routeProviders.forEach {
+            it.provideRoute().invoke(this)
+        }
         static("/static") {
             resource("styles.css")
         }

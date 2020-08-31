@@ -7,6 +7,6 @@ internal data class FlankDataModel(
     val annotations: List<String>,
     val packages: List<String>,
     val classes: List<String>,
-    val checkboxOptions : Map<Int, Boolean>,
-    val dropDownOptions : Map<Int, Int>
+    val checkboxOptions: Map<Int, Boolean>,
+    val dropDownOptions: Map<Int, Int>
 )

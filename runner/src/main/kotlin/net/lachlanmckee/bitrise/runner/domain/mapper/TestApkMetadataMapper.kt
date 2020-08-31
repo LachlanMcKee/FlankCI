@@ -5,8 +5,11 @@ import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
 import net.lachlanmckee.bitrise.core.data.entity.Config
 import net.lachlanmckee.bitrise.runner.domain.entity.PathWithAnnotationGroups
 import net.lachlanmckee.bitrise.runner.domain.entity.TestApkMetadata
+import javax.inject.Inject
 
-internal class TestApkMetadataMapper(private val configDataSource: ConfigDataSource) {
+internal class TestApkMetadataMapper @Inject constructor(
+    private val configDataSource: ConfigDataSource
+) {
     suspend fun mapTestApkMetadata(originalTestMethods: List<TestMethod>): TestApkMetadata {
         val config = configDataSource.getConfig()
         val testMethods: List<TestMethod> = getValidTestMethods(config, originalTestMethods)

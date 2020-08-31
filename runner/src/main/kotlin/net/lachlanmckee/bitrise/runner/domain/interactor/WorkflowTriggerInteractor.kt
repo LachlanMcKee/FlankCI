@@ -7,8 +7,9 @@ import net.lachlanmckee.bitrise.core.domain.ktor.MultipartCallFactory
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.runner.domain.entity.ConfirmModel
 import net.lachlanmckee.bitrise.runner.domain.mapper.ConfirmDataMapper
+import javax.inject.Inject
 
-internal class WorkflowTriggerInteractor(
+internal class WorkflowTriggerInteractor @Inject constructor(
     private val multipartCallFactory: MultipartCallFactory,
     private val errorScreenFactory: ErrorScreenFactory,
     private val bitriseDataSource: BitriseDataSource,

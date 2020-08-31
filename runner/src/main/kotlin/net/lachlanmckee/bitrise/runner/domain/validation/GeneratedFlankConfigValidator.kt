@@ -2,11 +2,12 @@ package net.lachlanmckee.bitrise.runner.domain.validation
 
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
 import net.lachlanmckee.bitrise.runner.domain.entity.GeneratedFlankConfig
+import javax.inject.Inject
 
-internal class GeneratedFlankConfigValidator(
+internal class GeneratedFlankConfigValidator @Inject constructor(
     private val configDataSource: ConfigDataSource
 ) {
-    suspend fun getValidationErrorMessage(generatedConfig: GeneratedFlankConfig) : String? {
+    suspend fun getValidationErrorMessage(generatedConfig: GeneratedFlankConfig): String? {
         return if (!configDataSource.getConfig().testData.allowTestingWithoutFilters) {
             when {
                 ((generatedConfig.contentAsMap["gcloud"] as? Map<String, Any>?)?.get("test-targets") as? List<String>?).isNullOrEmpty() -> {

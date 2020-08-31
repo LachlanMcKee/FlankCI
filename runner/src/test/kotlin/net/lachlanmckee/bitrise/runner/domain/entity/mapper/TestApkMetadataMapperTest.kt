@@ -3,9 +3,9 @@ package net.lachlanmckee.bitrise.runner.domain.entity.mapper
 import com.linkedin.dex.parser.TestAnnotation
 import com.linkedin.dex.parser.TestMethod
 import kotlinx.coroutines.runBlocking
-import net.lachlanmckee.bitrise.core.data.datasource.local.TestConfigDataSource
 import net.lachlanmckee.bitrise.core.data.entity.Config
 import net.lachlanmckee.bitrise.core.data.entity.ConfigModel
+import net.lachlanmckee.bitrise.data.datasource.local.TestConfigDataSource
 import net.lachlanmckee.bitrise.runner.domain.entity.PathWithAnnotationGroups
 import net.lachlanmckee.bitrise.runner.domain.entity.TestApkMetadata
 import net.lachlanmckee.bitrise.runner.domain.mapper.TestApkMetadataMapper

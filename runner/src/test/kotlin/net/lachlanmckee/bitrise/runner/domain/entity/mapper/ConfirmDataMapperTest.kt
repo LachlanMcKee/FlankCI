@@ -2,6 +2,7 @@ package net.lachlanmckee.bitrise.runner.domain.entity.mapper
 
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import net.lachlanmckee.bitrise.domain.mapper.ImmediateFormDataCollector
 import net.lachlanmckee.bitrise.runner.domain.entity.ConfirmModel
 import net.lachlanmckee.bitrise.runner.domain.mapper.ConfirmDataMapper
 import org.junit.jupiter.api.Assertions.assertEquals

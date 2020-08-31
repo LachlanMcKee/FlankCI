@@ -16,10 +16,6 @@ class HomeScreen {
                 div {
                     a(href = "/test-runner") { +"Test Runner" }
                 }
-
-                div {
-                    a(href = "/test-results") { +"Test Results" }
-                }
             }
         }
     }

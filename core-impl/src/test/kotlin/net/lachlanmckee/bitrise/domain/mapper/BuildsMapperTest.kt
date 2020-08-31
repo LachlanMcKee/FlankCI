@@ -2,7 +2,7 @@ package net.lachlanmckee.bitrise.domain.mapper
 
 import net.lachlanmckee.bitrise.core.data.entity.BuildsData
 import net.lachlanmckee.bitrise.core.data.entity.BuildsResponse
-import net.lachlanmckee.bitrise.core.domain.mapper.BuildsMapper
+import net.lachlanmckee.bitrise.core.domain.mapper.BuildsMapperImpl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -96,6 +96,6 @@ class BuildsMapperTest {
     }
 
     private fun testMapBuilds(data: List<BuildsResponse.BuildData>, expected: BuildsData) {
-        assertEquals(expected, BuildsMapper().mapBuilds(data))
+        assertEquals(expected, BuildsMapperImpl().mapBuilds(data))
     }
 }

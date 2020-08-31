@@ -10,10 +10,9 @@ import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
 import net.lachlanmckee.bitrise.core.data.entity.BitriseTriggerResponse
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
-import net.lachlanmckee.bitrise.domain.entity.ConfirmModel
-import net.lachlanmckee.bitrise.runner.domain.mapper.ConfirmDataMapper
-import net.lachlanmckee.bitrise.presentation.ErrorScreenFactory
+import net.lachlanmckee.bitrise.domain.interactor.ImmediateMultipartCallFactory
 import net.lachlanmckee.bitrise.runner.domain.entity.ConfirmModel
+import net.lachlanmckee.bitrise.runner.domain.mapper.ConfirmDataMapper
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
@@ -54,14 +53,16 @@ class WorkflowTriggerInteractorTest {
 
     @Test
     fun givenConfirmDataMapperSuccessAndTriggerFails_whenExecute_thenRespondErrorHtml() = runBlocking {
-        givenMapToConfirmModelResult(Result.success(
-            ConfirmModel(
-                branch = "branch",
-                commitHash = "hash",
-                jobName = "job",
-                flankConfigBase64 = "config"
+        givenMapToConfirmModelResult(
+            Result.success(
+                ConfirmModel(
+                    branch = "branch",
+                    commitHash = "hash",
+                    jobName = "job",
+                    flankConfigBase64 = "config"
+                )
             )
-        ))
+        )
         givenTriggerWorkflowResult(Result.failure(RuntimeException("Reason")))
 
         interactor.execute(applicationCall)
@@ -84,14 +85,16 @@ class WorkflowTriggerInteractorTest {
 
     @Test
     fun givenConfirmDataMapperSuccessAndTriggerSuccessWithoutOkStatus_whenExecute_thenRespondErrorHtml() = runBlocking {
-        givenMapToConfirmModelResult(Result.success(
-            ConfirmModel(
-                branch = "branch",
-                commitHash = "hash",
-                jobName = "job",
-                flankConfigBase64 = "config"
+        givenMapToConfirmModelResult(
+            Result.success(
+                ConfirmModel(
+                    branch = "branch",
+                    commitHash = "hash",
+                    jobName = "job",
+                    flankConfigBase64 = "config"
+                )
             )
-        ))
+        )
         givenTriggerWorkflowResult(Result.success(BitriseTriggerResponse("not-ok", "url")))
 
         interactor.execute(applicationCall)
@@ -114,14 +117,16 @@ class WorkflowTriggerInteractorTest {
 
     @Test
     fun givenConfirmDataMapperSuccessAndTriggerSuccessWithOkStatus_whenExecute_thenRespondRedirect() = runBlocking {
-        givenMapToConfirmModelResult(Result.success(
-            ConfirmModel(
-                branch = "branch",
-                commitHash = "hash",
-                jobName = "job",
-                flankConfigBase64 = "config"
+        givenMapToConfirmModelResult(
+            Result.success(
+                ConfirmModel(
+                    branch = "branch",
+                    commitHash = "hash",
+                    jobName = "job",
+                    flankConfigBase64 = "config"
+                )
             )
-        ))
+        )
         givenTriggerWorkflowResult(Result.success(BitriseTriggerResponse("ok", "url")))
 
         interactor.execute(applicationCall)

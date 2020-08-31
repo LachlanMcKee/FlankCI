@@ -1,6 +1,5 @@
 package net.lachlanmckee.bitrise.runner.domain.interactor
 
-import com.google.gson.JsonObject
 import io.ktor.application.ApplicationCall
 import io.ktor.response.respond
 import io.mockk.coEvery
@@ -9,6 +8,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
+import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactsListResponse
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
@@ -25,13 +25,15 @@ class ArtifactsInteractorTest {
 
     @Test
     fun givenArtifactSuccess_whenExecute_thenRespond() = runBlocking {
-        coEvery { bitriseDataSource.getArtifactDetails("buildSlug") } returns Result.success(JsonObject())
+        coEvery { bitriseDataSource.getArtifactDetails("buildSlug") } returns Result.success(
+            BitriseArtifactsListResponse(emptyList())
+        )
 
         interactor.execute(applicationCall, "buildSlug")
 
         coVerifySequence {
             bitriseDataSource.getArtifactDetails("buildSlug")
-            applicationCall.respond(JsonObject())
+            applicationCall.respond(BitriseArtifactsListResponse(emptyList()))
         }
     }
 

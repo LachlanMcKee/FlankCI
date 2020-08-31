@@ -5,8 +5,9 @@ import io.ktor.response.respond
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
 import net.lachlanmckee.bitrise.core.domain.mapper.BuildsMapper
+import javax.inject.Inject
 
-internal class TriggerBranchesInteractor(
+internal class TriggerBranchesInteractor @Inject constructor(
     private val bitriseDataSource: BitriseDataSource,
     private val configDataSource: ConfigDataSource,
     private val buildsMapper: BuildsMapper

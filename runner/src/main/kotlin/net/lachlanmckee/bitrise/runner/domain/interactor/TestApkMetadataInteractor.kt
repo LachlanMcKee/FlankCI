@@ -5,8 +5,9 @@ import io.ktor.response.respond
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
 import net.lachlanmckee.bitrise.runner.data.datasource.remote.ApkDataSource
 import net.lachlanmckee.bitrise.runner.domain.mapper.TestApkMetadataMapper
+import javax.inject.Inject
 
-internal class TestApkMetadataInteractor(
+internal class TestApkMetadataInteractor @Inject constructor(
     private val bitriseDataSource: BitriseDataSource,
     private val apkDataSource: ApkDataSource,
     private val testApkMetadataMapper: TestApkMetadataMapper

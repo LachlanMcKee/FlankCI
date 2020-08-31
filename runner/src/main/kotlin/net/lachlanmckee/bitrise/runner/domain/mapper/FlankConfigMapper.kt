@@ -6,8 +6,9 @@ import net.lachlanmckee.bitrise.runner.domain.entity.FlankDataModel
 import net.lachlanmckee.bitrise.runner.domain.entity.GeneratedFlankConfig
 import org.yaml.snakeyaml.Yaml
 import java.io.File
+import javax.inject.Inject
 
-internal class FlankConfigMapper(
+internal class FlankConfigMapper @Inject constructor(
     private val configDataSource: ConfigDataSource
 ) {
     suspend fun mapToFlankYaml(flankDataModel: FlankDataModel): Result<GeneratedFlankConfig> = kotlin.runCatching {

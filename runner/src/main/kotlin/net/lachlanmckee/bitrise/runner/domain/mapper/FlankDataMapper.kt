@@ -3,8 +3,9 @@ package net.lachlanmckee.bitrise.runner.domain.mapper
 import io.ktor.http.content.MultiPartData
 import net.lachlanmckee.bitrise.core.domain.mapper.FormDataCollector
 import net.lachlanmckee.bitrise.runner.domain.entity.FlankDataModel
+import javax.inject.Inject
 
-internal class FlankDataMapper(
+internal class FlankDataMapper @Inject constructor(
     private val formDataCollector: FormDataCollector
 ) {
     suspend fun mapToFlankData(multipart: MultiPartData): FlankDataModel {

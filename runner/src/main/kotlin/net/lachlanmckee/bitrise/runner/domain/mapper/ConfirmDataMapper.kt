@@ -3,8 +3,9 @@ package net.lachlanmckee.bitrise.runner.domain.mapper
 import io.ktor.http.content.MultiPartData
 import net.lachlanmckee.bitrise.core.domain.mapper.FormDataCollector
 import net.lachlanmckee.bitrise.runner.domain.entity.ConfirmModel
+import javax.inject.Inject
 
-internal class ConfirmDataMapper(
+internal class ConfirmDataMapper @Inject constructor(
     private val formDataCollector: FormDataCollector
 ) {
     suspend fun mapToConfirmModel(multipart: MultiPartData): Result<ConfirmModel> = kotlin.runCatching {

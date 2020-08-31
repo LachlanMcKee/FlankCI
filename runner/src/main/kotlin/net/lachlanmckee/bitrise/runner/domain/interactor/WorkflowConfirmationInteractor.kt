@@ -3,14 +3,15 @@ package net.lachlanmckee.bitrise.runner.domain.interactor
 import io.ktor.application.ApplicationCall
 import net.lachlanmckee.bitrise.core.domain.ktor.MultipartCallFactory
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
-import net.lachlanmckee.bitrise.runner.domain.validation.GeneratedFlankConfigValidator
 import net.lachlanmckee.bitrise.runner.domain.entity.FlankDataModel
 import net.lachlanmckee.bitrise.runner.domain.entity.GeneratedFlankConfig
 import net.lachlanmckee.bitrise.runner.domain.mapper.FlankConfigMapper
 import net.lachlanmckee.bitrise.runner.domain.mapper.FlankDataMapper
+import net.lachlanmckee.bitrise.runner.domain.validation.GeneratedFlankConfigValidator
 import net.lachlanmckee.bitrise.runner.presentation.WorkflowConfirmationScreen
+import javax.inject.Inject
 
-internal class WorkflowConfirmationInteractor(
+internal class WorkflowConfirmationInteractor @Inject constructor(
     private val multipartCallFactory: MultipartCallFactory,
     private val errorScreenFactory: ErrorScreenFactory,
     private val generatedFlankConfigValidator: GeneratedFlankConfigValidator,
