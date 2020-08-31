@@ -13,13 +13,10 @@ import io.ktor.gson.gson
 import io.ktor.http.content.resource
 import io.ktor.http.content.static
 import io.ktor.routing.get
-import io.ktor.routing.post
 import io.ktor.routing.routing
-import net.lachlanmckee.bitrise.data.serialization.BitriseGsonTypeFactory
-import net.lachlanmckee.bitrise.domain.DomainDi
-import net.lachlanmckee.bitrise.presentation.runner.TestRunnerScreen
-import net.lachlanmckee.bitrise.presentation.results.TestResultScreen
-import net.lachlanmckee.bitrise.presentation.results.TestResultsListScreen
+import net.lachlanmckee.bitrise.core.data.serialization.BitriseGsonTypeFactory
+import net.lachlanmckee.bitrise.results.presentation.TestResultsRouter
+import net.lachlanmckee.bitrise.runner.presentation.TestRunnerRouter
 import java.text.DateFormat
 
 // Referenced in application.conf
@@ -42,52 +39,13 @@ fun Application.module(testing: Boolean = false) {
         }
     }
 
-    val domainDi = DomainDi()
-
     routing {
         get("/") {
             HomeScreen().respondHtml(call)
         }
-        get("/test-runner") {
-            TestRunnerScreen(domainDi.configDataSource)
-                .respondHtml(call)
-        }
-        get("/test-results") {
-            TestResultsListScreen(
-                domainDi.testResultsListInteractor,
-                domainDi.errorScreenFactory
-            ).respondHtml(call)
-        }
-        get("/test-results/{build-slug}") {
-            val buildSlug: String = call.parameters["build-slug"]!!
-            TestResultScreen(
-                domainDi.testResultInteractor,
-                domainDi.errorScreenFactory
-            ).respondHtml(call, buildSlug)
-        }
-        get("/bitrise-data") {
-            domainDi.triggerBranchesInteractor.execute(call)
-        }
-        get("/artifact-data/{build-slug}") {
-            val buildSlug: String = call.parameters["build-slug"]!!
-            domainDi.artifactsInteractor.execute(call, buildSlug)
-        }
-        get("/test-apk-metadata/{build-slug}/{artifact-slug}") {
-            val buildSlug: String = call.parameters["build-slug"]!!
-            val artifactSlug: String = call.parameters["artifact-slug"]!!
-
-            domainDi
-                .testApkMetadataInteractor
-                .execute(call, buildSlug, artifactSlug)
-        }
-        post("/trigger-tests") {
-            domainDi.workflowConfirmationInteractor.execute(call)
-        }
-        post("/confirm-test-trigger") {
-            domainDi.workflowTriggerInteractor.execute(call)
-        }
+        TestRunnerRouter.setupRoutes().invoke(this)
+        TestResultsRouter.setupRoutes().invoke(this)
         static("/static") {
-            resource("script.js")
             resource("styles.css")
         }
     }

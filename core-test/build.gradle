@@ -1,0 +1,9 @@
+apply plugin: "kotlin"
+
+targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+dependencies {
+    api project(":core")
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}
