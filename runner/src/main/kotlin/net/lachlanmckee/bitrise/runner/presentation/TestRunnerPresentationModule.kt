@@ -16,7 +16,7 @@ import net.lachlanmckee.bitrise.runner.domain.interactor.*
 import javax.inject.Singleton
 
 @Module(includes = [TestRunnerDomainModule::class])
-class TestRunnerPresentationModule {
+object TestRunnerPresentationModule {
     @Provides
     @Singleton
     @IntoSet
