@@ -32,12 +32,21 @@ internal class TestResultsListScreen(
                     p {
                         classes = setOf("heading")
                     }
-                    buildsData.branchBuilds.values.forEach { builds: List<BuildsData.Build> ->
+                    buildsData.branchBuilds.entries.forEach { (branch, builds) ->
                         builds.forEach { build ->
                             p {
-                                classes = setOf("content")
+                                classes = if (build.status == "error") {
+                                    setOf("content", "test-failure")
+                                } else {
+                                    setOf("content", "test-success")
+                                }
+                                text("Branch: $branch")
+                                br()
+                                text("Result: $build")
+                                br()
                                 a(href = "/test-results/${build.buildSlug}") {
-                                    text(build.toString())
+                                    target = "_blank"
+                                    text("Details")
                                 }
                             }
                         }
