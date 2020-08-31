@@ -23,6 +23,7 @@ repositories {
 dependencies {
     implementation project(":core-impl")
     implementation project(":runner")
+    implementation project(":results")
 
     implementation "io.ktor:ktor-server-netty:$ktor_version"
     implementation "ch.qos.logback:logback-classic:$logback_version"
