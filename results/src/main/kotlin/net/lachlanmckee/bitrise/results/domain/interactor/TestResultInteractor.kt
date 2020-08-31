@@ -1,16 +1,14 @@
 package net.lachlanmckee.bitrise.results.domain.interactor
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
 import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactsListResponse
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
-import net.lachlanmckee.bitrise.results.domain.entity.TestSuites
+import net.lachlanmckee.bitrise.results.domain.mapper.TestSuitesMapper
 import javax.inject.Inject
 
 internal class TestResultInteractor @Inject constructor(
-    private val bitriseDataSource: BitriseDataSource
+    private val bitriseDataSource: BitriseDataSource,
+    private val testSuitesMapper: TestSuitesMapper
 ) {
     suspend fun execute(buildSlug: String): Result<TestResultModel> {
         return bitriseDataSource
@@ -18,23 +16,25 @@ internal class TestResultInteractor @Inject constructor(
             .mapCatching { artifactDetails ->
                 println(artifactDetails)
 
-                val junitText = getText(artifactDetails, buildSlug, "JUnitReport.xml")
-
-                val testSuites = XmlMapper.Builder(XmlMapper())
-                    .defaultUseWrapper(false)
-                    .build()
-                    .registerKotlinModule()
-                    .readValue<TestSuites>(junitText)
-
                 TestResultModel(
-                    cost = getText(artifactDetails, buildSlug,  "CostReport.txt"),
-                    testSuites = testSuites,
-                    matrixIds = getText(artifactDetails, buildSlug,  "matrix_ids.json")
+                    cost = getArtifactText(artifactDetails, buildSlug, "CostReport.txt"),
+                    testSuites = testSuitesMapper.mapTestSuites(
+                        getArtifactText(
+                            artifactDetails,
+                            buildSlug,
+                            "JUnitReport.xml"
+                        )
+                    ),
+                    matrixIds = getArtifactText(artifactDetails, buildSlug, "matrix_ids.json")
                 )
             }
     }
 
-    private suspend fun getText(artifactDetails: BitriseArtifactsListResponse, buildSlug: String, fileName: String): String {
+    private suspend fun getArtifactText(
+        artifactDetails: BitriseArtifactsListResponse,
+        buildSlug: String,
+        fileName: String
+    ): String {
         val artifactDetail = artifactDetails
             .data
             .first { it.title == fileName }
