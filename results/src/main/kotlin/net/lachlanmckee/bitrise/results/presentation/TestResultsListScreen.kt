@@ -3,8 +3,8 @@ package net.lachlanmckee.bitrise.results.presentation
 import io.ktor.application.ApplicationCall
 import io.ktor.html.respondHtml
 import kotlinx.html.*
-import net.lachlanmckee.bitrise.core.data.entity.BuildsData
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
+import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
 import net.lachlanmckee.bitrise.results.domain.interactor.TestResultsListInteractor
 
 internal class TestResultsListScreen(
@@ -20,7 +20,7 @@ internal class TestResultsListScreen(
 
     private suspend fun render(
         call: ApplicationCall,
-        buildsData: BuildsData
+        testResultModelList: List<TestResultModel>
     ) {
         call.respondHtml {
             head {
@@ -29,42 +29,36 @@ internal class TestResultsListScreen(
             body {
                 h1 { +"Bitrise Test Results" }
                 div {
-                    buildsData.branchBuilds.entries.forEach { (branch, builds) ->
-                        builds.forEach { build ->
-                            span {
-                                classes = setOf("heading")
+                    testResultModelList.forEach { build ->
+                        span {
+                            classes = setOf("heading")
+                        }
+                        span {
+                            classes = when (build.status) {
+                                "success" -> setOf("content", "test-success")
+                                "in-progress" -> setOf("content", "test-in-progress")
+                                else -> setOf("content", "test-failure")
                             }
-                            span {
-                                classes = when (build.status) {
-                                    "success" -> setOf("content", "test-success")
-                                    "in-progress" -> setOf("content", "test-in-progress")
-                                    else -> setOf("content", "test-failure")
-                                }
-                                b {
-                                    text("$branch [${build.commitHash}]")
-                                }
+                            b {
+                                text("${build.branch} [${build.commitHash}]")
+                            }
+                            br()
+                            br()
+
+                            if (!build.jobName.isNullOrBlank()) {
+                                text(build.jobName)
                                 br()
-                                br()
+                            }
 
-                                val jobName: String? = build.originalEnvironmentValueList
-                                    .find { it.name == "JOB_NAME" }
-                                    ?.value
+                            text("${build.triggeredAt} - ${build.finishedAt}")
 
-                                if (!jobName.isNullOrBlank()) {
-                                    text(jobName)
-                                    br()
-                                }
+                            br()
+                            br()
 
-                                text("${build.triggeredAt} - ${build.finishedAt}")
-
-                                br()
-                                br()
-
-                                if (build.status != "in-progress") {
-                                    a(href = "/test-results/${build.buildSlug}") {
-                                        target = "_blank"
-                                        text("Test Results")
-                                    }
+                            if (build.status != "in-progress") {
+                                a(href = "/test-results/${build.buildSlug}") {
+                                    target = "_blank"
+                                    text("Test Results")
                                 }
                             }
                         }

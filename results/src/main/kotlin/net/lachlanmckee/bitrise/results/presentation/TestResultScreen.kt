@@ -4,7 +4,7 @@ import io.ktor.application.ApplicationCall
 import io.ktor.html.respondHtml
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
-import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
+import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel
 import net.lachlanmckee.bitrise.results.domain.interactor.TestResultInteractor
 
 internal class TestResultScreen(
@@ -20,7 +20,7 @@ internal class TestResultScreen(
 
     private suspend fun render(
         call: ApplicationCall,
-        resultModel: TestResultModel
+        resultDetailModel: TestResultDetailModel
     ) {
         call.respondHtml {
             head {
@@ -35,11 +35,11 @@ internal class TestResultScreen(
                     span {
                         classes = setOf("content")
                         b {
-                            text(resultModel.cost)
+                            text(resultDetailModel.cost)
                         }
                     }
                 }
-                resultModel.testSuites.testsuite.forEach { testSuite ->
+                resultDetailModel.testSuites.testsuite.forEach { testSuite ->
                     div {
                         p {
                             classes = setOf("heading")

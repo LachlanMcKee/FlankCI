@@ -2,7 +2,7 @@ package net.lachlanmckee.bitrise.results.domain.interactor
 
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
 import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactsListResponse
-import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
+import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel
 import net.lachlanmckee.bitrise.results.domain.mapper.TestSuitesMapper
 import java.lang.IllegalStateException
 import javax.inject.Inject
@@ -11,7 +11,7 @@ internal class TestResultInteractor @Inject constructor(
     private val bitriseDataSource: BitriseDataSource,
     private val testSuitesMapper: TestSuitesMapper
 ) {
-    suspend fun execute(buildSlug: String): Result<TestResultModel> {
+    suspend fun execute(buildSlug: String): Result<TestResultDetailModel> {
         return bitriseDataSource
             .getArtifactDetails(buildSlug)
             .mapCatching { artifactDetails ->
@@ -21,7 +21,7 @@ internal class TestResultInteractor @Inject constructor(
                     throw IllegalStateException("No artifacts found. Perhaps the tests did not run?")
                 }
 
-                TestResultModel(
+                TestResultDetailModel(
                     cost = getArtifactText(artifactDetails, buildSlug, "CostReport.txt"),
                     testSuites = testSuitesMapper.mapTestSuites(
                         getArtifactText(
