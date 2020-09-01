@@ -3,14 +3,13 @@ package net.lachlanmckee.bitrise.runner.presentation
 import io.ktor.application.ApplicationCall
 import io.ktor.html.respondHtml
 import kotlinx.html.*
+import net.lachlanmckee.bitrise.runner.domain.entity.FlankDataModel
 import java.util.*
 
 internal class WorkflowConfirmationScreen {
     suspend fun respondHtml(
         call: ApplicationCall,
-        branch: String,
-        buildSlug: String,
-        commitHash: String,
+        flankDataModel: FlankDataModel,
         jobName: String,
         yaml: String
     ) {
@@ -21,7 +20,7 @@ internal class WorkflowConfirmationScreen {
             body {
                 h1 { +"Confirm Test Details" }
                 h3 { +"Branch" }
-                p { +branch }
+                p { +flankDataModel.branch }
                 h3 { +"Job Name" }
                 p { +jobName }
                 h3 { +"YAML" }
@@ -37,17 +36,17 @@ internal class WorkflowConfirmationScreen {
                     hiddenInput {
                         id = "branch"
                         name = "branch"
-                        value = branch
+                        value = flankDataModel.branch
                     }
                     hiddenInput {
                         id = "build-slug"
                         name = "build-slug"
-                        value = buildSlug
+                        value = flankDataModel.buildSlug
                     }
                     hiddenInput {
                         id = "commit-hash"
                         name = "commit-hash"
-                        value = commitHash
+                        value = flankDataModel.commitHash
                     }
                     hiddenInput {
                         id = "job-name"

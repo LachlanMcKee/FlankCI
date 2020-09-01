@@ -19,7 +19,7 @@ class ConfirmDataMapperTest {
     }
 
     @Test
-    fun givenNoBuildSLug_whenMap_thenExpectFailureResult() = runBlocking {
+    fun givenNoBuildSlug_whenMap_thenExpectFailureResult() = runBlocking {
         val confirmModel = testMapToConfirmModel(
             listOf(
                 "branch" to "dev"
