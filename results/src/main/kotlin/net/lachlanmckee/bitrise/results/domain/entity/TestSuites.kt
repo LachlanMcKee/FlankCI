@@ -21,6 +21,6 @@ internal data class TestCase(
     val name: String,
     val classname: String,
     val time: String,
-    val webLink: String,
+    val webLink: String?,
     val failure: String?
 )

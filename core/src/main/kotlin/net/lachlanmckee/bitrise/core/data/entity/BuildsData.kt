@@ -9,6 +9,14 @@ data class BuildsData(
         val commitHash: String,
         val commitMessage: String?,
         val buildNumber: Int,
-        val buildSlug: String
+        val buildSlug: String,
+        val triggeredAt: String,
+        val finishedAt: String,
+        val originalEnvironmentValueList: List<EnvironmentValue>
+    )
+
+    data class EnvironmentValue(
+        val name: String,
+        val value: String
     )
 }

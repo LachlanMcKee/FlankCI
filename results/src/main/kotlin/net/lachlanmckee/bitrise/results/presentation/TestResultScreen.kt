@@ -4,7 +4,7 @@ import io.ktor.application.ApplicationCall
 import io.ktor.html.respondHtml
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
-import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
+import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel
 import net.lachlanmckee.bitrise.results.domain.interactor.TestResultInteractor
 
 internal class TestResultScreen(
@@ -20,7 +20,7 @@ internal class TestResultScreen(
 
     private suspend fun render(
         call: ApplicationCall,
-        resultModel: TestResultModel
+        resultDetailModel: TestResultDetailModel
     ) {
         call.respondHtml {
             head {
@@ -35,11 +35,11 @@ internal class TestResultScreen(
                     span {
                         classes = setOf("content")
                         b {
-                            text(resultModel.cost)
+                            text(resultDetailModel.cost)
                         }
                     }
                 }
-                resultModel.testSuites.testsuite.forEach { testSuite ->
+                resultDetailModel.testSuites.testsuite.forEach { testSuite ->
                     div {
                         p {
                             classes = setOf("heading")
@@ -62,16 +62,24 @@ internal class TestResultScreen(
                                 }
                             }
                             span {
-                                classes = if (testCase.failure != null) {
-                                    setOf("content", "test-failure")
-                                } else {
-                                    setOf("content", "test-success")
+                                classes = when {
+                                    testCase.failure != null -> {
+                                        setOf("content", "test-failure")
+                                    }
+                                    testCase.webLink == null -> {
+                                        setOf("content", "test-in-progress")
+                                    }
+                                    else -> {
+                                        setOf("content", "test-success")
+                                    }
                                 }
                                 text("${testCase.classname}#${testCase.name}")
                                 br()
-                                a(href = testCase.webLink) {
-                                    target = "_blank"
-                                    text("Open in Firebase")
+                                if (testCase.webLink != null) {
+                                    a(href = testCase.webLink) {
+                                        target = "_blank"
+                                        text("Open in Firebase")
+                                    }
                                 }
                             }
                         }
