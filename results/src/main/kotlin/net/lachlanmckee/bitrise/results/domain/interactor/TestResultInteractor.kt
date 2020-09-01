@@ -4,6 +4,7 @@ import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
 import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactsListResponse
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
 import net.lachlanmckee.bitrise.results.domain.mapper.TestSuitesMapper
+import java.lang.IllegalStateException
 import javax.inject.Inject
 
 internal class TestResultInteractor @Inject constructor(
@@ -15,6 +16,10 @@ internal class TestResultInteractor @Inject constructor(
             .getArtifactDetails(buildSlug)
             .mapCatching { artifactDetails ->
                 println(artifactDetails)
+
+                if (artifactDetails.data.isEmpty()) {
+                    throw IllegalStateException("No artifacts found. Perhaps the tests did not run?")
+                }
 
                 TestResultModel(
                     cost = getArtifactText(artifactDetails, buildSlug, "CostReport.txt"),
@@ -37,7 +42,8 @@ internal class TestResultInteractor @Inject constructor(
     ): String {
         val artifactDetail = artifactDetails
             .data
-            .first { it.title == fileName }
+            .firstOrNull { it.title == fileName }
+            ?: throw IllegalStateException("Unable to find artifact with file name: $fileName")
 
         val artifact = bitriseDataSource
             .getArtifact(buildSlug, artifactDetail.slug)

@@ -62,16 +62,24 @@ internal class TestResultScreen(
                                 }
                             }
                             span {
-                                classes = if (testCase.failure != null) {
-                                    setOf("content", "test-failure")
-                                } else {
-                                    setOf("content", "test-success")
+                                classes = when {
+                                    testCase.failure != null -> {
+                                        setOf("content", "test-failure")
+                                    }
+                                    testCase.webLink == null -> {
+                                        setOf("content", "test-in-progress")
+                                    }
+                                    else -> {
+                                        setOf("content", "test-success")
+                                    }
                                 }
                                 text("${testCase.classname}#${testCase.name}")
                                 br()
-                                a(href = testCase.webLink) {
-                                    target = "_blank"
-                                    text("Open in Firebase")
+                                if (testCase.webLink != null) {
+                                    a(href = testCase.webLink) {
+                                        target = "_blank"
+                                        text("Open in Firebase")
+                                    }
                                 }
                             }
                         }

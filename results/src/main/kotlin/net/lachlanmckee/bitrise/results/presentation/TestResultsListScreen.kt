@@ -29,24 +29,42 @@ internal class TestResultsListScreen(
             body {
                 h1 { +"Bitrise Test Results" }
                 div {
-                    p {
-                        classes = setOf("heading")
-                    }
                     buildsData.branchBuilds.entries.forEach { (branch, builds) ->
                         builds.forEach { build ->
-                            p {
-                                classes = if (build.status == "error") {
-                                    setOf("content", "test-failure")
-                                } else {
-                                    setOf("content", "test-success")
+                            span {
+                                classes = setOf("heading")
+                            }
+                            span {
+                                classes = when (build.status) {
+                                    "success" -> setOf("content", "test-success")
+                                    "in-progress" -> setOf("content", "test-in-progress")
+                                    else -> setOf("content", "test-failure")
                                 }
-                                text("Branch: $branch")
+                                b {
+                                    text("$branch [${build.commitHash}]")
+                                }
                                 br()
-                                text("Result: $build")
                                 br()
-                                a(href = "/test-results/${build.buildSlug}") {
-                                    target = "_blank"
-                                    text("Details")
+
+                                val jobName: String? = build.originalEnvironmentValueList
+                                    .find { it.name == "JOB_NAME" }
+                                    ?.value
+
+                                if (!jobName.isNullOrBlank()) {
+                                    text(jobName)
+                                    br()
+                                }
+
+                                text("${build.triggeredAt} - ${build.finishedAt}")
+
+                                br()
+                                br()
+
+                                if (build.status != "in-progress") {
+                                    a(href = "/test-results/${build.buildSlug}") {
+                                        target = "_blank"
+                                        text("Test Results")
+                                    }
                                 }
                             }
                         }

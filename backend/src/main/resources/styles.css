@@ -41,13 +41,36 @@ form {
 }
 .test-success {
   color: white;
-  background-color: green;
+  background-color: darkgreen;
   padding: 12px;
+  border: 2px solid black;
+  border-radius: 5px;
 }
 .test-failure {
   color: white;
-  background-color: red;
+  background-color: darkred;
   padding: 12px;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+.test-in-progress {
+  color: white;
+  background-color: #CCCC00;
+  padding: 12px;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.test-success a {
+    color: white;
+}
+
+.test-failure a {
+    color: white;
+}
+
+.test-in-progress a {
+    color: white;
 }
 
 p {

@@ -28,7 +28,12 @@ class BuildsMapperTest {
                     commitHash = "commit-hash-dev-1",
                     commitMessage = "commit-message-dev-1",
                     buildNumber = 1,
-                    slug = "slug-dev-1"
+                    slug = "slug-dev-1",
+                    triggeredAt = "2020-09-01T16:00:00Z",
+                    finishedAt = "2020-09-01T17:00:00Z",
+                    originalEnvironmentValueList = listOf(
+                        BuildsResponse.EnvironmentValue("ENV1", "VALUE1")
+                    )
                 ),
                 BuildsResponse.BuildData(
                     branch = "dev",
@@ -36,7 +41,10 @@ class BuildsMapperTest {
                     commitHash = "commit-hash-dev-2",
                     commitMessage = "commit-message-dev-2\nSecond Line",
                     buildNumber = 2,
-                    slug = "slug-dev-2"
+                    slug = "slug-dev-2",
+                    triggeredAt = "2020-09-01T16:00:00Z",
+                    finishedAt = "2020-09-01T17:00:00Z",
+                    originalEnvironmentValueList = emptyList()
                 ),
                 BuildsResponse.BuildData(
                     branch = "dev",
@@ -44,7 +52,10 @@ class BuildsMapperTest {
                     commitHash = "commit-hash-dev-3",
                     commitMessage = null,
                     buildNumber = 3,
-                    slug = "slug-dev-3"
+                    slug = "slug-dev-3",
+                    triggeredAt = "2020-09-01T16:00:00Z",
+                    finishedAt = "2020-09-01T17:00:00Z",
+                    originalEnvironmentValueList = emptyList()
                 ),
                 BuildsResponse.BuildData(
                     branch = "feature1",
@@ -52,7 +63,10 @@ class BuildsMapperTest {
                     commitHash = "commit-hash-feature-1",
                     commitMessage = "commit-message-feature-1-that-will-exceed-50-characters",
                     buildNumber = 3,
-                    slug = "slug-feature-1"
+                    slug = "slug-feature-1",
+                    triggeredAt = "2020-09-01T16:00:00Z",
+                    finishedAt = "2020-09-01T17:00:00Z",
+                    originalEnvironmentValueList = emptyList()
                 )
             ),
             BuildsData(
@@ -64,21 +78,32 @@ class BuildsMapperTest {
                             commitHash = "commit-hash-dev-3",
                             commitMessage = null,
                             buildNumber = 3,
-                            buildSlug = "slug-dev-3"
+                            buildSlug = "slug-dev-3",
+                            triggeredAt = "2020-09-01T16:00:00Z",
+                            finishedAt = "2020-09-01T17:00:00Z",
+                            originalEnvironmentValueList = emptyList()
                         ),
                         BuildsData.Build(
                             status = "status-text-dev-2",
                             commitHash = "commit-hash-dev-2",
                             commitMessage = "commit-message-dev-2",
                             buildNumber = 2,
-                            buildSlug = "slug-dev-2"
+                            buildSlug = "slug-dev-2",
+                            triggeredAt = "2020-09-01T16:00:00Z",
+                            finishedAt = "2020-09-01T17:00:00Z",
+                            originalEnvironmentValueList = emptyList()
                         ),
                         BuildsData.Build(
                             status = "status-text-dev-1",
                             commitHash = "commit-hash-dev-1",
                             commitMessage = "commit-message-dev-1",
                             buildNumber = 1,
-                            buildSlug = "slug-dev-1"
+                            buildSlug = "slug-dev-1",
+                            triggeredAt = "2020-09-01T16:00:00Z",
+                            finishedAt = "2020-09-01T17:00:00Z",
+                            originalEnvironmentValueList = listOf(
+                                BuildsData.EnvironmentValue("ENV1", "VALUE1")
+                            )
                         )
                     ),
                     "feature1" to listOf(
@@ -87,7 +112,10 @@ class BuildsMapperTest {
                             commitHash = "commit-hash-feature-1",
                             commitMessage = "commit-message-feature-1-that-will-exceed-50-chara...",
                             buildNumber = 3,
-                            buildSlug = "slug-feature-1"
+                            buildSlug = "slug-feature-1",
+                            triggeredAt = "2020-09-01T16:00:00Z",
+                            finishedAt = "2020-09-01T17:00:00Z",
+                            originalEnvironmentValueList = emptyList()
                         )
                     )
                 )

@@ -30,7 +30,12 @@ internal class BuildsMapperImpl @Inject constructor() : BuildsMapper {
                                     }
                                 },
                             buildNumber = it.buildNumber,
-                            buildSlug = it.slug
+                            buildSlug = it.slug,
+                            triggeredAt = it.triggeredAt,
+                            finishedAt = it.finishedAt,
+                            originalEnvironmentValueList = it.originalEnvironmentValueList.map { env ->
+                                BuildsData.EnvironmentValue(env.mappedTo, env.value)
+                            }
                         )
                     }
                 )
