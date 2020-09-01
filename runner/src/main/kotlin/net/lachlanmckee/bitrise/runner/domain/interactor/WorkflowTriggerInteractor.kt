@@ -3,6 +3,7 @@ package net.lachlanmckee.bitrise.runner.domain.interactor
 import io.ktor.application.ApplicationCall
 import io.ktor.response.respondRedirect
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
+import net.lachlanmckee.bitrise.core.data.entity.WorkflowTriggerData
 import net.lachlanmckee.bitrise.core.domain.ktor.MultipartCallFactory
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.runner.domain.entity.ConfirmModel
@@ -33,10 +34,13 @@ internal class WorkflowTriggerInteractor @Inject constructor(
     private suspend fun triggerWorkflow(call: ApplicationCall, confirmModel: ConfirmModel) {
         bitriseDataSource
             .triggerWorkflow(
-                branch = confirmModel.branch,
-                commitHash = confirmModel.commitHash,
-                jobName = confirmModel.jobName,
-                flankConfigBase64 = confirmModel.flankConfigBase64
+                WorkflowTriggerData(
+                    branch = confirmModel.branch,
+                    buildSlug = confirmModel.buildSlug,
+                    commitHash = confirmModel.commitHash,
+                    jobName = confirmModel.jobName,
+                    flankConfigBase64 = confirmModel.flankConfigBase64
+                )
             )
             .onSuccess {
                 if (it.status == "ok") {

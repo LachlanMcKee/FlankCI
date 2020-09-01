@@ -19,7 +19,7 @@ class ConfirmDataMapperTest {
     }
 
     @Test
-    fun givenNoCommitHash_whenMap_thenExpectFailureResult() = runBlocking {
+    fun givenNoBuildSlug_whenMap_thenExpectFailureResult() = runBlocking {
         val confirmModel = testMapToConfirmModel(
             listOf(
                 "branch" to "dev"
@@ -27,7 +27,7 @@ class ConfirmDataMapperTest {
         )
 
         assertTrue(confirmModel.isFailure)
-        assertEquals("Commit hash must exist", confirmModel.exceptionOrNull()!!.message)
+        assertEquals("Build slug must exist", confirmModel.exceptionOrNull()!!.message)
     }
 
     @Test
@@ -35,6 +35,7 @@ class ConfirmDataMapperTest {
         val confirmModel = testMapToConfirmModel(
             listOf(
                 "branch" to "dev",
+                "build-slug" to "slug",
                 "commit-hash" to "hash",
                 "job-name" to "job",
                 "yaml-base64" to "config"
@@ -44,6 +45,7 @@ class ConfirmDataMapperTest {
         assertEquals(
             ConfirmModel(
                 branch = "dev",
+                buildSlug = "slug",
                 commitHash = "hash",
                 jobName = "job",
                 flankConfigBase64 = "config"

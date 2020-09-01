@@ -1,6 +1,6 @@
-package net.lachlanmckee.bitrise.runner.domain.entity
+package net.lachlanmckee.bitrise.core.data.entity
 
-internal data class ConfirmModel(
+data class WorkflowTriggerData(
     val branch: String,
     val buildSlug: String,
     val commitHash: String,

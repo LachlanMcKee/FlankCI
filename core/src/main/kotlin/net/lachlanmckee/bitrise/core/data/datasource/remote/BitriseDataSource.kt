@@ -1,9 +1,6 @@
 package net.lachlanmckee.bitrise.core.data.datasource.remote
 
-import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactResponse
-import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactsListResponse
-import net.lachlanmckee.bitrise.core.data.entity.BitriseTriggerResponse
-import net.lachlanmckee.bitrise.core.data.entity.BuildsResponse
+import net.lachlanmckee.bitrise.core.data.entity.*
 
 interface BitriseDataSource {
     suspend fun getBuilds(workflow: String): Result<List<BuildsResponse.BuildData>>
@@ -14,10 +11,5 @@ interface BitriseDataSource {
 
     suspend fun getArtifactText(url: String): Result<String>
 
-    suspend fun triggerWorkflow(
-        branch: String,
-        commitHash: String,
-        jobName: String,
-        flankConfigBase64: String
-    ): Result<BitriseTriggerResponse>
+    suspend fun triggerWorkflow(triggerData: WorkflowTriggerData): Result<BitriseTriggerResponse>
 }
