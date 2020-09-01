@@ -79,7 +79,7 @@ internal class BitriseServiceImpl(
             url("${createAppUrl()}/builds")
             contentType(ContentType.Application.Json)
             auth()
-            body = BitriseTriggerRequest(
+            val bitriseTriggerRequest = BitriseTriggerRequest(
                 buildParams = BitriseTriggerRequest.BuildParams(
                     environments = listOf(
                         BitriseTriggerRequest.BuildParams.EnvironmentValue(
@@ -100,6 +100,8 @@ internal class BitriseServiceImpl(
                     workflowId = workflowId
                 )
             )
+            println("Triggering workflow with content: $bitriseTriggerRequest")
+            body = bitriseTriggerRequest
         }
     }
 
