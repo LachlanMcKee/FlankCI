@@ -72,12 +72,8 @@ internal class BitriseServiceImpl(
         }
 
     override suspend fun triggerWorkflow(
-        branch: String,
-        buildSlug: String,
-        commitHash: String,
-        jobName: String,
-        workflowId: String,
-        flankConfigBase64: String
+        triggerData: WorkflowTriggerData,
+        workflowId: String
     ): Result<BitriseTriggerResponse> = kotlin.runCatching {
         client.post<BitriseTriggerResponse> {
             url("${createAppUrl()}/builds")
@@ -88,19 +84,19 @@ internal class BitriseServiceImpl(
                     environments = listOf(
                         BitriseTriggerRequest.BuildParams.EnvironmentValue(
                             mappedTo = "FLANK_CONFIG",
-                            value = flankConfigBase64
+                            value = triggerData.flankConfigBase64
                         ),
                         BitriseTriggerRequest.BuildParams.EnvironmentValue(
                             mappedTo = "JOB_NAME",
-                            value = jobName
+                            value = triggerData.jobName
                         ),
                         BitriseTriggerRequest.BuildParams.EnvironmentValue(
                             mappedTo = "JOB_BUILD_SLUG",
-                            value = buildSlug
+                            value = triggerData.buildSlug
                         )
                     ),
-                    branch = branch,
-                    commitHash = commitHash,
+                    branch = triggerData.branch,
+                    commitHash = triggerData.commitHash,
                     workflowId = workflowId
                 )
             )

@@ -1,10 +1,7 @@
 package net.lachlanmckee.bitrise.core.data.datasource.remote
 
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
-import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactResponse
-import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactsListResponse
-import net.lachlanmckee.bitrise.core.data.entity.BitriseTriggerResponse
-import net.lachlanmckee.bitrise.core.data.entity.BuildsResponse
+import net.lachlanmckee.bitrise.core.data.entity.*
 import javax.inject.Inject
 
 internal class BitriseDataSourceImpl @Inject constructor(
@@ -28,21 +25,11 @@ internal class BitriseDataSourceImpl @Inject constructor(
         return bitriseService.getArtifactText(url)
     }
 
-    override suspend fun triggerWorkflow(
-        branch: String,
-        buildSlug: String,
-        commitHash: String,
-        jobName: String,
-        flankConfigBase64: String
-    ): Result<BitriseTriggerResponse> {
+    override suspend fun triggerWorkflow(triggerData: WorkflowTriggerData): Result<BitriseTriggerResponse> {
         val flankWorkflowId = configDataSource.getConfig().bitrise.testTriggerWorkflow
         return bitriseService.triggerWorkflow(
-            branch = branch,
-            buildSlug = buildSlug,
-            commitHash = commitHash,
-            jobName = jobName,
-            workflowId = flankWorkflowId,
-            flankConfigBase64 = flankConfigBase64
+            triggerData = triggerData,
+            workflowId = flankWorkflowId
         )
     }
 }

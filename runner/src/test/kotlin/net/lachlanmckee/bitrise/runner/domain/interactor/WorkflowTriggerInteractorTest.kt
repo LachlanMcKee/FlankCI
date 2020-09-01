@@ -9,6 +9,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
 import net.lachlanmckee.bitrise.core.data.entity.BitriseTriggerResponse
+import net.lachlanmckee.bitrise.core.data.entity.WorkflowTriggerData
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.domain.interactor.ImmediateMultipartCallFactory
 import net.lachlanmckee.bitrise.runner.domain.entity.ConfirmModel
@@ -71,11 +72,13 @@ class WorkflowTriggerInteractorTest {
         coVerifySequence {
             confirmDataMapper.mapToConfirmModel(any())
             bitriseDataSource.triggerWorkflow(
-                branch = "branch",
-                buildSlug = "slug",
-                commitHash = "hash",
-                jobName = "job",
-                flankConfigBase64 = "config"
+                WorkflowTriggerData(
+                    branch = "branch",
+                    buildSlug = "slug",
+                    commitHash = "hash",
+                    jobName = "job",
+                    flankConfigBase64 = "config"
+                )
             )
             errorScreenFactory.respondHtml(
                 applicationCall,
@@ -105,11 +108,13 @@ class WorkflowTriggerInteractorTest {
         coVerifySequence {
             confirmDataMapper.mapToConfirmModel(any())
             bitriseDataSource.triggerWorkflow(
-                branch = "branch",
-                buildSlug = "slug",
-                commitHash = "hash",
-                jobName = "job",
-                flankConfigBase64 = "config"
+                WorkflowTriggerData(
+                    branch = "branch",
+                    buildSlug = "slug",
+                    commitHash = "hash",
+                    jobName = "job",
+                    flankConfigBase64 = "config"
+                )
             )
             errorScreenFactory.respondHtml(
                 applicationCall,
@@ -139,11 +144,13 @@ class WorkflowTriggerInteractorTest {
         coVerifySequence {
             confirmDataMapper.mapToConfirmModel(any())
             bitriseDataSource.triggerWorkflow(
-                branch = "branch",
-                buildSlug = "slug",
-                commitHash = "hash",
-                jobName = "job",
-                flankConfigBase64 = "config"
+                WorkflowTriggerData(
+                    branch = "branch",
+                    buildSlug = "slug",
+                    commitHash = "hash",
+                    jobName = "job",
+                    flankConfigBase64 = "config"
+                )
             )
             applicationCall.respondRedirect("url")
         }
@@ -156,11 +163,13 @@ class WorkflowTriggerInteractorTest {
     private fun givenTriggerWorkflowResult(result: Result<BitriseTriggerResponse>) {
         coEvery {
             bitriseDataSource.triggerWorkflow(
-                branch = "branch",
-                buildSlug = "slug",
-                commitHash = "hash",
-                jobName = "job",
-                flankConfigBase64 = "config"
+                WorkflowTriggerData(
+                    branch = "branch",
+                    buildSlug = "slug",
+                    commitHash = "hash",
+                    jobName = "job",
+                    flankConfigBase64 = "config"
+                )
             )
         } returns result
     }

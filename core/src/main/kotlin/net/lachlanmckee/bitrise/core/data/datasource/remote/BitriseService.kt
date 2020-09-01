@@ -1,9 +1,6 @@
 package net.lachlanmckee.bitrise.core.data.datasource.remote
 
-import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactResponse
-import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactsListResponse
-import net.lachlanmckee.bitrise.core.data.entity.BitriseTriggerResponse
-import net.lachlanmckee.bitrise.core.data.entity.BuildsResponse
+import net.lachlanmckee.bitrise.core.data.entity.*
 import java.io.File
 
 interface BitriseService {
@@ -18,11 +15,7 @@ interface BitriseService {
     suspend fun <T> getUsingTempFile(url: String, callback: suspend (file: File) -> T): T
 
     suspend fun triggerWorkflow(
-        branch: String,
-        buildSlug: String,
-        commitHash: String,
-        jobName: String,
-        workflowId: String,
-        flankConfigBase64: String
+        triggerData: WorkflowTriggerData,
+        workflowId: String
     ): Result<BitriseTriggerResponse>
 }
