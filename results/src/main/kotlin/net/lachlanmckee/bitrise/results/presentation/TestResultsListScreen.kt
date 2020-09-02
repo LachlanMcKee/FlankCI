@@ -50,7 +50,11 @@ internal class TestResultsListScreen(
                                 br()
                             }
 
-                            text("${build.triggeredAt} - ${build.finishedAt}")
+                            text(build.triggeredAt)
+
+                            if (build.finishedAt != null) {
+                                text(" - ${build.finishedAt}")
+                            }
 
                             br()
                             br()

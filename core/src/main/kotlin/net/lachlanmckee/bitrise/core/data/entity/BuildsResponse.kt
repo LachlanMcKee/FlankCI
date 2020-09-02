@@ -19,7 +19,7 @@ data class BuildsResponse(
         val buildNumber: Int,
         val slug: String,
         val triggeredAt: String,
-        val finishedAt: String,
+        val finishedAt: String?,
         @SerializedName("original_build_params.environments")
         val originalEnvironmentValueList: List<EnvironmentValue>
     )
