@@ -11,7 +11,7 @@ data class BuildsData(
         val buildNumber: Int,
         val buildSlug: String,
         val triggeredAt: String,
-        val finishedAt: String,
+        val finishedAt: String?,
         val originalEnvironmentValueList: List<EnvironmentValue>
     )
 
