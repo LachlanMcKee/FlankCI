@@ -1,25 +1,23 @@
 package net.lachlanmckee.bitrise.results.domain.mapper
 
-import net.lachlanmckee.bitrise.core.data.entity.BuildsData
+import net.lachlanmckee.bitrise.core.data.entity.BuildsResponse
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
 import javax.inject.Inject
 
 internal class TestResultsListMapper @Inject constructor() {
-    fun mapToTestResultsList(buildsData: BuildsData): List<TestResultModel> {
-        return buildsData.branchBuilds.entries.flatMap { (branch, builds) ->
-            builds.map { build ->
-                TestResultModel(
-                    branch = branch,
-                    status = build.status,
-                    commitHash = build.commitHash,
-                    triggeredAt = build.triggeredAt,
-                    finishedAt = build.finishedAt,
-                    buildSlug = build.buildSlug,
-                    jobName = build.originalEnvironmentValueList
-                        .find { envValue -> envValue.name == "JOB_NAME" }
-                        ?.value
-                )
-            }
+    fun mapToTestResultsList(buildsData: List<BuildsResponse.BuildData>): List<TestResultModel> {
+        return buildsData.map { build ->
+            TestResultModel(
+                branch = build.branch,
+                status = build.statusText,
+                commitHash = build.commitHash,
+                triggeredAt = build.triggeredAt,
+                finishedAt = build.finishedAt,
+                buildSlug = build.slug,
+                jobName = build.originalEnvironmentValueList
+                    .find { envValue -> envValue.mappedTo == "JOB_NAME" }
+                    ?.value
+            )
         }
     }
 }
