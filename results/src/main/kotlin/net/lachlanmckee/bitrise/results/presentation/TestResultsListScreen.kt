@@ -59,7 +59,13 @@ internal class TestResultsListScreen(
                             br()
                             br()
 
+                            a(href = build.bitriseUrl) {
+                                target = "_blank"
+                                text("Bitrise")
+                            }
+
                             if (build.status != "in-progress") {
+                                text(" | ")
                                 a(href = "/test-results/${build.buildSlug}") {
                                     target = "_blank"
                                     text("Test Results")

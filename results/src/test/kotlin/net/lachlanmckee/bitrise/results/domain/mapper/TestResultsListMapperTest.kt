@@ -37,7 +37,8 @@ internal class TestResultsListMapperTest {
                     triggeredAt = "triggeredAt",
                     finishedAt = "finishedAt",
                     buildSlug = "slug",
-                    jobName = null
+                    jobName = null,
+                    bitriseUrl = "https://app.bitrise.io/build/slug"
                 )
             )
         )
@@ -69,7 +70,8 @@ internal class TestResultsListMapperTest {
                     triggeredAt = "triggeredAt",
                     finishedAt = "finishedAt",
                     buildSlug = "slug",
-                    jobName = "JOB1"
+                    jobName = "JOB1",
+                    bitriseUrl = "https://app.bitrise.io/build/slug"
                 )
             )
         )
