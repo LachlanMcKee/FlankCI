@@ -98,14 +98,14 @@ internal class TestResultScreen(
                                             setOf("content", "test-success")
                                         }
                                     }
-                                    th {
+                                    td {
                                         if (testCase.failure != null) {
                                             text("Failure")
                                         } else {
                                             text("Success")
                                         }
                                     }
-                                    th {
+                                    td {
                                         text("${testCase.classname}#${testCase.name}")
                                         br()
                                         a(href = testCase.webLink) {

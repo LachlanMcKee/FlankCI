@@ -68,7 +68,7 @@ body {
   background: #fafafa;
   position: relative;
 }
-.mdl-data-table th {
+.mdl-data-table td {
     text-align: left !important;
 }
 
