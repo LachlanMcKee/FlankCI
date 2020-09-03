@@ -16,61 +16,60 @@ form {
   display: inline-block;
   width: 15%;
   vertical-align: top;
-  text-align: right;
-  padding-right: 12px;
-}
-.content {
-  display: inline-block;
-  width: 80%;
-}
-.data-list {
-  overflow-x: auto;
-  overflow-y: auto;
-  max-height: 250px;
-  white-space: nowrap;
-}
-.inline-label {
-  display: inline-block;
-  width: 15%;
-  text-align: right;
-  padding-right: 8px;
-  font-weight: bold;
+  text-align: left;
 }
 .test-runner-group {
   padding-bottom: 8px;
 }
-.test-success {
-  color: white;
-  background-color: darkgreen;
+.span.test-success {
+  color: black;
+  background: #66bb6a;
   padding: 12px;
-  border: 2px solid black;
-  border-radius: 5px;
 }
-.test-failure {
-  color: white;
-  background-color: darkred;
+.span.test-failure {
+  color: black;
+  background: #e57373;
   padding: 12px;
-  border: 2px solid black;
-  border-radius: 5px;
 }
-.test-in-progress {
-  color: white;
-  background-color: #CCCC00;
-  padding: 12px;
-  border: 2px solid black;
-  border-radius: 5px;
+.test-result-card.mdl-card {
+  width: 90%;
+  height: wrap;
+  margin: 10px;
+  background: #f2f1f4;
+  min-height: 0px;
+}
+.test-result-card.test-success > .mdl-card__title {
+  color: #fff;
+  background: #66bb6a;
+  min-height: 0px;
 }
 
-.test-success a {
-    color: white;
+.test-result-card.test-failure > .mdl-card__title {
+  color: #fff;
+  background: #e57373;
+  min-height: 0px;
 }
 
-.test-failure a {
-    color: white;
+.result.success {
+  background: #00ff0020;
+}
+.result.failure {
+  background: #ff000020;
+}
+.result.failure:hover {
+ background-color: #ff000080 !important;
 }
 
-.test-in-progress a {
-    color: white;
+.result.success:hover {
+ background-color: #00ff0080 !important;
+}
+body {
+  margin: 20px;
+  background: #fafafa;
+  position: relative;
+}
+.mdl-data-table th {
+    text-align: left !important;
 }
 
 p {
