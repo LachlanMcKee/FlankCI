@@ -1,3 +1,7 @@
+:root {
+  --main-accent-color: #38b132;
+}
+
 input[type=checkbox] + label {
   margin-right: 10px;
 }
@@ -51,17 +55,17 @@ form {
 }
 
 .result.success {
-  background: #00ff0020;
+  background: #66bb6a20;
 }
 .result.failure {
-  background: #ff000020;
+  background: #e5737320;
 }
 .result.failure:hover {
- background-color: #ff000080 !important;
+ background-color: #e5737380 !important;
 }
 
 .result.success:hover {
- background-color: #00ff0080 !important;
+ background-color: #66bb6a80 !important;
 }
 body {
   margin: 20px;
@@ -70,6 +74,18 @@ body {
 }
 .mdl-data-table td {
     text-align: left !important;
+}
+.mdl-textfield__input {
+  width: auto;
+  border-bottom: 1px solid rgb(56, 177, 50);
+}
+.mdl-button.mdl-button--colored {
+    color: white;
+    background: rgb(56, 177, 50);
+}
+.mdl-button.mdl-button--colored.more-details {
+    color: white;
+    background: gray;
 }
 
 p {

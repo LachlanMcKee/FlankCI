@@ -11,6 +11,11 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
         val options: List<ConfigModel.Option> = configDataSource.getConfig().testData.options
         call.respondHtml {
             head {
+                link(rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons")
+                link(rel="stylesheet", href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css")
+                script {
+                    src = "https://code.getmdl.io/1.3.0/material.min.js"
+                }
                 link(rel = "stylesheet", href = "/static/styles.css", type = "text/css")
             }
             body {
@@ -27,6 +32,7 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                             text("Branch: ")
                         }
                         select {
+                            classes = setOf("mdl-textfield__input")
                             id = "branch-select"
                             name = "branch-select"
                         }
@@ -40,6 +46,7 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                             text("Build: ")
                         }
                         select {
+                            classes = setOf("mdl-textfield__input")
                             id = "build-select"
                             name = "build-select"
                         }
@@ -67,6 +74,7 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                         p {
                             classes = setOf("content")
                             button {
+                                classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect")
                                 id = "load-test-data-button"
                                 type = ButtonType.button
                                 text("Load Test Data")
@@ -136,7 +144,9 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                         }
                         p {
                             classes = setOf("content")
-                            submitInput { value = "Trigger Tests" }
+                            submitInput {
+                                classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect")
+                                value = "Trigger Tests" }
                         }
                     }
                 }
@@ -177,6 +187,7 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                             text("${option.label}:")
                         }
                         select {
+                            classes = setOf("mdl-textfield__input")
                             id = "option-drop-down-$index"
                             name = "option-drop-down-$index"
 

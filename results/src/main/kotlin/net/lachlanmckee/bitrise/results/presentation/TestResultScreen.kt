@@ -85,7 +85,6 @@ internal class TestResultScreen(
                         }
                         tbody {
                             testSuite.testcase.forEach { testCase ->
-
                                 tr {
                                     classes = when {
                                         testCase.failure != null -> {
