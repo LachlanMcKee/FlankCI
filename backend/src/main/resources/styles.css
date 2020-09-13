@@ -35,6 +35,12 @@ form {
   background: #e57373;
   padding: 12px;
 }
+.data-list {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 250px;
+  white-space: nowrap;
+}
 .test-result-card.mdl-card {
   width: 90%;
   height: wrap;
