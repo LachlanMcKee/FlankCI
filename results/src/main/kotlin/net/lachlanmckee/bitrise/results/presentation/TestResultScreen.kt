@@ -34,6 +34,19 @@ internal class TestResultScreen(
                     }
                     span {
                         classes = setOf("content")
+                        a(href = resultDetailModel.bitriseUrl) {
+                            target = "_blank"
+                            text("Bitrise")
+                        }
+                    }
+                }
+                br()
+                div {
+                    span {
+                        classes = setOf("heading")
+                    }
+                    span {
+                        classes = setOf("content")
                         b {
                             text(resultDetailModel.cost)
                         }

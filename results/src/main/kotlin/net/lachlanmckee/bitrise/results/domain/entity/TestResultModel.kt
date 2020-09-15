@@ -7,5 +7,6 @@ internal data class TestResultModel(
     val triggeredAt: String,
     val finishedAt: String?,
     val buildSlug: String,
-    val jobName: String?
+    val jobName: String?,
+    val bitriseUrl: String
 )
