@@ -1,13 +1,13 @@
 package net.lachlanmckee.bitrise.runner.presentation
 
-import io.ktor.application.ApplicationCall
-import io.ktor.html.respondHtml
+import io.ktor.application.*
+import io.ktor.html.*
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
 import net.lachlanmckee.bitrise.core.data.entity.ConfigModel
 
 internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) {
-    suspend fun respondHtml(call: ApplicationCall) {
+    suspend fun respondHtml(call: ApplicationCall, tests: List<String>?) {
         val options: List<ConfigModel.Option> = configDataSource.getConfig().testData.options
         call.respondHtml {
             head {
@@ -59,21 +59,6 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
 
                     this@body.addOptions(options)
 
-                    div {
-                        classes = setOf("test-runner-group")
-                        p {
-                            classes = setOf("heading")
-                        }
-                        p {
-                            classes = setOf("content")
-                            button {
-                                id = "load-test-data-button"
-                                type = ButtonType.button
-                                text("Load Test Data")
-                            }
-                        }
-                    }
-
                     input {
                         id = "root-package"
                         name = "rootPackage"
@@ -92,42 +77,10 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                         type = InputType.hidden
                     }
 
-                    p {
-                        classes = setOf("heading")
-                        text("Annotations")
-                    }
-
-                    div {
-                        classes = setOf("test-runner-group", "annotations", "data-list", "content")
-                        fieldSet {
-                            id = "annotations-field-set"
-                        }
-                    }
-
-                    p {
-                        id = "packages-heading"
-                        classes = setOf("heading")
-                        text("Packages")
-                    }
-
-                    div {
-                        classes = setOf("test-runner-group", "packages", "data-list", "content")
-                        fieldSet {
-                            id = "packages-field-set"
-                        }
-                    }
-
-                    p {
-                        id = "classes-heading"
-                        classes = setOf("heading")
-                        text("Classes")
-                    }
-
-                    div {
-                        classes = setOf("test-runner-group", "classes", "data-list", "content")
-                        fieldSet {
-                            id = "classes-field-set"
-                        }
+                    if (tests == null) {
+                        this@body.addTestRunOptions()
+                    } else {
+                        this@body.addTestRerunOptions(tests)
                     }
 
                     div {
@@ -141,6 +94,92 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                     }
                 }
                 script(src = "/static/test-runner-script.js") {
+                }
+            }
+        }
+    }
+
+    private fun BODY.addTestRunOptions() {
+        div {
+            classes = setOf("test-runner-group")
+            p {
+                classes = setOf("heading")
+            }
+            p {
+                classes = setOf("content")
+                button {
+                    id = "load-test-data-button"
+                    type = ButtonType.button
+                    text("Load Test Data")
+                }
+            }
+        }
+
+        p {
+            classes = setOf("heading")
+            text("Annotations")
+        }
+
+        div {
+            classes = setOf("test-runner-group", "annotations", "data-list", "content")
+            fieldSet {
+                id = "annotations-field-set"
+            }
+        }
+
+        p {
+            id = "packages-heading"
+            classes = setOf("heading")
+            text("Packages")
+        }
+
+        div {
+            classes = setOf("test-runner-group", "packages", "data-list", "content")
+            fieldSet {
+                id = "packages-field-set"
+            }
+        }
+
+        p {
+            id = "classes-heading"
+            classes = setOf("heading")
+            text("Classes")
+        }
+
+        div {
+            classes = setOf("test-runner-group", "classes", "data-list", "content")
+            fieldSet {
+                id = "classes-field-set"
+            }
+        }
+    }
+
+    private fun BODY.addTestRerunOptions(tests: List<String>) {
+        p {
+            id = "classes-heading"
+            classes = setOf("heading")
+            text("Classes")
+        }
+
+        div {
+            classes = setOf("test-runner-group", "classes", "data-list", "content")
+            fieldSet {
+                id = "classes-field-set"
+
+                tests.forEachIndexed { index, test ->
+                    div {
+                        input {
+                            placeholder = "full_class$index"
+                            type = InputType.checkBox
+                            id = "full_class$index"
+                            name = "full_class"
+                            value = test
+                        }
+                        label {
+                            htmlFor = "full_class$index"
+                            text(test)
+                        }
+                    }
                 }
             }
         }

@@ -1,7 +1,7 @@
 package net.lachlanmckee.bitrise.results.presentation
 
-import io.ktor.application.ApplicationCall
-import io.ktor.html.respondHtml
+import io.ktor.application.*
+import io.ktor.html.*
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel
@@ -28,6 +28,47 @@ internal class TestResultScreen(
             }
             body {
                 h1 { +"Bitrise Test Result" }
+                form("/test-rerun", encType = FormEncType.multipartFormData, method = FormMethod.post) {
+                    target = "_blank"
+                    resultDetailModel.testSuites.testsuite
+                        .asSequence()
+                        .flatMap { suite ->
+                            suite.testcase
+                                .asSequence()
+                                .filter { testCase -> testCase.failure != null }
+                                .map { it.classname }
+                        }
+                        .sorted()
+                        .forEach { className ->
+                            input {
+                                id = "rerun-test"
+                                name = "rerun-test"
+                                type = InputType.hidden
+                                value = className
+                            }
+                        }
+                    input {
+                        id = "rerun-branch"
+                        name = "rerun-build"
+                        type = InputType.hidden
+                        value = resultDetailModel.
+                    }
+                    input {
+                        id = "rerun-build"
+                        name = "rerun-build"
+                        type = InputType.hidden
+                        value = className
+                    }
+                    div {
+                        p {
+                            classes = setOf("heading")
+                        }
+                        p {
+                            classes = setOf("content")
+                            submitInput { value = "Test Rerun" }
+                        }
+                    }
+                }
                 div {
                     span {
                         classes = setOf("heading")

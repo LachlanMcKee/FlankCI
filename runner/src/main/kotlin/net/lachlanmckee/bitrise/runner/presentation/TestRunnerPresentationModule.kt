@@ -3,13 +3,12 @@ package net.lachlanmckee.bitrise.runner.presentation
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
-import io.ktor.application.call
-import io.ktor.http.content.resource
-import io.ktor.http.content.static
-import io.ktor.routing.Routing
-import io.ktor.routing.get
-import io.ktor.routing.post
+import io.ktor.application.*
+import io.ktor.http.content.*
+import io.ktor.routing.*
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
+import net.lachlanmckee.bitrise.core.domain.ktor.MultipartCallFactory
+import net.lachlanmckee.bitrise.core.domain.mapper.FormDataCollector
 import net.lachlanmckee.bitrise.core.presentation.RouteProvider
 import net.lachlanmckee.bitrise.runner.domain.TestRunnerDomainModule
 import net.lachlanmckee.bitrise.runner.domain.interactor.*
@@ -32,12 +31,26 @@ object TestRunnerPresentationModule {
     @Singleton
     @IntoSet
     internal fun provideTestRunnerRouteProvider(
-        configDataSource: ConfigDataSource
+        configDataSource: ConfigDataSource,
+        multipartCallFactory: MultipartCallFactory,
+        formDataCollector: FormDataCollector
     ): RouteProvider = object : RouteProvider {
         override fun provideRoute(): Routing.() -> Unit = {
             get("/test-runner") {
                 TestRunnerScreen(configDataSource)
-                    .respondHtml(call)
+                    .respondHtml(call, null)
+            }
+            post("/test-rerun") {
+                multipartCallFactory.handleMultipart(call) {
+                    val tests = mutableListOf<String>()
+                    formDataCollector.collectData(it) { name, value ->
+                        if (name == "test") {
+                            tests.add(value)
+                        }
+                    }
+                    TestRunnerScreen(configDataSource)
+                        .respondHtml(call, tests)
+                }
             }
         }
     }

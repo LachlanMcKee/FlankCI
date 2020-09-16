@@ -16,6 +16,7 @@ internal class FlankDataMapper @Inject constructor(
         val annotations = mutableListOf<String>()
         val packages = mutableListOf<String>()
         val classes = mutableListOf<String>()
+        val fullClasses = mutableListOf<String>()
         val checkboxOptions = mutableMapOf<Int, Boolean>()
         val dropDownOptions = mutableMapOf<Int, Int>()
 
@@ -28,6 +29,7 @@ internal class FlankDataMapper @Inject constructor(
                 name == "annotation" -> annotations.add(value)
                 name == "package" -> packages.add(value)
                 name == "class" -> classes.add(value)
+                name == "full_class" -> fullClasses.add(value)
                 name.startsWith("option-checkbox-") -> {
                     val checkboxContent = name.removePrefix("option-checkbox-").split("-")
                     val index = checkboxContent[0].toInt()
@@ -56,6 +58,7 @@ internal class FlankDataMapper @Inject constructor(
             annotations = annotations,
             packages = packages,
             classes = classes,
+            fullClasses = fullClasses,
             checkboxOptions = checkboxOptions,
             dropDownOptions = dropDownOptions
         )

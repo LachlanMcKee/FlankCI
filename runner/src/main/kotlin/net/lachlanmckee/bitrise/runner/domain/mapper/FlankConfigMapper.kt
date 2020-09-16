@@ -131,6 +131,9 @@ internal class FlankConfigMapper @Inject constructor(
         mapFormData.classes.forEach {
             testTargets.add("class $rootPackage.$it")
         }
+        mapFormData.fullClasses.forEach {
+            testTargets.add("class $it")
+        }
         mapFormData.packages.forEach {
             if (it.isEmpty()) {
                 testTargets.add("package $it")
