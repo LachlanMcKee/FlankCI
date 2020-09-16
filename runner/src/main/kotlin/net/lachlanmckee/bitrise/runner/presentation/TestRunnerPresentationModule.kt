@@ -31,26 +31,30 @@ object TestRunnerPresentationModule {
     @Singleton
     @IntoSet
     internal fun provideTestRunnerRouteProvider(
-        configDataSource: ConfigDataSource,
-        multipartCallFactory: MultipartCallFactory,
-        formDataCollector: FormDataCollector
+        configDataSource: ConfigDataSource
     ): RouteProvider = object : RouteProvider {
         override fun provideRoute(): Routing.() -> Unit = {
             get("/test-runner") {
+                val rerunBuildSlug: String = call.parameters["rerun-build-slug"]!!
+                val rerunBranch: String = call.parameters["rerun-branch"]!!
                 TestRunnerScreen(configDataSource)
                     .respondHtml(call, null)
             }
-            post("/test-rerun") {
-                multipartCallFactory.handleMultipart(call) {
-                    val tests = mutableListOf<String>()
-                    formDataCollector.collectData(it) { name, value ->
-                        if (name == "test") {
-                            tests.add(value)
-                        }
-                    }
-                    TestRunnerScreen(configDataSource)
-                        .respondHtml(call, tests)
-                }
+        }
+    }
+
+    @Provides
+    @Singleton
+    @IntoSet
+    internal fun provideTestRerunRouteProvider(
+        configDataSource: ConfigDataSource
+    ): RouteProvider = object : RouteProvider {
+        override fun provideRoute(): Routing.() -> Unit = {
+            get("/test-rerun") {
+                val buildSlug: String = call.parameters["build-slug"]!!
+                val branch: String = call.parameters["branch"]!!
+                TestRunnerScreen(configDataSource)
+                    .respondHtml(call, null)
             }
         }
     }

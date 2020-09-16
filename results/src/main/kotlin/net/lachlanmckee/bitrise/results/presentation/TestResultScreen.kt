@@ -28,44 +28,24 @@ internal class TestResultScreen(
             }
             body {
                 h1 { +"Bitrise Test Result" }
-                form("/test-rerun", encType = FormEncType.multipartFormData, method = FormMethod.post) {
-                    target = "_blank"
-                    resultDetailModel.testSuites.testsuite
-                        .asSequence()
-                        .flatMap { suite ->
-                            suite.testcase
-                                .asSequence()
-                                .filter { testCase -> testCase.failure != null }
-                                .map { it.classname }
-                        }
-                        .sorted()
-                        .forEach { className ->
-                            input {
-                                id = "rerun-test"
-                                name = "rerun-test"
-                                type = InputType.hidden
-                                value = className
-                            }
-                        }
-                    input {
-                        id = "rerun-branch"
-                        name = "rerun-build"
-                        type = InputType.hidden
-                        value = resultDetailModel.
-                    }
-                    input {
-                        id = "rerun-build"
-                        name = "rerun-build"
-                        type = InputType.hidden
-                        value = className
-                    }
+
+                val totalFailures = resultDetailModel.testSuites.testsuite
+                    .sumBy { it.failures }
+
+                if (totalFailures > 0) {
                     div {
-                        p {
+                        span {
                             classes = setOf("heading")
+                            text("Total Failures")
                         }
-                        p {
+                        span {
                             classes = setOf("content")
-                            submitInput { value = "Test Rerun" }
+                            text("$totalFailures (")
+                            a(href = "/test-rerun?build-slug=a&branch=b") {
+                                target = "_blank"
+                                text("Rerun")
+                            }
+                            text(")")
                         }
                     }
                 }
