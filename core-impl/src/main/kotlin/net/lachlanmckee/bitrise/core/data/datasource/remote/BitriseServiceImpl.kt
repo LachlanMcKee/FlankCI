@@ -40,7 +40,7 @@ internal class BitriseServiceImpl(
     override suspend fun getArtifactDetails(buildSlug: String): Result<BitriseArtifactsListResponse> =
         kotlin.runCatching {
             client
-                .get<BitriseArtifactsListResponse>("${createAppUrl()}/builds/$buildSlug/artifacts") {
+                .get("${createAppUrl()}/builds/$buildSlug/artifacts") {
                     auth()
                 }
         }
@@ -48,7 +48,7 @@ internal class BitriseServiceImpl(
     override suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<BitriseArtifactResponse> =
         kotlin.runCatching {
             client
-                .get<BitriseArtifactResponse>("${createAppUrl()}/builds/$buildSlug/artifacts/$artifactSlug") {
+                .get("${createAppUrl()}/builds/$buildSlug/artifacts/$artifactSlug") {
                     auth()
                 }
         }
@@ -68,14 +68,14 @@ internal class BitriseServiceImpl(
 
     override suspend fun getArtifactText(url: String): Result<String> =
         kotlin.runCatching {
-            client.get<String>(url)
+            client.get(url)
         }
 
     override suspend fun triggerWorkflow(
         triggerData: WorkflowTriggerData,
         workflowId: String
     ): Result<BitriseTriggerResponse> = kotlin.runCatching {
-        client.post<BitriseTriggerResponse> {
+        client.post {
             url("${createAppUrl()}/builds")
             contentType(ContentType.Application.Json)
             auth()

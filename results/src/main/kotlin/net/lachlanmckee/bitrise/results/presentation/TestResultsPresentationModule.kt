@@ -3,9 +3,8 @@ package net.lachlanmckee.bitrise.results.presentation
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
-import io.ktor.application.call
-import io.ktor.routing.Routing
-import io.ktor.routing.get
+import io.ktor.application.*
+import io.ktor.routing.*
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.core.presentation.RouteProvider
 import net.lachlanmckee.bitrise.results.domain.TestResultsDomainModule
@@ -21,8 +20,8 @@ object TestResultsPresentationModule {
     internal fun provideTestResultsListRouteProvider(
         testResultsListInteractor: TestResultsListInteractor,
         errorScreenFactory: ErrorScreenFactory
-    ): RouteProvider = object : RouteProvider {
-        override fun provideRoute(): Routing.() -> Unit = {
+    ): RouteProvider = RouteProvider {
+        {
             get("/test-results") {
                 TestResultsListScreen(
                     testResultsListInteractor,
@@ -38,8 +37,8 @@ object TestResultsPresentationModule {
     internal fun provideTestResultRouteProvider(
         testResultInteractor: TestResultInteractor,
         errorScreenFactory: ErrorScreenFactory
-    ): RouteProvider = object : RouteProvider {
-        override fun provideRoute(): Routing.() -> Unit = {
+    ): RouteProvider = RouteProvider {
+        {
             get("/test-results/{build-slug}") {
                 val buildSlug: String = call.parameters["build-slug"]!!
                 TestResultScreen(

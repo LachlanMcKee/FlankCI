@@ -6,7 +6,6 @@ import dagger.multibindings.IntoSet
 import io.ktor.application.call
 import io.ktor.http.content.resource
 import io.ktor.http.content.static
-import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.post
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
@@ -20,8 +19,8 @@ object TestRunnerPresentationModule {
     @Provides
     @Singleton
     @IntoSet
-    internal fun provideJavascriptRouteProvider(): RouteProvider = object : RouteProvider {
-        override fun provideRoute(): Routing.() -> Unit = {
+    internal fun provideJavascriptRouteProvider(): RouteProvider = RouteProvider {
+        {
             static("/static") {
                 resource("test-runner-script.js")
             }
@@ -33,8 +32,8 @@ object TestRunnerPresentationModule {
     @IntoSet
     internal fun provideTestRunnerRouteProvider(
         configDataSource: ConfigDataSource
-    ): RouteProvider = object : RouteProvider {
-        override fun provideRoute(): Routing.() -> Unit = {
+    ): RouteProvider = RouteProvider {
+        {
             get("/test-runner") {
                 TestRunnerScreen(configDataSource)
                     .respondHtml(call)
@@ -47,8 +46,8 @@ object TestRunnerPresentationModule {
     @IntoSet
     internal fun provideBitriseDataRouteProvider(
         triggerBranchesInteractor: TriggerBranchesInteractor
-    ): RouteProvider = object : RouteProvider {
-        override fun provideRoute(): Routing.() -> Unit = {
+    ): RouteProvider = RouteProvider {
+        {
             get("/bitrise-data") {
                 triggerBranchesInteractor.execute(call)
             }
@@ -60,8 +59,8 @@ object TestRunnerPresentationModule {
     @IntoSet
     internal fun provideArtifactDataRouteProvider(
         artifactsInteractor: ArtifactsInteractor
-    ): RouteProvider = object : RouteProvider {
-        override fun provideRoute(): Routing.() -> Unit = {
+    ): RouteProvider = RouteProvider {
+        {
             get("/artifact-data/{build-slug}") {
                 val buildSlug: String = call.parameters["build-slug"]!!
                 artifactsInteractor.execute(call, buildSlug)
@@ -74,8 +73,8 @@ object TestRunnerPresentationModule {
     @IntoSet
     internal fun provideTestApkMetadataRouteProvider(
         testApkMetadataInteractor: TestApkMetadataInteractor
-    ): RouteProvider = object : RouteProvider {
-        override fun provideRoute(): Routing.() -> Unit = {
+    ): RouteProvider = RouteProvider {
+        {
             get("/test-apk-metadata/{build-slug}/{artifact-slug}") {
                 val buildSlug: String = call.parameters["build-slug"]!!
                 val artifactSlug: String = call.parameters["artifact-slug"]!!
@@ -91,8 +90,8 @@ object TestRunnerPresentationModule {
     @IntoSet
     internal fun provideTriggerTestsRouteProvider(
         workflowConfirmationInteractor: WorkflowConfirmationInteractor
-    ): RouteProvider = object : RouteProvider {
-        override fun provideRoute(): Routing.() -> Unit = {
+    ): RouteProvider = RouteProvider {
+        {
             post("/trigger-tests") {
                 workflowConfirmationInteractor.execute(call)
             }
@@ -104,8 +103,8 @@ object TestRunnerPresentationModule {
     @IntoSet
     internal fun provideConfirmTestTriggerRouteProvider(
         workflowTriggerInteractor: WorkflowTriggerInteractor
-    ): RouteProvider = object : RouteProvider {
-        override fun provideRoute(): Routing.() -> Unit = {
+    ): RouteProvider = RouteProvider {
+        {
             post("/confirm-test-trigger") {
                 workflowTriggerInteractor.execute(call)
             }
