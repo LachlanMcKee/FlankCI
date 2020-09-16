@@ -8,11 +8,9 @@ internal class FormDataCollectorImpl @Inject constructor() : FormDataCollector {
     override suspend fun collectData(multipart: MultiPartData, func: (String, String) -> Unit) {
         loop@ while (true) {
             val part = multipart.readPart() ?: break
-            when (part) {
-                is PartData.FormItem -> {
-                    val name = part.name ?: continue@loop
-                    func(name, part.value)
-                }
+            if (part is PartData.FormItem) {
+                val name = part.name ?: continue@loop
+                func(name, part.value)
             }
             part.dispose()
         }

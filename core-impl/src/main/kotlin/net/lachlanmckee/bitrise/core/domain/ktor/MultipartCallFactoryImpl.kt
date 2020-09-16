@@ -14,7 +14,7 @@ internal class MultipartCallFactoryImpl @Inject constructor() : MultipartCallFac
             multiPartDataFunc(multipart)
         } else {
             call.respondTextWriter {
-                appendln("Request was not made by a form submission")
+                appendLine("Request was not made by a form submission")
             }
         }
     }
