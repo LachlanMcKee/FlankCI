@@ -7,8 +7,6 @@ import io.ktor.application.*
 import io.ktor.http.content.*
 import io.ktor.routing.*
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
-import net.lachlanmckee.bitrise.core.domain.ktor.MultipartCallFactory
-import net.lachlanmckee.bitrise.core.domain.mapper.FormDataCollector
 import net.lachlanmckee.bitrise.core.presentation.RouteProvider
 import net.lachlanmckee.bitrise.runner.domain.TestRunnerDomainModule
 import net.lachlanmckee.bitrise.runner.domain.interactor.*
@@ -35,10 +33,8 @@ object TestRunnerPresentationModule {
     ): RouteProvider = object : RouteProvider {
         override fun provideRoute(): Routing.() -> Unit = {
             get("/test-runner") {
-                val rerunBuildSlug: String = call.parameters["rerun-build-slug"]!!
-                val rerunBranch: String = call.parameters["rerun-branch"]!!
                 TestRunnerScreen(configDataSource)
-                    .respondHtml(call, null)
+                    .respondHtml(call)
             }
         }
     }
@@ -53,8 +49,8 @@ object TestRunnerPresentationModule {
             get("/test-rerun") {
                 val buildSlug: String = call.parameters["build-slug"]!!
                 val branch: String = call.parameters["branch"]!!
-                TestRunnerScreen(configDataSource)
-                    .respondHtml(call, null)
+                TestRerunScreen(configDataSource)
+                    .respondHtml(call)
             }
         }
     }
