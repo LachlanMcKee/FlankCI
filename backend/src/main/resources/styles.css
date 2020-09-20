@@ -15,72 +15,16 @@ fieldset {
 form {
   font-family: sans-serif;
 }
-.heading {
-  font-weight: bold;
-  display: inline-block;
-  width: 15%;
-  vertical-align: top;
-  text-align: left;
-}
-.test-runner-group {
-  padding-bottom: 8px;
-}
-.span.test-success {
-  color: black;
-  background: #66bb6a;
-  padding: 12px;
-}
-.span.test-failure {
-  color: black;
-  background: #e57373;
-  padding: 12px;
-}
-.data-list {
-  overflow-x: auto;
-  overflow-y: auto;
-  max-height: 250px;
-  white-space: nowrap;
-}
-.test-result-card.mdl-card {
-  width: 90%;
-  height: wrap;
-  margin: 10px;
-  background: #f2f1f4;
-  min-height: 0px;
-}
-.test-result-card.test-success > .mdl-card__title {
-  color: #fff;
-  background: #66bb6a;
-  min-height: 0px;
-}
-
-.test-result-card.test-failure > .mdl-card__title {
-  color: #fff;
-  background: #e57373;
-  min-height: 0px;
-}
-
-.result.success {
-  background: #66bb6a20;
-}
-.result.failure {
-  background: #e5737320;
-}
-.result.failure:hover {
- background-color: #e5737380 !important;
-}
-
-.result.success:hover {
- background-color: #66bb6a80 !important;
-}
 body {
   margin: 20px;
   background: #fafafa;
   position: relative;
 }
-.mdl-data-table td {
-    text-align: left !important;
+p {
+  white-space: pre-wrap;
 }
+
+// Common
 .mdl-textfield__input {
   width: auto;
   border-bottom: 1px solid rgb(56, 177, 50);
@@ -94,6 +38,70 @@ body {
     background: gray;
 }
 
-p {
-  white-space: pre-wrap;
+.heading {
+  font-weight: bold;
+  display: inline-block;
+  width: 15%;
+  vertical-align: top;
+  text-align: left;
+}
+.test-runner-group {
+  padding-bottom: 8px;
+}
+.data-list {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 250px;
+  white-space: nowrap;
+}
+
+// Job list
+.jmdl-card {
+  // Need to have this... to be able to style job-result-card
+  // Not sure why
+}
+.job-result-card {
+  width: 90%;
+  height: wrap;
+  margin-top: 10px;
+  background: #f2f1f4;
+  min-height: 0px;
+}
+.job-result-card.job-success > .mdl-card__title {
+  color: #fff;
+  background: #66bb6a;
+  min-height: 0px;
+}
+
+.job-result-card.job-in-progress > .mdl-card__title {
+  color: #fff;
+  background: #ffe082;
+  min-height: 0px;
+}
+
+.job-result-card.job-failure > .mdl-card__title {
+  color: #fff;
+  background: #e57373;
+  min-height: 0px;
+}
+
+// Test results
+.mdl-data-table td {
+  // Need to have this... for .test-success and .test-failure to take affect...
+  // Not sure why
+}
+.test-success {
+  background: #66bb6a20
+}
+.test-failure {
+  background: #e5737320
+}
+.test-success:hover {
+ background-color: #66bb6a80 !important;
+}
+.test-failure:hover {
+ background-color: #e5737380 !important;
+}
+.mdl-data-table td {
+    text-align: left !important;
 }

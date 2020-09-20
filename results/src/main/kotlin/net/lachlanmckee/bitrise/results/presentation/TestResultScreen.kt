@@ -35,9 +35,6 @@ internal class TestResultScreen(
                 h1 { +"Bitrise Test Result" }
                 div {
                     span {
-                        classes = setOf("heading")
-                    }
-                    span {
                         classes = setOf("content")
                         a(href = resultDetailModel.bitriseUrl) {
                             target = "_blank"
@@ -88,13 +85,13 @@ internal class TestResultScreen(
                                 tr {
                                     classes = when {
                                         testCase.failure != null -> {
-                                            setOf("content", "test-failure")
+                                            setOf("test-failure")
                                         }
                                         testCase.webLink == null -> {
-                                            setOf("content", "test-in-progress")
+                                            setOf("test-in-progress")
                                         }
                                         else -> {
-                                            setOf("content", "test-success")
+                                            setOf("test-success")
                                         }
                                     }
                                     td {

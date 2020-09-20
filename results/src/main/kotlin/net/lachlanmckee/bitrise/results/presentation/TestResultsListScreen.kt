@@ -40,9 +40,9 @@ internal class TestResultsListScreen(
                     testResultModelList.forEach { build ->
                         div {
                             classes = when (build.status) {
-                                "success" -> setOf("test-result-card", "mdl-card", "mdl-shadow--2dp", "test-success")
-                                "in-progress" -> setOf("test-result-card", "mdl-card", "mdl-shadow--2dp", "test-in-progress")
-                                else -> setOf("test-result-card", "mdl-card", "mdl-shadow--2dp", "test-failure")
+                                "success" -> setOf("job-result-card", "mdl-card", "mdl-shadow--2dp", "job-success")
+                                "in-progress" -> setOf("mdl-card", "mdl-shadow--2dp", "job-result-card", "job-in-progress")
+                                else -> setOf("mdl-card", "mdl-shadow--2dp", "job-result-card", "job-failure")
                             }
                             div {
                                 classes = setOf("mdl-card__title")
