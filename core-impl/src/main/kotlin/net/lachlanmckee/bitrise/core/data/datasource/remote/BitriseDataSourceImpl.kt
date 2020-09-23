@@ -48,12 +48,12 @@ internal class BitriseDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun getTestResults(buildSlug: String): Result<TestSuites> {
+    override suspend fun getTestResults(buildSlug: String): Result<List<TestSuite>> {
         return getArtifactDetails(buildSlug)
             .map { artifactDetails ->
                 getArtifactText(artifactDetails, buildSlug, "JUnitReport.xml")
                     .getOrThrow()
             }
-            .mapCatching(testSuitesMapper::mapTestSuites)
+            .mapCatching { testSuitesMapper.mapTestSuites(it).testsuite }
     }
 }

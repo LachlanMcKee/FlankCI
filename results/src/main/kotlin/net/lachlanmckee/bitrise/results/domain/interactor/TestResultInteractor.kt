@@ -18,6 +18,7 @@ internal class TestResultInteractor @Inject constructor(
                 }
 
                 TestResultDetailModel(
+                    buildSlug = buildSlug,
                     bitriseUrl = "https://app.bitrise.io/build/$buildSlug",
                     cost = bitriseDataSource
                         .getArtifactText(artifactDetails, buildSlug, "CostReport.txt")

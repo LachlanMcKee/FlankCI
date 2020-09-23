@@ -29,7 +29,7 @@ internal class TestResultScreen(
             body {
                 h1 { +"Bitrise Test Result" }
 
-                val totalFailures = resultDetailModel.testSuites.testsuite
+                val totalFailures = resultDetailModel.testSuites
                     .sumBy { it.failures }
 
                 if (totalFailures > 0) {
@@ -41,7 +41,7 @@ internal class TestResultScreen(
                         span {
                             classes = setOf("content")
                             text("$totalFailures (")
-                            a(href = "/test-rerun?build-slug=a&branch=b") {
+                            a(href = "/test-rerun?build-slug=${resultDetailModel.buildSlug}") {
                                 target = "_blank"
                                 text("Rerun")
                             }
@@ -73,7 +73,7 @@ internal class TestResultScreen(
                         }
                     }
                 }
-                resultDetailModel.testSuites.testsuite.forEach { testSuite ->
+                resultDetailModel.testSuites.forEach { testSuite ->
                     div {
                         p {
                             classes = setOf("heading")

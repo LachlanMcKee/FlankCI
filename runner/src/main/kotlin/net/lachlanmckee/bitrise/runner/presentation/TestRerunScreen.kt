@@ -3,17 +3,28 @@ package net.lachlanmckee.bitrise.runner.presentation
 import io.ktor.application.*
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
-import net.lachlanmckee.bitrise.core.data.entity.ConfigModel
+import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
+import net.lachlanmckee.bitrise.runner.domain.interactor.TestRerunInteractor
 
-internal class TestRerunScreen(private val configDataSource: ConfigDataSource) {
+internal class TestRerunScreen(
+    private val configDataSource: ConfigDataSource,
+    private val errorScreenFactory: ErrorScreenFactory,
+    private val testRerunInteractor: TestRerunInteractor
+) {
     private val delegate by lazy {
         TestRunnerScreenDelegate(configDataSource)
     }
 
-    suspend fun respondHtml(call: ApplicationCall) {
-        delegate.respondHtml(call) {
-            addTestRerunOptions(emptyList())
-        }
+    suspend fun respondHtml(call: ApplicationCall, buildSlug: String) {
+        testRerunInteractor
+            .execute(buildSlug)
+            .onSuccess {
+                delegate.respondHtml(call) {
+                    addTestRerunOptions(it.failedTests)
+                }
+            }
+            .onFailure { errorScreenFactory.respondHtml(call, "Failed to parse content", it.message!!) }
+
     }
 
     private fun BODY.addTestRerunOptions(tests: List<String>) {

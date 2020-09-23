@@ -17,5 +17,5 @@ interface BitriseDataSource {
 
     suspend fun triggerWorkflow(triggerData: WorkflowTriggerData): Result<BitriseTriggerResponse>
 
-    suspend fun getTestResults(buildSlug: String): Result<TestSuites>
+    suspend fun getTestResults(buildSlug: String): Result<List<TestSuite>>
 }

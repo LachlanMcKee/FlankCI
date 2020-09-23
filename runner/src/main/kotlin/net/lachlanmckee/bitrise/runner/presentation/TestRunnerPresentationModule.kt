@@ -7,6 +7,7 @@ import io.ktor.application.*
 import io.ktor.http.content.*
 import io.ktor.routing.*
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
+import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.core.presentation.RouteProvider
 import net.lachlanmckee.bitrise.runner.domain.TestRunnerDomainModule
 import net.lachlanmckee.bitrise.runner.domain.interactor.*
@@ -43,14 +44,16 @@ object TestRunnerPresentationModule {
     @Singleton
     @IntoSet
     internal fun provideTestRerunRouteProvider(
-        configDataSource: ConfigDataSource
+        configDataSource: ConfigDataSource,
+        errorScreenFactory: ErrorScreenFactory,
+        testRerunInteractor: TestRerunInteractor
     ): RouteProvider = object : RouteProvider {
         override fun provideRoute(): Routing.() -> Unit = {
             get("/test-rerun") {
                 val buildSlug: String = call.parameters["build-slug"]!!
-                val branch: String = call.parameters["branch"]!!
-                TestRerunScreen(configDataSource)
-                    .respondHtml(call)
+
+                TestRerunScreen(configDataSource, errorScreenFactory, testRerunInteractor)
+                    .respondHtml(call, buildSlug)
             }
         }
     }
