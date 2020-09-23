@@ -85,7 +85,7 @@ internal class TestResultScreen(
                             }
                         }
                     }
-                    testSuite.testcase.forEach { testCase ->
+                    testSuite.testcase?.forEach { testCase ->
                         div {
                             span {
                                 classes = setOf("heading")
