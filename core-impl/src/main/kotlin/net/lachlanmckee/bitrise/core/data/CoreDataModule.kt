@@ -1,5 +1,7 @@
 package net.lachlanmckee.bitrise.core.data
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.google.gson.TypeAdapterFactory
 import dagger.Binds
 import dagger.Module
@@ -19,6 +21,8 @@ import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSourceImpl
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseService
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseServiceImpl
+import net.lachlanmckee.bitrise.core.data.mapper.TestSuitesMapper
+import net.lachlanmckee.bitrise.core.data.mapper.TestSuitesMapperImpl
 import javax.inject.Singleton
 
 @Module(includes = [CoreSerializationModule::class])
@@ -53,6 +57,17 @@ internal abstract class CoreDataModule {
                     }
                 },
                 configDataSource = configDataSource
+            )
+        }
+
+        @Provides
+        @Singleton
+        internal fun provideTestSuitesMapper(): TestSuitesMapper {
+            return TestSuitesMapperImpl(
+                xmlMapper = XmlMapper.Builder(XmlMapper())
+                    .defaultUseWrapper(false)
+                    .build()
+                    .registerKotlinModule()
             )
         }
     }

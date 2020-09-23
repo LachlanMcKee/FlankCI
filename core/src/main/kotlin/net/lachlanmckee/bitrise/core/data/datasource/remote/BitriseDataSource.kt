@@ -9,7 +9,13 @@ interface BitriseDataSource {
 
     suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<BitriseArtifactResponse>
 
-    suspend fun getArtifactText(url: String): Result<String>
+    suspend fun getArtifactText(
+        artifactDetails: BitriseArtifactsListResponse,
+        buildSlug: String,
+        fileName: String
+    ): Result<String>
 
     suspend fun triggerWorkflow(triggerData: WorkflowTriggerData): Result<BitriseTriggerResponse>
+
+    suspend fun getTestResults(buildSlug: String): Result<TestSuites>
 }
