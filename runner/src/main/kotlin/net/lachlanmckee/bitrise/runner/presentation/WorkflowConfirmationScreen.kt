@@ -64,7 +64,7 @@ internal class WorkflowConfirmationScreen {
                         value = Base64.getEncoder().encodeToString(yaml.toByteArray())
                     }
                     submitInput {
-                        classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect")
+                        classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "green-button")
                         value = "Trigger" }
                 }
             }

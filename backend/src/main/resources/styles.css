@@ -28,16 +28,16 @@ p {
 
 // Common
 .mdl-textfield__input {
-  width: fit-content;
+  width: fit-content !important;
   border-bottom: 1px solid rgb(56, 177, 50);
 }
-.mdl-button.mdl-button--colored {
-    color: white;
-    background: rgb(56, 177, 50);
+.green-button {
+  color: white !important;
+  background: rgb(56, 177, 50) !important;
 }
-.mdl-button.mdl-button--colored.more-details {
-    color: white;
-    background: gray;
+.gray-button {
+  color: black !important;
+  background: lightgrey !important;
 }
 
 .heading {
@@ -87,6 +87,8 @@ p {
   background: #e57373;
   min-height: 0px;
 }
+
+
 
 // Test results
 .mdl-data-table td {

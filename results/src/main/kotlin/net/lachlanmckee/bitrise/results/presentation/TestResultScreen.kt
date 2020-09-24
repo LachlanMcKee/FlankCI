@@ -45,9 +45,6 @@ internal class TestResultScreen(
                 br()
                 div {
                     span {
-                        classes = setOf("heading")
-                    }
-                    span {
                         classes = setOf("content")
                         b {
                             text(resultDetailModel.cost)

@@ -20,14 +20,14 @@ class HomeScreen {
 
                 div {
                     a(href = "/test-runner") {
-                        classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect")
+                        classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "green-button")
                         +"Test Runner"
                     }
                 }
                 br
                 div {
                     a(href = "/test-results") {
-                        classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect")
+                        classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "green-button")
                         +"Test Results"
                     }
                 }

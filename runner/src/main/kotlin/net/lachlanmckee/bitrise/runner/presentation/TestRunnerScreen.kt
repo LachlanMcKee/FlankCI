@@ -74,7 +74,7 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                         p {
                             classes = setOf("content")
                             button {
-                                classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect")
+                                classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "green-button")
                                 id = "load-test-data-button"
                                 type = ButtonType.button
                                 text("Load Test Data")
@@ -145,7 +145,7 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
                         p {
                             classes = setOf("content")
                             submitInput {
-                                classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect")
+                                classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "green-button")
                                 value = "Trigger Tests" }
                         }
                     }

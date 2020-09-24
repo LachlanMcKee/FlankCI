@@ -68,7 +68,7 @@ internal class TestResultsListScreen(
                                 div {
                                     classes = setOf("mdl-card__actions mdl-card--border")
                                     a(href = "/test-results/${build.buildSlug}") {
-                                        classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect")
+                                        classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "gray-button")
                                         target = "_blank"
                                         text("Details")
                                     }
@@ -79,4 +79,5 @@ internal class TestResultsListScreen(
                 }
             }
         }
+    }
 }
