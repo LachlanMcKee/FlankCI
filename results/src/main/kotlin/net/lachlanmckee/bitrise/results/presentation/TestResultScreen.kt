@@ -1,7 +1,7 @@
 package net.lachlanmckee.bitrise.results.presentation
 
-import io.ktor.application.ApplicationCall
-import io.ktor.html.respondHtml
+import io.ktor.application.*
+import io.ktor.html.*
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel
@@ -28,6 +28,27 @@ internal class TestResultScreen(
             }
             body {
                 h1 { +"Bitrise Test Result" }
+
+                val totalFailures = resultDetailModel.testSuites
+                    .sumBy { it.failures }
+
+                if (totalFailures > 0) {
+                    div {
+                        span {
+                            classes = setOf("heading")
+                            text("Total Failures")
+                        }
+                        span {
+                            classes = setOf("content")
+                            text("$totalFailures (")
+                            a(href = "/test-rerun?build-slug=${resultDetailModel.buildSlug}") {
+                                target = "_blank"
+                                text("Rerun Failures")
+                            }
+                            text(")")
+                        }
+                    }
+                }
                 div {
                     span {
                         classes = setOf("heading")
@@ -52,7 +73,7 @@ internal class TestResultScreen(
                         }
                     }
                 }
-                resultDetailModel.testSuites.testsuite.forEach { testSuite ->
+                resultDetailModel.testSuites.forEach { testSuite ->
                     div {
                         p {
                             classes = setOf("heading")
@@ -64,7 +85,7 @@ internal class TestResultScreen(
                             }
                         }
                     }
-                    testSuite.testcase.forEach { testCase ->
+                    testSuite.testcase?.forEach { testCase ->
                         div {
                             span {
                                 classes = setOf("heading")

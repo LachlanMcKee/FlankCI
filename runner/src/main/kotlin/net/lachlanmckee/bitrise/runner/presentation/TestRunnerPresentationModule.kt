@@ -3,13 +3,11 @@ package net.lachlanmckee.bitrise.runner.presentation
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
-import io.ktor.application.call
-import io.ktor.http.content.resource
-import io.ktor.http.content.static
-import io.ktor.routing.Routing
-import io.ktor.routing.get
-import io.ktor.routing.post
+import io.ktor.application.*
+import io.ktor.http.content.*
+import io.ktor.routing.*
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
+import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.core.presentation.RouteProvider
 import net.lachlanmckee.bitrise.runner.domain.TestRunnerDomainModule
 import net.lachlanmckee.bitrise.runner.domain.interactor.*
@@ -38,6 +36,24 @@ object TestRunnerPresentationModule {
             get("/test-runner") {
                 TestRunnerScreen(configDataSource)
                     .respondHtml(call)
+            }
+        }
+    }
+
+    @Provides
+    @Singleton
+    @IntoSet
+    internal fun provideTestRerunRouteProvider(
+        configDataSource: ConfigDataSource,
+        errorScreenFactory: ErrorScreenFactory,
+        testRerunInteractor: TestRerunInteractor
+    ): RouteProvider = object : RouteProvider {
+        override fun provideRoute(): Routing.() -> Unit = {
+            get("/test-rerun") {
+                val buildSlug: String = call.parameters["build-slug"]!!
+
+                TestRerunScreen(configDataSource, errorScreenFactory, testRerunInteractor)
+                    .respondHtml(call, buildSlug)
             }
         }
     }

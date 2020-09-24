@@ -1,7 +1,8 @@
 package net.lachlanmckee.bitrise.domain.mapper
 
+import net.lachlanmckee.bitrise.core.data.entity.BuildDataResponse
 import net.lachlanmckee.bitrise.core.data.entity.BuildsData
-import net.lachlanmckee.bitrise.core.data.entity.BuildsResponse
+import net.lachlanmckee.bitrise.core.data.entity.EnvironmentValueResponse
 import net.lachlanmckee.bitrise.core.domain.mapper.BuildsMapperImpl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -22,7 +23,7 @@ class BuildsMapperTest {
     fun givenBuildDataExists_whenMap_thenAssertBuildsData() {
         testMapBuilds(
             listOf(
-                BuildsResponse.BuildData(
+                BuildDataResponse(
                     branch = "dev",
                     statusText = "status-text-dev-1",
                     commitHash = "commit-hash-dev-1",
@@ -32,10 +33,10 @@ class BuildsMapperTest {
                     triggeredAt = "2020-09-01T16:00:00Z",
                     finishedAt = "2020-09-01T17:00:00Z",
                     originalEnvironmentValueList = listOf(
-                        BuildsResponse.EnvironmentValue("ENV1", "VALUE1")
+                        EnvironmentValueResponse("ENV1", "VALUE1")
                     )
                 ),
-                BuildsResponse.BuildData(
+                BuildDataResponse(
                     branch = "dev",
                     statusText = "status-text-dev-2",
                     commitHash = "commit-hash-dev-2",
@@ -46,7 +47,7 @@ class BuildsMapperTest {
                     finishedAt = "2020-09-01T17:00:00Z",
                     originalEnvironmentValueList = emptyList()
                 ),
-                BuildsResponse.BuildData(
+                BuildDataResponse(
                     branch = "dev",
                     statusText = "status-text-dev-3",
                     commitHash = "commit-hash-dev-3",
@@ -57,7 +58,7 @@ class BuildsMapperTest {
                     finishedAt = "2020-09-01T17:00:00Z",
                     originalEnvironmentValueList = emptyList()
                 ),
-                BuildsResponse.BuildData(
+                BuildDataResponse(
                     branch = "feature1",
                     statusText = "status-text-feature-1",
                     commitHash = "commit-hash-feature-1",
@@ -123,7 +124,7 @@ class BuildsMapperTest {
         )
     }
 
-    private fun testMapBuilds(data: List<BuildsResponse.BuildData>, expected: BuildsData) {
+    private fun testMapBuilds(data: List<BuildDataResponse>, expected: BuildsData) {
         assertEquals(expected, BuildsMapperImpl().mapBuilds(data))
     }
 }

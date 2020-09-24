@@ -1,23 +1,23 @@
-package net.lachlanmckee.bitrise.results.domain.entity
+package net.lachlanmckee.bitrise.core.data.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-internal data class TestSuites(
+data class TestSuites(
     val testsuite: List<TestSuite>
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-internal data class TestSuite(
+data class TestSuite(
     val name: String,
     val tests: Int,
     val failures: Int,
     val time: String,
-    val testcase: List<TestCase>
+    val testcase: List<TestCase>?
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-internal data class TestCase(
+data class TestCase(
     val name: String,
     val classname: String,
     val time: String,
