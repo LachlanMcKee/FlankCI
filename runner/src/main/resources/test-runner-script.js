@@ -16,6 +16,11 @@ async function load() {
         branchSelectDropDown.add(option);
     }
 
+    let defaultBranch = document.getElementById('defaultBranch');
+    if (defaultBranch != null) {
+        branchSelectDropDown.value = defaultBranch.value;
+    }
+
     onBranchChanged(branchData);
     branchSelectDropDown.addEventListener("change", function () {
         onBranchChanged(branchData);

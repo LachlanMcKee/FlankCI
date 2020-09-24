@@ -4,6 +4,7 @@ import io.ktor.application.*
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
+import net.lachlanmckee.bitrise.runner.domain.entity.RerunModel
 import net.lachlanmckee.bitrise.runner.domain.interactor.TestRerunInteractor
 
 internal class TestRerunScreen(
@@ -20,14 +21,21 @@ internal class TestRerunScreen(
             .execute(buildSlug)
             .onSuccess {
                 delegate.respondHtml(call) {
-                    addTestRerunOptions(it.failedTests)
+                    addTestRerunOptions(it)
                 }
             }
             .onFailure { errorScreenFactory.respondHtml(call, "Failed to parse content", it.message!!) }
 
     }
 
-    private fun BODY.addTestRerunOptions(tests: List<String>) {
+    private fun BODY.addTestRerunOptions(rerunModel: RerunModel) {
+        input {
+            id = "defaultBranch"
+            name = "defaultBranch"
+            type = InputType.hidden
+            value = rerunModel.branch
+        }
+
         p {
             id = "classes-heading"
             classes = setOf("heading")
@@ -39,7 +47,7 @@ internal class TestRerunScreen(
             fieldSet {
                 id = "classes-field-set"
 
-                tests.forEachIndexed { index, test ->
+                rerunModel.failedTests.forEachIndexed { index, test ->
                     div {
                         input {
                             placeholder = "full_class$index"

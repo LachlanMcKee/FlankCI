@@ -43,7 +43,7 @@ internal class TestResultScreen(
                             text("$totalFailures (")
                             a(href = "/test-rerun?build-slug=${resultDetailModel.buildSlug}") {
                                 target = "_blank"
-                                text("Rerun")
+                                text("Rerun Failures")
                             }
                             text(")")
                         }

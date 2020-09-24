@@ -71,6 +71,13 @@ internal class TestResultsListScreen(
                                     text("Test Results")
                                 }
                             }
+                            if (build.status == "error") {
+                                text(" | ")
+                                a(href = "/test-rerun/${build.buildSlug}") {
+                                    target = "_blank"
+                                    text("Rerun Failures")
+                                }
+                            }
                         }
                     }
                 }
