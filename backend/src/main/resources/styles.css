@@ -10,7 +10,9 @@ input[type=checkbox] {
   cursor: pointer;
 }
 fieldset {
-  border: none;
+  border: dashed;
+  border-width: 2px;
+  width: fit-content;
 }
 form {
   font-family: sans-serif;
@@ -26,7 +28,7 @@ p {
 
 // Common
 .mdl-textfield__input {
-  width: auto;
+  width: fit-content;
   border-bottom: 1px solid rgb(56, 177, 50);
 }
 .mdl-button.mdl-button--colored {
@@ -53,6 +55,7 @@ p {
   overflow-y: auto;
   max-height: 250px;
   white-space: nowrap;
+  width: fit-content;
 }
 
 // Job list
