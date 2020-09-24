@@ -1,11 +1,12 @@
 package net.lachlanmckee.bitrise.results.domain.mapper
 
-import net.lachlanmckee.bitrise.core.data.entity.BuildsResponse
+import net.lachlanmckee.bitrise.core.data.entity.BuildDataResponse
+import net.lachlanmckee.bitrise.core.data.entity.MultipleBuildsResponse
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
 import javax.inject.Inject
 
 internal class TestResultsListMapper @Inject constructor() {
-    fun mapToTestResultsList(buildsData: List<BuildsResponse.BuildData>): List<TestResultModel> {
+    fun mapToTestResultsList(buildsData: List<BuildDataResponse>): List<TestResultModel> {
         return buildsData.map { build ->
             TestResultModel(
                 branch = build.branch,

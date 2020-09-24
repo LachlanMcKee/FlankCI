@@ -4,7 +4,9 @@ import net.lachlanmckee.bitrise.core.data.entity.*
 import java.io.File
 
 interface BitriseService {
-    suspend fun getBuilds(workflow: String): Result<List<BuildsResponse.BuildData>>
+    suspend fun getBuilds(workflow: String): Result<List<BuildDataResponse>>
+
+    suspend fun getBuildDetails(buildSlug: String): Result<BuildDataResponse>
 
     suspend fun getArtifactDetails(buildSlug: String): Result<BitriseArtifactsListResponse>
 

@@ -7,8 +7,11 @@ import javax.inject.Inject
 class TestRerunInteractor @Inject constructor(
     private val bitriseDataSource: BitriseDataSource
 ) {
-    suspend fun execute(buildSlug: String): Result<RerunModel> {
-        return bitriseDataSource
+    suspend fun execute(buildSlug: String): Result<RerunModel> = kotlin.runCatching {
+        val buildDetails = bitriseDataSource.getBuildDetails(buildSlug)
+            .getOrThrow()
+
+        bitriseDataSource
             .getTestResults(buildSlug)
             .mapCatching { tests ->
                 val failedTests: List<String> = tests
@@ -24,7 +27,10 @@ class TestRerunInteractor @Inject constructor(
                             ?: emptyList()
                     }
 
-                RerunModel(failedTests)
+                RerunModel(
+                    branch = buildDetails.branch,
+                    failedTests = failedTests)
             }
+            .getOrThrow()
     }
 }

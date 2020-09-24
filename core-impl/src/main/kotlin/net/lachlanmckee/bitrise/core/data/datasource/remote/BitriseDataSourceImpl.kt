@@ -11,8 +11,12 @@ internal class BitriseDataSourceImpl @Inject constructor(
     private val testSuitesMapper: TestSuitesMapper
 ) : BitriseDataSource {
 
-    override suspend fun getBuilds(workflow: String): Result<List<BuildsResponse.BuildData>> {
+    override suspend fun getBuilds(workflow: String): Result<List<BuildDataResponse>> {
         return bitriseService.getBuilds(workflow)
+    }
+
+    override suspend fun getBuildDetails(buildSlug: String): Result<BuildDataResponse> {
+        return bitriseService.getBuildDetails(buildSlug)
     }
 
     override suspend fun getArtifactDetails(buildSlug: String): Result<BitriseArtifactsListResponse> {

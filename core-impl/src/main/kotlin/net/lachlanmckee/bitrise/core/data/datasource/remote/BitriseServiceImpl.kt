@@ -19,10 +19,10 @@ internal class BitriseServiceImpl(
         return "https://api.bitrise.io/v0.1/apps/${configDataSource.getConfig().bitrise.appId}"
     }
 
-    override suspend fun getBuilds(workflow: String): Result<List<BuildsResponse.BuildData>> =
+    override suspend fun getBuilds(workflow: String): Result<List<BuildDataResponse>> =
         kotlin.runCatching {
             client
-                .get<BuildsResponse>("${createAppUrl()}/builds?workflow=$workflow&sort_by=created_at") {
+                .get<MultipleBuildsResponse>("${createAppUrl()}/builds?workflow=$workflow&sort_by=created_at") {
                     auth()
                 }
                 .data
@@ -35,6 +35,15 @@ internal class BitriseServiceImpl(
                         }
                     }
                 }
+        }
+
+    override suspend fun getBuildDetails(buildSlug: String): Result<BuildDataResponse> =
+        kotlin.runCatching {
+            client
+                .get<SingleBuildResponse>("${createAppUrl()}/builds/$buildSlug") {
+                    auth()
+                }
+                .data
         }
 
     override suspend fun getArtifactDetails(buildSlug: String): Result<BitriseArtifactsListResponse> =

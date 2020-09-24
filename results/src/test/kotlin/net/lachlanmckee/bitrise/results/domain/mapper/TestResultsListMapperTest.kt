@@ -1,6 +1,6 @@
 package net.lachlanmckee.bitrise.results.domain.mapper
 
-import net.lachlanmckee.bitrise.core.data.entity.BuildsResponse
+import net.lachlanmckee.bitrise.core.data.entity.MultipleBuildsResponse
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -15,7 +15,7 @@ internal class TestResultsListMapperTest {
     fun givenBuildDataWithoutJobName_whenMap_thenExpectListResultModelsWithoutJobName() {
         testMapBuilds(
             listOf(
-                BuildsResponse.BuildData(
+                MultipleBuildsResponse.BuildData(
                     branch = "branch",
                     statusText = "statusText",
                     commitHash = "commitHash",
@@ -25,7 +25,7 @@ internal class TestResultsListMapperTest {
                     triggeredAt = "triggeredAt",
                     finishedAt = "finishedAt",
                     originalEnvironmentValueList = listOf(
-                        BuildsResponse.EnvironmentValue("ENV1", "VAL1")
+                        MultipleBuildsResponse.EnvironmentValue("ENV1", "VAL1")
                     )
                 )
             ),
@@ -48,7 +48,7 @@ internal class TestResultsListMapperTest {
     fun givenBuildDataWithJobName_whenMap_thenExpectListResultModelsWithJobName() {
         testMapBuilds(
             listOf(
-                BuildsResponse.BuildData(
+                MultipleBuildsResponse.BuildData(
                     branch = "branch",
                     statusText = "statusText",
                     commitHash = "commitHash",
@@ -58,7 +58,7 @@ internal class TestResultsListMapperTest {
                     triggeredAt = "triggeredAt",
                     finishedAt = "finishedAt",
                     originalEnvironmentValueList = listOf(
-                        BuildsResponse.EnvironmentValue("JOB_NAME", "JOB1")
+                        MultipleBuildsResponse.EnvironmentValue("JOB_NAME", "JOB1")
                     )
                 )
             ),
@@ -77,7 +77,7 @@ internal class TestResultsListMapperTest {
         )
     }
 
-    private fun testMapBuilds(data: List<BuildsResponse.BuildData>, expected: List<TestResultModel>) {
+    private fun testMapBuilds(data: List<MultipleBuildsResponse.BuildData>, expected: List<TestResultModel>) {
         assertEquals(expected, TestResultsListMapper().mapToTestResultsList(data))
     }
 }

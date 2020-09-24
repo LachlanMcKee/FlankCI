@@ -1,11 +1,12 @@
 package net.lachlanmckee.bitrise.core.domain.mapper
 
+import net.lachlanmckee.bitrise.core.data.entity.BuildDataResponse
 import net.lachlanmckee.bitrise.core.data.entity.BuildsData
-import net.lachlanmckee.bitrise.core.data.entity.BuildsResponse
+import net.lachlanmckee.bitrise.core.data.entity.MultipleBuildsResponse
 import javax.inject.Inject
 
 internal class BuildsMapperImpl @Inject constructor() : BuildsMapper {
-    override fun mapBuilds(data: List<BuildsResponse.BuildData>): BuildsData {
+    override fun mapBuilds(data: List<BuildDataResponse>): BuildsData {
         return BuildsData(
             branches = data
                 .map { it.branch }
