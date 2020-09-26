@@ -6,7 +6,7 @@ import net.lachlanmckee.bitrise.core.data.entity.EnvironmentValueResponse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class BuildsMapperImplTest {
+internal class BuildsMapperImplTest {
     @Test
     fun givenNoBuildData_whenMap_thenExpectEmptyBuildsData() {
         testMapBuilds(
