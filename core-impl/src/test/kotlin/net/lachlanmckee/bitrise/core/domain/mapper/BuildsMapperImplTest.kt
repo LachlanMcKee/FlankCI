@@ -1,13 +1,12 @@
-package net.lachlanmckee.bitrise.domain.mapper
+package net.lachlanmckee.bitrise.core.domain.mapper
 
 import net.lachlanmckee.bitrise.core.data.entity.BuildDataResponse
 import net.lachlanmckee.bitrise.core.data.entity.BuildsData
 import net.lachlanmckee.bitrise.core.data.entity.EnvironmentValueResponse
-import net.lachlanmckee.bitrise.core.domain.mapper.BuildsMapperImpl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class BuildsMapperTest {
+class BuildsMapperImplTest {
     @Test
     fun givenNoBuildData_whenMap_thenExpectEmptyBuildsData() {
         testMapBuilds(
