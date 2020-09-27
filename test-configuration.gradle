@@ -22,4 +22,18 @@ jacocoTestReport {
         html.enabled true
         xml.enabled true
     }
+
+    def fileExcludeFilter = [
+            '**/*Component*.*',
+            '**/*Module*.*'
+    ]
+
+    def kotlinClasses = fileTree(dir: "$buildDir/classes/kotlin", excludes: fileExcludeFilter)
+    def mainSrc = "${project.projectDir}/src/main/kotlin"
+
+    sourceDirectories.setFrom(files([mainSrc]))
+    classDirectories.setFrom(files([kotlinClasses]))
+    executionData.setFrom(fileTree(dir: "$buildDir", includes: [
+            "jacoco/test.exec"
+    ]))
 }
