@@ -43,10 +43,11 @@ internal class BuildsMapperImpl @Inject constructor() : BuildsMapper {
     }
 
     private fun mapCommitMessage(response: BuildDataResponse): String? {
-        return response.commitMessage
-            ?.split("\n")
-            ?.firstOrNull()
-            ?.let { message ->
+        val commitMessage = response.commitMessage ?: return null
+        return commitMessage
+            .split("\n")
+            .first()
+            .let { message ->
                 if (message.length > 50) {
                     message.take(50) + "..."
                 } else {
