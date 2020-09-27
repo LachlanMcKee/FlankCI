@@ -6,25 +6,25 @@ plugins {
 
 dependencies {
     api(project(":core"))
-    implementation("io.ktor:ktor-html-builder:${Dependencies.Ktor.version}")
-    implementation("io.ktor:ktor-client-core:${Dependencies.Ktor.version}")
-    implementation("io.ktor:ktor-client-core-jvm:${Dependencies.Ktor.version}")
-    implementation("io.ktor:ktor-client-apache:${Dependencies.Ktor.version}")
+    implementation(Dependencies.Ktor.htmlBuilder)
+    implementation(Dependencies.Ktor.clientCore)
+    implementation(Dependencies.Ktor.clientCoreJvm)
+    implementation(Dependencies.Ktor.clientApache)
 
-    implementation("io.ktor:ktor-gson:${Dependencies.Ktor.version}")
-    implementation("io.ktor:ktor-client-json:${Dependencies.Ktor.version}")
-    implementation("io.ktor:ktor-client-gson:${Dependencies.Ktor.version}")
+    implementation(Dependencies.Ktor.gson)
+    implementation(Dependencies.Ktor.clientJson)
+    implementation(Dependencies.Ktor.clientGson)
 
-    implementation("io.ktor:ktor-client-logging:${Dependencies.Ktor.version}")
-    implementation("io.ktor:ktor-client-logging-jvm:${Dependencies.Ktor.version}")
+    implementation(Dependencies.Ktor.clientLogging)
+    implementation(Dependencies.Ktor.clientLoggingJvm)
 
     // XML parsing
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.11.2")
+    implementation(Dependencies.Jackson.xml)
 
-    implementation("com.google.dagger:dagger:2.28.3")
-    kapt("com.google.dagger:dagger-compiler:2.28.3")
+    implementation(Dependencies.Dagger.dagger)
+    kapt(Dependencies.Dagger.daggerCompiler)
 
-    implementation("net.lachlanmckee:gsonpath-kt:4.0.0")
+    implementation(Dependencies.GsonPath.gsonpathKt)
 }
 
 tasks.test {

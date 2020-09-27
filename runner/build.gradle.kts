@@ -6,15 +6,14 @@ plugins {
 
 dependencies {
     api(project(":core"))
-    implementation("com.linkedin.dextestparser:parser:2.2.1")
 
-    implementation("io.ktor:ktor-html-builder:${Dependencies.Ktor.version}")
+    implementation(Dependencies.androidDexParser)
+    implementation(Dependencies.yamlParser)
 
-    // Yaml parsing
-    implementation("org.yaml:snakeyaml:1.26")
+    implementation(Dependencies.Ktor.htmlBuilder)
 
-    implementation("com.google.dagger:dagger:2.28.3")
-    kapt("com.google.dagger:dagger-compiler:2.28.3")
+    implementation(Dependencies.Dagger.dagger)
+    kapt(Dependencies.Dagger.daggerCompiler)
 
     testImplementation(project(":core-test"))
 }

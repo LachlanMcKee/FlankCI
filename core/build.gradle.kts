@@ -4,19 +4,19 @@ plugins {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Dependencies.Kotlin.version}")
+    implementation(Dependencies.Kotlin.stdlib)
     api(Dependencies.Ktor.serverCore)
 
     // Json parsing
-    implementation("net.lachlanmckee:gsonpath:4.0.0")
-    implementation("net.lachlanmckee:gsonpath-kt:4.0.0")
-    kapt("net.lachlanmckee:gsonpath-compiler:4.0.0")
+    implementation(Dependencies.GsonPath.gsonpath)
+    implementation(Dependencies.GsonPath.gsonpathKt)
+    kapt(Dependencies.GsonPath.gsonpathCompiler)
 
     // XML parsing
-    api("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2")
+    api(Dependencies.Jackson.kotlinModule)
 
-    implementation("com.google.dagger:dagger:2.28.3")
-    kapt("com.google.dagger:dagger-compiler:2.28.3")
+    implementation(Dependencies.Dagger.dagger)
+    kapt(Dependencies.Dagger.daggerCompiler)
 }
 
 kapt {

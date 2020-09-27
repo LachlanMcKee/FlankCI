@@ -7,10 +7,10 @@ plugins {
 dependencies {
     api(project(":core"))
 
-    implementation("io.ktor:ktor-html-builder:${Dependencies.Ktor.version}")
+    implementation(Dependencies.Ktor.htmlBuilder)
 
-    implementation("com.google.dagger:dagger:2.28.3")
-    kapt("com.google.dagger:dagger-compiler:2.28.3")
+    implementation(Dependencies.Dagger.dagger)
+    kapt(Dependencies.Dagger.daggerCompiler)
 
     testImplementation(project(":core-test"))
 }
