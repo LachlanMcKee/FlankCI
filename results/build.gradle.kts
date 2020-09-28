@@ -27,4 +27,12 @@ tasks.jacocoTestReport {
         csv.isEnabled = false
         html.destination = file("${buildDir}/jacocoHtml")
     }
+
+    sourceDirectories.setFrom(files("${project.projectDir}/src/main/kotlin"))
+    classDirectories.setFrom(files(fileTree("$buildDir/classes/kotlin") {
+        exclude("**/*Component*.*", "**/*Module*.*")
+    }))
+    executionData.setFrom(fileTree("$buildDir") {
+        include("jacoco/test.exec")
+    })
 }
