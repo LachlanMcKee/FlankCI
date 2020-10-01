@@ -27,48 +27,48 @@ import javax.inject.Singleton
 
 @Module(includes = [CoreSerializationModule::class])
 internal abstract class CoreDataModule {
-    @Binds
+  @Binds
+  @Singleton
+  abstract fun bindConfigDataSource(impl: ConfigDataSourceImpl): ConfigDataSource
+
+  @Binds
+  @Singleton
+  abstract fun bindBitriseDataSource(impl: BitriseDataSourceImpl): BitriseDataSource
+
+  companion object {
+    @Provides
     @Singleton
-    abstract fun bindConfigDataSource(impl: ConfigDataSourceImpl): ConfigDataSource
-
-    @Binds
-    @Singleton
-    abstract fun bindBitriseDataSource(impl: BitriseDataSourceImpl): BitriseDataSource
-
-    companion object {
-        @Provides
-        @Singleton
-        fun provideBitriseService(
-            configDataSource: ConfigDataSource,
-            typeAdapterFactories: Set<@JvmSuppressWildcards TypeAdapterFactory>
-        ): BitriseService {
-            return BitriseServiceImpl(
-                client = HttpClient(Apache) {
-                    install(JsonFeature) {
-                        serializer = GsonSerializer {
-                            serializeNulls()
-                            setLenient()
-                            typeAdapterFactories.forEach { registerTypeAdapterFactory(it) }
-                        }
-                    }
-                    install(Logging) {
-                        logger = Logger.DEFAULT
-                        level = LogLevel.ALL
-                    }
-                },
-                configDataSource = configDataSource
-            )
-        }
-
-        @Provides
-        @Singleton
-        internal fun provideTestSuitesMapper(): TestSuitesMapper {
-            return TestSuitesMapperImpl(
-                xmlMapper = XmlMapper.Builder(XmlMapper())
-                    .defaultUseWrapper(false)
-                    .build()
-                    .registerKotlinModule()
-            )
-        }
+    fun provideBitriseService(
+      configDataSource: ConfigDataSource,
+      typeAdapterFactories: Set<@JvmSuppressWildcards TypeAdapterFactory>
+    ): BitriseService {
+      return BitriseServiceImpl(
+        client = HttpClient(Apache) {
+          install(JsonFeature) {
+            serializer = GsonSerializer {
+              serializeNulls()
+              setLenient()
+              typeAdapterFactories.forEach { registerTypeAdapterFactory(it) }
+            }
+          }
+          install(Logging) {
+            logger = Logger.DEFAULT
+            level = LogLevel.ALL
+          }
+        },
+        configDataSource = configDataSource
+      )
     }
+
+    @Provides
+    @Singleton
+    internal fun provideTestSuitesMapper(): TestSuitesMapper {
+      return TestSuitesMapperImpl(
+        xmlMapper = XmlMapper.Builder(XmlMapper())
+          .defaultUseWrapper(false)
+          .build()
+          .registerKotlinModule()
+      )
+    }
+  }
 }

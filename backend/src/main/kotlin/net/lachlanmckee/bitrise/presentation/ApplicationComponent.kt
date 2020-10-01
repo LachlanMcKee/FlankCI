@@ -10,13 +10,13 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = [
-        CorePresentationModule::class,
-        TestRunnerPresentationModule::class,
-        TestResultsPresentationModule::class
-    ]
+  modules = [
+    CorePresentationModule::class,
+    TestRunnerPresentationModule::class,
+    TestResultsPresentationModule::class
+  ]
 )
 interface ApplicationComponent {
-    fun routeProviders(): Set<RouteProvider>
-    fun typeAdapterFactories(): Set<@JvmSuppressWildcards TypeAdapterFactory>
+  fun routeProviders(): Set<RouteProvider>
+  fun typeAdapterFactories(): Set<@JvmSuppressWildcards TypeAdapterFactory>
 }

@@ -5,6 +5,6 @@ import gsonpath.annotation.AutoGsonAdapter
 
 @AutoGsonAdapter(fieldNamingPolicy = [FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES])
 data class BitriseTriggerResponse(
-    val status: String,
-    val buildUrl: String
+  val status: String,
+  val buildUrl: String
 )

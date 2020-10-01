@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @Module(includes = [CoreDomainModule::class])
 abstract class CorePresentationModule {
-    @Binds
-    @Singleton
-    internal abstract fun bindErrorScreenFactory(impl: ErrorScreenFactoryImpl): ErrorScreenFactory
+  @Binds
+  @Singleton
+  internal abstract fun bindErrorScreenFactory(impl: ErrorScreenFactoryImpl): ErrorScreenFactory
 }
