@@ -17,25 +17,3 @@ dependencies {
 
     testImplementation(project(":core-test"))
 }
-
-tasks.test {
-    finalizedBy(tasks.jacocoTestReport)
-}
-
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-
-    reports {
-        csv.isEnabled = false
-        html.isEnabled = true
-        xml.isEnabled = true
-    }
-
-    sourceDirectories.setFrom(files("${project.projectDir}/src/main/kotlin"))
-    classDirectories.setFrom(files(fileTree("$buildDir/classes/kotlin") {
-        exclude("**/*Component*.*", "**/*Module*.*")
-    }))
-    executionData.setFrom(fileTree("$buildDir") {
-        include("jacoco/test.exec")
-    })
-}
