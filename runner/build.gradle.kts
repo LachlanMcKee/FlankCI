@@ -26,9 +26,9 @@ tasks.jacocoTestReport {
     dependsOn(tasks.test)
 
     reports {
-        xml.isEnabled = false
         csv.isEnabled = false
-        html.destination = file("${buildDir}/jacocoHtml")
+        html.isEnabled = true
+        xml.isEnabled = true
     }
 
     sourceDirectories.setFrom(files("${project.projectDir}/src/main/kotlin"))
