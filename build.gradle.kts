@@ -10,6 +10,37 @@ buildscript {
     }
 }
 
+plugins {
+    id("com.diffplug.spotless") version "5.6.1"
+}
+
+spotless {
+    format("misc") {
+        target("*.md", ".gitignore")
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+    kotlin {
+        ktlint(Dependencies.ktlintVersion).userData(
+            mapOf(
+                "indent_size" to "2",
+                "disabled_rules" to "no-wildcard-imports"
+            )
+        )
+        target("**/*.kt")
+        trimTrailingWhitespace()
+        endWithNewline()
+        targetExclude("**/build/**")
+    }
+    kotlinGradle {
+        ktlint(Dependencies.ktlintVersion).userData(mapOf("indent_size" to "2"))
+        target("**/*.gradle.kts")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
 subprojects {
     repositories {
         mavenCentral()

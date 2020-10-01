@@ -1,5 +1,6 @@
 object Dependencies {
     const val androidDexParser = "com.linkedin.dextestparser:parser:2.2.1"
+    const val ktlintVersion = "0.39.0"
     const val logbackClassic = "ch.qos.logback:logback-classic:1.2.1"
     const val shadowVersion = "6.0.0"
     const val yamlParser = "org.yaml:snakeyaml:1.26"
