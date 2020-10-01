@@ -73,7 +73,7 @@ internal class TestResultsListScreen(
               }
               if (build.status == "error") {
                 text(" | ")
-                a(href = "/test-rerun/${build.buildSlug}") {
+                a(href = "/test-rerun?build-slug=${build.buildSlug}") {
                   target = "_blank"
                   text("Rerun Failures")
                 }
