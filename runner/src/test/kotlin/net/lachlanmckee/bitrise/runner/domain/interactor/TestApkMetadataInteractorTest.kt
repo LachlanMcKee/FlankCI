@@ -16,85 +16,85 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 class TestApkMetadataInteractorTest {
-    private val bitriseDataSource: BitriseDataSource = mockk()
-    private val apkDataSource: ApkDataSource = mockk()
-    private val testApkMetadataMapper: TestApkMetadataMapper = mockk()
-    private val interactor: TestApkMetadataInteractor =
-        TestApkMetadataInteractor(bitriseDataSource, apkDataSource, testApkMetadataMapper)
+  private val bitriseDataSource: BitriseDataSource = mockk()
+  private val apkDataSource: ApkDataSource = mockk()
+  private val testApkMetadataMapper: TestApkMetadataMapper = mockk()
+  private val interactor: TestApkMetadataInteractor =
+    TestApkMetadataInteractor(bitriseDataSource, apkDataSource, testApkMetadataMapper)
 
-    private val applicationCall: ApplicationCall = mockk()
+  private val applicationCall: ApplicationCall = mockk()
 
-    @AfterEach
-    fun verifyNoMoreInteractions() {
-        confirmVerified(bitriseDataSource, testApkMetadataMapper, applicationCall)
+  @AfterEach
+  fun verifyNoMoreInteractions() {
+    confirmVerified(bitriseDataSource, testApkMetadataMapper, applicationCall)
+  }
+
+  @Test
+  fun givenArtifactAndTestApkMethodsSucceed_whenExecute_thenRespond() = runBlocking {
+    coEvery { bitriseDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
+      BitriseArtifactResponse("apk-url")
+    )
+    coEvery { apkDataSource.getTestApkTestMethods("apk-url") } returns Result.success(emptyList())
+
+    val testApkMetadata = mockk<TestApkMetadata>()
+    coEvery { testApkMetadataMapper.mapTestApkMetadata(emptyList()) } returns testApkMetadata
+
+    interactor.execute(applicationCall, "buildSlug", "artifactSlug")
+
+    coVerifySequence {
+      bitriseDataSource.getArtifact("buildSlug", "artifactSlug")
+      apkDataSource.getTestApkTestMethods("apk-url")
+      testApkMetadataMapper.mapTestApkMetadata(emptyList())
+      applicationCall.respond(testApkMetadata)
     }
+  }
 
-    @Test
-    fun givenArtifactAndTestApkMethodsSucceed_whenExecute_thenRespond() = runBlocking {
-        coEvery { bitriseDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
-            BitriseArtifactResponse("apk-url")
-        )
-        coEvery { apkDataSource.getTestApkTestMethods("apk-url") } returns Result.success(emptyList())
+  @Test
+  fun givenArtifactFails_whenExecute_thenDoNotRespond() = runBlocking {
+    coEvery {
+      bitriseDataSource.getArtifact(
+        "buildSlug",
+        "artifactSlug"
+      )
+    } returns Result.failure(RuntimeException())
 
-        val testApkMetadata = mockk<TestApkMetadata>()
-        coEvery { testApkMetadataMapper.mapTestApkMetadata(emptyList()) } returns testApkMetadata
+    interactor.execute(applicationCall, "buildSlug", "artifactSlug")
 
-        interactor.execute(applicationCall, "buildSlug", "artifactSlug")
-
-        coVerifySequence {
-            bitriseDataSource.getArtifact("buildSlug", "artifactSlug")
-            apkDataSource.getTestApkTestMethods("apk-url")
-            testApkMetadataMapper.mapTestApkMetadata(emptyList())
-            applicationCall.respond(testApkMetadata)
-        }
+    coVerifySequence {
+      bitriseDataSource.getArtifact("buildSlug", "artifactSlug")
     }
+  }
 
-    @Test
-    fun givenArtifactFails_whenExecute_thenDoNotRespond() = runBlocking {
-        coEvery {
-            bitriseDataSource.getArtifact(
-                "buildSlug",
-                "artifactSlug"
-            )
-        } returns Result.failure(RuntimeException())
+  @Test
+  fun givenArtifactSucceedsAndTestApkMethodsFails_whenExecute_thenDoNotRespond() = runBlocking {
+    coEvery { bitriseDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
+      BitriseArtifactResponse("apk-url")
+    )
+    coEvery { apkDataSource.getTestApkTestMethods("apk-url") } returns Result.failure(RuntimeException())
 
-        interactor.execute(applicationCall, "buildSlug", "artifactSlug")
+    interactor.execute(applicationCall, "buildSlug", "artifactSlug")
 
-        coVerifySequence {
-            bitriseDataSource.getArtifact("buildSlug", "artifactSlug")
-        }
+    coVerifySequence {
+      bitriseDataSource.getArtifact("buildSlug", "artifactSlug")
+      apkDataSource.getTestApkTestMethods("apk-url")
     }
+  }
 
-    @Test
-    fun givenArtifactSucceedsAndTestApkMethodsFails_whenExecute_thenDoNotRespond() = runBlocking {
-        coEvery { bitriseDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
-            BitriseArtifactResponse("apk-url")
-        )
-        coEvery { apkDataSource.getTestApkTestMethods("apk-url") } returns Result.failure(RuntimeException())
+  @Test
+  fun givenArtifactAndTestApkMethodsSucceedAndMappingFails_whenExecute_thenDoNotRespond() = runBlocking {
+    coEvery { bitriseDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
+      BitriseArtifactResponse("apk-url")
+    )
+    coEvery { apkDataSource.getTestApkTestMethods("apk-url") } returns Result.success(emptyList())
 
-        interactor.execute(applicationCall, "buildSlug", "artifactSlug")
+    coEvery { testApkMetadataMapper.mapTestApkMetadata(emptyList()) } throws RuntimeException()
 
-        coVerifySequence {
-            bitriseDataSource.getArtifact("buildSlug", "artifactSlug")
-            apkDataSource.getTestApkTestMethods("apk-url")
-        }
+    interactor.execute(applicationCall, "buildSlug", "artifactSlug")
+
+    coVerifySequence {
+      bitriseDataSource.getArtifact("buildSlug", "artifactSlug")
+      apkDataSource.getTestApkTestMethods("apk-url")
+      testApkMetadataMapper.mapTestApkMetadata(emptyList())
     }
-
-    @Test
-    fun givenArtifactAndTestApkMethodsSucceedAndMappingFails_whenExecute_thenDoNotRespond() = runBlocking {
-        coEvery { bitriseDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
-            BitriseArtifactResponse("apk-url")
-        )
-        coEvery { apkDataSource.getTestApkTestMethods("apk-url") } returns Result.success(emptyList())
-
-        coEvery { testApkMetadataMapper.mapTestApkMetadata(emptyList()) } throws RuntimeException()
-
-        interactor.execute(applicationCall, "buildSlug", "artifactSlug")
-
-        coVerifySequence {
-            bitriseDataSource.getArtifact("buildSlug", "artifactSlug")
-            apkDataSource.getTestApkTestMethods("apk-url")
-            testApkMetadataMapper.mapTestApkMetadata(emptyList())
-        }
-    }
+  }
 }

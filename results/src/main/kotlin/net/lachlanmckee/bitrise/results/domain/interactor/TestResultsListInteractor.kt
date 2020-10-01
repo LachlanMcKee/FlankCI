@@ -7,13 +7,13 @@ import net.lachlanmckee.bitrise.results.domain.mapper.TestResultsListMapper
 import javax.inject.Inject
 
 internal class TestResultsListInteractor @Inject constructor(
-    private val bitriseDataSource: BitriseDataSource,
-    private val configDataSource: ConfigDataSource,
-    private val testResultsListMapper: TestResultsListMapper
+  private val bitriseDataSource: BitriseDataSource,
+  private val configDataSource: ConfigDataSource,
+  private val testResultsListMapper: TestResultsListMapper
 ) {
-    suspend fun execute(): Result<List<TestResultModel>> {
-        return bitriseDataSource
-            .getBuilds(configDataSource.getConfig().bitrise.testTriggerWorkflow)
-            .mapCatching(testResultsListMapper::mapToTestResultsList)
-    }
+  suspend fun execute(): Result<List<TestResultModel>> {
+    return bitriseDataSource
+      .getBuilds(configDataSource.getConfig().bitrise.testTriggerWorkflow)
+      .mapCatching(testResultsListMapper::mapToTestResultsList)
+  }
 }

@@ -8,15 +8,15 @@ import net.lachlanmckee.bitrise.core.domain.mapper.BuildsMapper
 import javax.inject.Inject
 
 internal class TriggerBranchesInteractor @Inject constructor(
-    private val bitriseDataSource: BitriseDataSource,
-    private val configDataSource: ConfigDataSource,
-    private val buildsMapper: BuildsMapper
+  private val bitriseDataSource: BitriseDataSource,
+  private val configDataSource: ConfigDataSource,
+  private val buildsMapper: BuildsMapper
 ) {
-    suspend fun execute(call: ApplicationCall) {
-        bitriseDataSource
-            .getBuilds(configDataSource.getConfig().bitrise.testApkSourceWorkflow)
-            .mapCatching(buildsMapper::mapBuilds)
-            .onSuccess { call.respond(it) }
-            .onFailure { println("Failure: $it") }
-    }
+  suspend fun execute(call: ApplicationCall) {
+    bitriseDataSource
+      .getBuilds(configDataSource.getConfig().bitrise.testApkSourceWorkflow)
+      .mapCatching(buildsMapper::mapBuilds)
+      .onSuccess { call.respond(it) }
+      .onFailure { println("Failure: $it") }
+  }
 }

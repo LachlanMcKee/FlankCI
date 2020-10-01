@@ -5,23 +5,23 @@ import net.lachlanmckee.bitrise.runner.domain.entity.GeneratedFlankConfig
 import javax.inject.Inject
 
 internal class GeneratedFlankConfigValidator @Inject constructor(
-    private val configDataSource: ConfigDataSource
+  private val configDataSource: ConfigDataSource
 ) {
-    suspend fun getValidationErrorMessage(generatedConfig: GeneratedFlankConfig): String? {
-        return if (!configDataSource.getConfig().testData.allowTestingWithoutFilters) {
-            when {
-                ((generatedConfig.contentAsMap["gcloud"] as? Map<String, Any>?)?.get("test-targets") as? List<String>?).isNullOrEmpty() -> {
-                    "You cannot execute the tests without specifying at least one annotation/package/class filter"
-                }
-                ((generatedConfig.contentAsMap["gcloud"] as? Map<String, Any>?)?.get("device") as? List<String>?).isNullOrEmpty() -> {
-                    "You cannot execute the tests without specifying at least one device"
-                }
-                else -> {
-                    null
-                }
-            }
-        } else {
-            null
+  suspend fun getValidationErrorMessage(generatedConfig: GeneratedFlankConfig): String? {
+    return if (!configDataSource.getConfig().testData.allowTestingWithoutFilters) {
+      when {
+        ((generatedConfig.contentAsMap["gcloud"] as? Map<String, Any>?)?.get("test-targets") as? List<String>?).isNullOrEmpty() -> {
+          "You cannot execute the tests without specifying at least one annotation/package/class filter"
         }
+        ((generatedConfig.contentAsMap["gcloud"] as? Map<String, Any>?)?.get("device") as? List<String>?).isNullOrEmpty() -> {
+          "You cannot execute the tests without specifying at least one device"
+        }
+        else -> {
+          null
+        }
+      }
+    } else {
+      null
     }
+  }
 }

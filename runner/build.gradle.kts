@@ -1,19 +1,19 @@
 plugins {
-    kotlin("jvm")
-    kotlin("kapt")
-    id("testing")
+  kotlin("jvm")
+  kotlin("kapt")
+  id("testing")
 }
 
 dependencies {
-    api(project(":core"))
+  api(project(":core"))
 
-    implementation(Dependencies.androidDexParser)
-    implementation(Dependencies.yamlParser)
+  implementation(Dependencies.androidDexParser)
+  implementation(Dependencies.yamlParser)
 
-    implementation(Dependencies.Ktor.htmlBuilder)
+  implementation(Dependencies.Ktor.htmlBuilder)
 
-    implementation(Dependencies.Dagger.dagger)
-    kapt(Dependencies.Dagger.daggerCompiler)
+  implementation(Dependencies.Dagger.dagger)
+  kapt(Dependencies.Dagger.daggerCompiler)
 
-    testImplementation(project(":core-test"))
+  testImplementation(project(":core-test"))
 }

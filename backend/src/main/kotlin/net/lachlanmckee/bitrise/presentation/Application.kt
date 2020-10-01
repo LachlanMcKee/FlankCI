@@ -18,37 +18,37 @@ import java.text.DateFormat
 @Suppress("unused")
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
-    val applicationComponent: ApplicationComponent = DaggerApplicationComponent.create()
+  val applicationComponent: ApplicationComponent = DaggerApplicationComponent.create()
 
-    install(DefaultHeaders)
-    install(Compression)
-    install(CallLogging)
-    install(ContentNegotiation) {
-        gson {
-            applicationComponent
-                .typeAdapterFactories()
-                .forEach {
-                    registerTypeAdapterFactory(it)
-                }
-            setDateFormat(DateFormat.LONG)
-            setPrettyPrinting()
-            setLenient()
+  install(DefaultHeaders)
+  install(Compression)
+  install(CallLogging)
+  install(ContentNegotiation) {
+    gson {
+      applicationComponent
+        .typeAdapterFactories()
+        .forEach {
+          registerTypeAdapterFactory(it)
         }
+      setDateFormat(DateFormat.LONG)
+      setPrettyPrinting()
+      setLenient()
+    }
+  }
+
+  routing {
+    get("/") {
+      HomeScreen().respondHtml(call)
     }
 
-    routing {
-        get("/") {
-            HomeScreen().respondHtml(call)
-        }
+    applicationComponent
+      .routeProviders()
+      .forEach {
+        it.provideRoute().invoke(this)
+      }
 
-        applicationComponent
-            .routeProviders()
-            .forEach {
-                it.provideRoute().invoke(this)
-            }
-
-        static("/static") {
-            resource("styles.css")
-        }
+    static("/static") {
+      resource("styles.css")
     }
+  }
 }

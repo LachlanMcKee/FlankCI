@@ -1,26 +1,26 @@
 plugins {
-    kotlin("jvm")
-    kotlin("kapt")
+  kotlin("jvm")
+  kotlin("kapt")
 }
 
 dependencies {
-    implementation(Dependencies.Kotlin.stdlib)
-    api(Dependencies.Ktor.serverCore)
+  implementation(Dependencies.Kotlin.stdlib)
+  api(Dependencies.Ktor.serverCore)
 
-    // Json parsing
-    implementation(Dependencies.GsonPath.gsonpath)
-    implementation(Dependencies.GsonPath.gsonpathKt)
-    kapt(Dependencies.GsonPath.gsonpathCompiler)
+  // Json parsing
+  implementation(Dependencies.GsonPath.gsonpath)
+  implementation(Dependencies.GsonPath.gsonpathKt)
+  kapt(Dependencies.GsonPath.gsonpathCompiler)
 
-    // XML parsing
-    api(Dependencies.Jackson.kotlinModule)
+  // XML parsing
+  api(Dependencies.Jackson.kotlinModule)
 
-    implementation(Dependencies.Dagger.dagger)
-    kapt(Dependencies.Dagger.daggerCompiler)
+  implementation(Dependencies.Dagger.dagger)
+  kapt(Dependencies.Dagger.daggerCompiler)
 }
 
 kapt {
-    arguments {
-        arg("gsonpath.incremental", "true")
-    }
+  arguments {
+    arg("gsonpath.incremental", "true")
+  }
 }

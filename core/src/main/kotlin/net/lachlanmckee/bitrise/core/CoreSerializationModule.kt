@@ -10,12 +10,12 @@ import net.lachlanmckee.bitrise.core.data.serialization.BitriseGsonTypeFactory
 
 @Module
 object CoreSerializationModule {
-    @Provides
-    @ElementsIntoSet
-    internal fun provideGsonTypeAdapterFactories(): Set<@JvmSuppressWildcards TypeAdapterFactory> {
-        return setOf(
-            GsonPathTypeAdapterFactoryKt(),
-            GsonPath.createTypeAdapterFactory(BitriseGsonTypeFactory::class.java)
-        )
-    }
+  @Provides
+  @ElementsIntoSet
+  internal fun provideGsonTypeAdapterFactories(): Set<@JvmSuppressWildcards TypeAdapterFactory> {
+    return setOf(
+      GsonPathTypeAdapterFactoryKt(),
+      GsonPath.createTypeAdapterFactory(BitriseGsonTypeFactory::class.java)
+    )
+  }
 }
