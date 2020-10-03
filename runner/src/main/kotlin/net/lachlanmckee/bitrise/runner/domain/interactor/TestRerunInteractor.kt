@@ -28,9 +28,7 @@ class TestRerunInteractor @Inject constructor(
     return testSuiteList
       .asSequence()
       .flatMap { test ->
-        test.testcase
-          ?.let(::mapFailedTestClassNames)
-          ?: emptySequence()
+        mapFailedTestClassNames(test.testcase ?: emptyList())
       }
       .distinct()
       .sorted()

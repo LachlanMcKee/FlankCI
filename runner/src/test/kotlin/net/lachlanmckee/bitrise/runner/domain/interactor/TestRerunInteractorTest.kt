@@ -90,7 +90,16 @@ internal class TestRerunInteractorTest {
   @Test
   fun givenTestSuiteWithNullTestsCase_whenExecute_thenReturnNoTests() = runBlocking {
     testWithContentSuccess(
-      testSuites = listOf(emptySuite),
+      testSuites = listOf(
+        TestSuite(
+          name = "suite",
+          tests = 0,
+          failures = 1,
+          time = "time",
+          testcase = null
+        ),
+        createTestSuite()
+      ),
       expectedTests = emptyList()
     )
   }
@@ -146,16 +155,6 @@ internal class TestRerunInteractorTest {
       time = "time",
       webLink = null,
       failure = "Failure"
-    )
-  }
-
-  private companion object {
-    private val emptySuite = TestSuite(
-      name = "suite",
-      tests = 0,
-      failures = 1,
-      time = "time",
-      testcase = null
     )
   }
 }
