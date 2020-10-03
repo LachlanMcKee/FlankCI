@@ -38,5 +38,9 @@ object Dependencies {
     const val clientGson = "io.ktor:ktor-client-gson:$version"
     const val clientLogging = "io.ktor:ktor-client-logging:$version"
     const val clientLoggingJvm = "io.ktor:ktor-client-logging-jvm:$version"
+
+    const val serverTestHost = "io.ktor:ktor-server-test-host:$version"
+    const val clientMock = "io.ktor:ktor-client-mock:$version"
+    const val clientMockJvm = "io.ktor:ktor-client-mock-jvm:$version"
   }
 }
