@@ -7,7 +7,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.apache.Apache
 import io.ktor.client.features.json.GsonSerializer
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.logging.DEFAULT
@@ -25,7 +24,7 @@ import net.lachlanmckee.bitrise.core.data.mapper.TestSuitesMapper
 import net.lachlanmckee.bitrise.core.data.mapper.TestSuitesMapperImpl
 import javax.inject.Singleton
 
-@Module(includes = [CoreSerializationModule::class])
+@Module(includes = [CoreSerializationModule::class, CoreHttpModule::class])
 internal abstract class CoreDataModule {
   @Binds
   @Singleton
@@ -40,10 +39,11 @@ internal abstract class CoreDataModule {
     @Singleton
     fun provideBitriseService(
       configDataSource: ConfigDataSource,
+      httpClientFactory: HttpClientFactory,
       typeAdapterFactories: Set<@JvmSuppressWildcards TypeAdapterFactory>
     ): BitriseService {
       return BitriseServiceImpl(
-        client = HttpClient(Apache) {
+        client = HttpClient(httpClientFactory.engineFactory) {
           install(JsonFeature) {
             serializer = GsonSerializer {
               serializeNulls()
@@ -55,6 +55,7 @@ internal abstract class CoreDataModule {
             logger = Logger.DEFAULT
             level = LogLevel.ALL
           }
+          httpClientFactory.handleConfig(this)
         },
         configDataSource = configDataSource
       )

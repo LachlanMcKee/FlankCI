@@ -12,6 +12,7 @@ plugins {
   kotlin("jvm")
   kotlin("kapt")
   id("application")
+  id("testing")
   id("com.github.johnrengelman.shadow") version Dependencies.shadowVersion
 }
 
@@ -45,6 +46,10 @@ dependencies {
 
   implementation(Dependencies.Dagger.dagger)
   kapt(Dependencies.Dagger.daggerCompiler)
+
+  testImplementation(Dependencies.Ktor.serverTestHost)
+  testImplementation(Dependencies.Ktor.clientMock)
+  testImplementation(Dependencies.Ktor.clientMockJvm)
 }
 
 tasks.shadowJar {
