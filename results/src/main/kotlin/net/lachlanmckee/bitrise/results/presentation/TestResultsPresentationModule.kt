@@ -15,38 +15,38 @@ import javax.inject.Singleton
 
 @Module(includes = [TestResultsDomainModule::class])
 object TestResultsPresentationModule {
-    @Provides
-    @Singleton
-    @IntoSet
-    internal fun provideTestResultsListRouteProvider(
-        testResultsListInteractor: TestResultsListInteractor,
-        errorScreenFactory: ErrorScreenFactory
-    ): RouteProvider = object : RouteProvider {
-        override fun provideRoute(): Routing.() -> Unit = {
-            get("/test-results") {
-                TestResultsListScreen(
-                    testResultsListInteractor,
-                    errorScreenFactory
-                ).respondHtml(call)
-            }
-        }
+  @Provides
+  @Singleton
+  @IntoSet
+  internal fun provideTestResultsListRouteProvider(
+    testResultsListInteractor: TestResultsListInteractor,
+    errorScreenFactory: ErrorScreenFactory
+  ): RouteProvider = object : RouteProvider {
+    override fun provideRoute(): Routing.() -> Unit = {
+      get("/test-results") {
+        TestResultsListScreen(
+          testResultsListInteractor,
+          errorScreenFactory
+        ).respondHtml(call)
+      }
     }
+  }
 
-    @Provides
-    @Singleton
-    @IntoSet
-    internal fun provideTestResultRouteProvider(
-        testResultInteractor: TestResultInteractor,
-        errorScreenFactory: ErrorScreenFactory
-    ): RouteProvider = object : RouteProvider {
-        override fun provideRoute(): Routing.() -> Unit = {
-            get("/test-results/{build-slug}") {
-                val buildSlug: String = call.parameters["build-slug"]!!
-                TestResultScreen(
-                    testResultInteractor,
-                    errorScreenFactory
-                ).respondHtml(call, buildSlug)
-            }
-        }
+  @Provides
+  @Singleton
+  @IntoSet
+  internal fun provideTestResultRouteProvider(
+    testResultInteractor: TestResultInteractor,
+    errorScreenFactory: ErrorScreenFactory
+  ): RouteProvider = object : RouteProvider {
+    override fun provideRoute(): Routing.() -> Unit = {
+      get("/test-results/{build-slug}") {
+        val buildSlug: String = call.parameters["build-slug"]!!
+        TestResultScreen(
+          testResultInteractor,
+          errorScreenFactory
+        ).respondHtml(call, buildSlug)
+      }
     }
+  }
 }

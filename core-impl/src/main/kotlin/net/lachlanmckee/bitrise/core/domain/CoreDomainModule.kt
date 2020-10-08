@@ -13,15 +13,15 @@ import javax.inject.Singleton
 
 @Module(includes = [CoreDataModule::class])
 internal abstract class CoreDomainModule {
-    @Binds
-    @Singleton
-    abstract fun bindMultipartCallFactory(impl: MultipartCallFactoryImpl): MultipartCallFactory
+  @Binds
+  @Singleton
+  abstract fun bindMultipartCallFactory(impl: MultipartCallFactoryImpl): MultipartCallFactory
 
-    @Binds
-    @Singleton
-    abstract fun bindFormDataCollector(impl: FormDataCollectorImpl): FormDataCollector
+  @Binds
+  @Singleton
+  abstract fun bindFormDataCollector(impl: FormDataCollectorImpl): FormDataCollector
 
-    @Binds
-    @Singleton
-    abstract fun bindBuildsMapper(impl: BuildsMapperImpl): BuildsMapper
+  @Binds
+  @Singleton
+  abstract fun bindBuildsMapper(impl: BuildsMapperImpl): BuildsMapper
 }

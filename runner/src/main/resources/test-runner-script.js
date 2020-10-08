@@ -16,6 +16,11 @@ async function load() {
         branchSelectDropDown.add(option);
     }
 
+    let defaultBranch = document.getElementById('defaultBranch');
+    if (defaultBranch != null) {
+        branchSelectDropDown.value = defaultBranch.value;
+    }
+
     onBranchChanged(branchData);
     branchSelectDropDown.addEventListener("change", function () {
         onBranchChanged(branchData);
@@ -69,9 +74,12 @@ async function onBuildChanged(buildsData) {
     console.log(androidTestArtifactData);
     console.log("Test apk slug: " + androidTestArtifactSlug);
 
-    document.getElementById('load-test-data-button').addEventListener("click", function () {
-        onTestDataRequested(buildSlug, androidTestArtifactSlug);
-    });
+    let loadDataButton = document.getElementById('load-test-data-button');
+    if (loadDataButton != null) {
+        loadDataButton.addEventListener("click", function () {
+            onTestDataRequested(buildSlug, androidTestArtifactSlug);
+        });
+    }
 }
 
 async function onTestDataRequested(buildSlug, artifactSlug) {

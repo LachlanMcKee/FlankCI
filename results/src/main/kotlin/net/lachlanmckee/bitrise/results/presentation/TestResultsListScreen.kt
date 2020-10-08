@@ -8,15 +8,15 @@ import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
 import net.lachlanmckee.bitrise.results.domain.interactor.TestResultsListInteractor
 
 internal class TestResultsListScreen(
-        private val testResultsListInteractor: TestResultsListInteractor,
-        private val errorScreenFactory: ErrorScreenFactory
+  private val testResultsListInteractor: TestResultsListInteractor,
+  private val errorScreenFactory: ErrorScreenFactory
 ) {
-    suspend fun respondHtml(call: ApplicationCall) {
-        testResultsListInteractor
-                .execute()
-                .onSuccess { render(call, it) }
-                .onFailure { errorScreenFactory.respondHtml(call, "Failed to parse content", it.message!!) }
-    }
+  suspend fun respondHtml(call: ApplicationCall) {
+    testResultsListInteractor
+      .execute()
+      .onSuccess { render(call, it) }
+      .onFailure { errorScreenFactory.respondHtml(call, "Failed to parse content", it.message!!) }
+  }
 
     private suspend fun render(
             call: ApplicationCall,
@@ -58,19 +58,30 @@ internal class TestResultsListScreen(
                                     br()
                                 }
 
-                                text(build.triggeredAt)
+                            text(build.triggeredAt)
 
                                 if (build.finishedAt != null) {
                                     text(" - ${build.finishedAt}")
                                 }
                             }
-                            if (build.status != "in-progress") {
+                            val inProgress = build.status != "in-progress"
+                            val error = build.status == "error"
+                            if (inProgress || error) {
                                 div {
-                                    classes = setOf("mdl-card__actions mdl-card--border")
-                                    a(href = "/test-results/${build.buildSlug}") {
-                                        classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "gray-button")
-                                        target = "_blank"
-                                        text("Details")
+                                    if (inProgress) {
+                                        classes = setOf("mdl-card__actions mdl-card--border")
+                                        a(href = "/test-results/${build.buildSlug}") {
+                                            classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "gray-button")
+                                            target = "_blank"
+                                            text("Details")
+                                        }
+                                    }
+                                    if (error) {
+                                        text(" | ")
+                                        a(href = "/test-rerun?build-slug=${build.buildSlug}") {
+                                            target = "_blank"
+                                            text("Rerun Failures")
+                                        }
                                     }
                                 }
                             }

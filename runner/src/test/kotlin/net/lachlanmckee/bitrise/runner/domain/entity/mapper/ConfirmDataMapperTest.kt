@@ -10,52 +10,52 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class ConfirmDataMapperTest {
-    @Test
-    fun givenNoBranchOrYaml_whenMap_thenExpectFailureResult() = runBlocking {
-        val confirmModel = testMapToConfirmModel(emptyList())
+  @Test
+  fun givenNoBranchOrYaml_whenMap_thenExpectFailureResult() = runBlocking {
+    val confirmModel = testMapToConfirmModel(emptyList())
 
-        assertTrue(confirmModel.isFailure)
-        assertEquals("Branch must exist", confirmModel.exceptionOrNull()!!.message)
-    }
+    assertTrue(confirmModel.isFailure)
+    assertEquals("Branch must exist", confirmModel.exceptionOrNull()!!.message)
+  }
 
-    @Test
-    fun givenNoBuildSlug_whenMap_thenExpectFailureResult() = runBlocking {
-        val confirmModel = testMapToConfirmModel(
-            listOf(
-                "branch" to "dev"
-            )
-        )
+  @Test
+  fun givenNoBuildSlug_whenMap_thenExpectFailureResult() = runBlocking {
+    val confirmModel = testMapToConfirmModel(
+      listOf(
+        "branch" to "dev"
+      )
+    )
 
-        assertTrue(confirmModel.isFailure)
-        assertEquals("Build slug must exist", confirmModel.exceptionOrNull()!!.message)
-    }
+    assertTrue(confirmModel.isFailure)
+    assertEquals("Build slug must exist", confirmModel.exceptionOrNull()!!.message)
+  }
 
-    @Test
-    fun givenBranchAndJobNameAndYaml_whenMap_thenAssertConfirmModel() = runBlocking {
-        val confirmModel = testMapToConfirmModel(
-            listOf(
-                "branch" to "dev",
-                "build-slug" to "slug",
-                "commit-hash" to "hash",
-                "job-name" to "job",
-                "yaml-base64" to "config"
-            )
-        )
+  @Test
+  fun givenBranchAndJobNameAndYaml_whenMap_thenAssertConfirmModel() = runBlocking {
+    val confirmModel = testMapToConfirmModel(
+      listOf(
+        "branch" to "dev",
+        "build-slug" to "slug",
+        "commit-hash" to "hash",
+        "job-name" to "job",
+        "yaml-base64" to "config"
+      )
+    )
 
-        assertEquals(
-            ConfirmModel(
-                branch = "dev",
-                buildSlug = "slug",
-                commitHash = "hash",
-                jobName = "job",
-                flankConfigBase64 = "config"
-            ),
-            confirmModel.getOrThrow()
-        )
-    }
+    assertEquals(
+      ConfirmModel(
+        branch = "dev",
+        buildSlug = "slug",
+        commitHash = "hash",
+        jobName = "job",
+        flankConfigBase64 = "config"
+      ),
+      confirmModel.getOrThrow()
+    )
+  }
 
-    private suspend fun testMapToConfirmModel(dataToEmit: List<Pair<String, String>>): Result<ConfirmModel> {
-        return ConfirmDataMapper(ImmediateFormDataCollector(dataToEmit))
-            .mapToConfirmModel(mockk())
-    }
+  private suspend fun testMapToConfirmModel(dataToEmit: List<Pair<String, String>>): Result<ConfirmModel> {
+    return ConfirmDataMapper(ImmediateFormDataCollector(dataToEmit))
+      .mapToConfirmModel(mockk())
+  }
 }

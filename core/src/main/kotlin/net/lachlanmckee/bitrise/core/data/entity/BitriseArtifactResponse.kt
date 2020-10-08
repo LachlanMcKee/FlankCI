@@ -6,6 +6,6 @@ import gsonpath.annotation.AutoGsonAdapter
 
 @AutoGsonAdapter(fieldNamingPolicy = [FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES])
 data class BitriseArtifactResponse(
-    @SerializedName("data.expiring_download_url")
-    val expiringDownloadUrl: String
+  @SerializedName("data.expiring_download_url")
+  val expiringDownloadUrl: String
 )

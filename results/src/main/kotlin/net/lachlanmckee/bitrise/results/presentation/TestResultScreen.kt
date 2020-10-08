@@ -1,22 +1,22 @@
 package net.lachlanmckee.bitrise.results.presentation
 
-import io.ktor.application.ApplicationCall
-import io.ktor.html.respondHtml
+import io.ktor.application.*
+import io.ktor.html.*
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel
 import net.lachlanmckee.bitrise.results.domain.interactor.TestResultInteractor
 
 internal class TestResultScreen(
-    private val testResultInteractor: TestResultInteractor,
-    private val errorScreenFactory: ErrorScreenFactory
+  private val testResultInteractor: TestResultInteractor,
+  private val errorScreenFactory: ErrorScreenFactory
 ) {
-    suspend fun respondHtml(call: ApplicationCall, buildSlug: String) {
-        testResultInteractor
-            .execute(buildSlug)
-            .onSuccess { render(call, it) }
-            .onFailure { errorScreenFactory.respondHtml(call, "Failed to parse content", it.message!!) }
-    }
+  suspend fun respondHtml(call: ApplicationCall, buildSlug: String) {
+    testResultInteractor
+      .execute(buildSlug)
+      .onSuccess { render(call, it) }
+      .onFailure { errorScreenFactory.respondHtml(call, "Failed to parse content", it.message!!) }
+  }
 
     private suspend fun render(
         call: ApplicationCall,
@@ -33,6 +33,26 @@ internal class TestResultScreen(
             }
             body {
                 h1 { +"Bitrise Test Result" }
+                val totalFailures = resultDetailModel.testSuites
+                        .sumBy { it.failures }
+
+                if (totalFailures > 0) {
+                    div {
+                        span {
+                            classes = setOf("heading")
+                            text("Total Failures")
+                        }
+                        span {
+                            classes = setOf("content")
+                            text("$totalFailures (")
+                            a(href = "/test-rerun?build-slug=${resultDetailModel.buildSlug}") {
+                                target = "_blank"
+                                text("Rerun Failures")
+                            }
+                            text(")")
+                        }
+                    }
+                }
                 div {
                     span {
                         classes = setOf("content")
@@ -51,7 +71,7 @@ internal class TestResultScreen(
                         }
                     }
                 }
-                resultDetailModel.testSuites.testsuite.forEach { testSuite ->
+                resultDetailModel.testSuites.forEach { testSuite ->
                     div {
                         p {
                             classes = setOf("heading")
@@ -78,7 +98,7 @@ internal class TestResultScreen(
                             }
                         }
                         tbody {
-                            testSuite.testcase.forEach { testCase ->
+                            testSuite.testcase?.forEach { testCase ->
                                 tr {
                                     classes = when {
                                         testCase.failure != null -> {
@@ -101,9 +121,11 @@ internal class TestResultScreen(
                                     td {
                                         text("${testCase.classname}#${testCase.name}")
                                         br()
-                                        a(href = testCase.webLink) {
-                                            target = "_blank"
-                                            text("Open in Firebase")
+                                        if (testCase.webLink != null) {
+                                            a(href = testCase.webLink) {
+                                                target = "_blank"
+                                                text("Open in Firebase")
+                                            }
                                         }
                                     }
                                 }

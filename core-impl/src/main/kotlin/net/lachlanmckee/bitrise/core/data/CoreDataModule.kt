@@ -1,11 +1,12 @@
 package net.lachlanmckee.bitrise.core.data
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.google.gson.TypeAdapterFactory
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.apache.Apache
 import io.ktor.client.features.json.GsonSerializer
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.logging.DEFAULT
@@ -19,41 +20,56 @@ import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSourceImpl
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseService
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseServiceImpl
+import net.lachlanmckee.bitrise.core.data.mapper.TestSuitesMapper
+import net.lachlanmckee.bitrise.core.data.mapper.TestSuitesMapperImpl
 import javax.inject.Singleton
 
-@Module(includes = [CoreSerializationModule::class])
+@Module(includes = [CoreSerializationModule::class, CoreHttpModule::class])
 internal abstract class CoreDataModule {
-    @Binds
-    @Singleton
-    abstract fun bindConfigDataSource(impl: ConfigDataSourceImpl): ConfigDataSource
+  @Binds
+  @Singleton
+  abstract fun bindConfigDataSource(impl: ConfigDataSourceImpl): ConfigDataSource
 
-    @Binds
-    @Singleton
-    abstract fun bindBitriseDataSource(impl: BitriseDataSourceImpl): BitriseDataSource
+  @Binds
+  @Singleton
+  abstract fun bindBitriseDataSource(impl: BitriseDataSourceImpl): BitriseDataSource
 
-    companion object {
-        @Provides
-        @Singleton
-        fun provideBitriseService(
-            configDataSource: ConfigDataSource,
-            typeAdapterFactories: Set<@JvmSuppressWildcards TypeAdapterFactory>
-        ): BitriseService {
-            return BitriseServiceImpl(
-                client = HttpClient(Apache) {
-                    install(JsonFeature) {
-                        serializer = GsonSerializer {
-                            serializeNulls()
-                            setLenient()
-                            typeAdapterFactories.forEach { registerTypeAdapterFactory(it) }
-                        }
-                    }
-                    install(Logging) {
-                        logger = Logger.DEFAULT
-                        level = LogLevel.ALL
-                    }
-                },
-                configDataSource = configDataSource
-            )
-        }
+  companion object {
+    @Provides
+    @Singleton
+    fun provideBitriseService(
+      configDataSource: ConfigDataSource,
+      httpClientFactory: HttpClientFactory,
+      typeAdapterFactories: Set<@JvmSuppressWildcards TypeAdapterFactory>
+    ): BitriseService {
+      return BitriseServiceImpl(
+        client = HttpClient(httpClientFactory.engineFactory) {
+          install(JsonFeature) {
+            serializer = GsonSerializer {
+              serializeNulls()
+              setLenient()
+              typeAdapterFactories.forEach { registerTypeAdapterFactory(it) }
+            }
+          }
+          install(Logging) {
+            logger = Logger.DEFAULT
+            level = LogLevel.ALL
+          }
+          httpClientFactory.handleConfig(this)
+        },
+        configDataSource = configDataSource
+      )
     }
+
+    @Provides
+    @Singleton
+    internal fun provideTestSuitesMapper(): TestSuitesMapper {
+      return TestSuitesMapperImpl(
+        xmlMapper = XmlMapper.Builder(XmlMapper())
+          .defaultUseWrapper(false)
+          .build()
+          .registerKotlinModule()
+      )
+    }
+  }
 }

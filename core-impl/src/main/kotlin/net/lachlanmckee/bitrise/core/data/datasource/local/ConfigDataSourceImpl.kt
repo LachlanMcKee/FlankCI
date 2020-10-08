@@ -9,23 +9,23 @@ import java.util.*
 import javax.inject.Inject
 
 internal class ConfigDataSourceImpl @Inject constructor(
-    typeAdapterFactories: Set<@JvmSuppressWildcards TypeAdapterFactory>
+  typeAdapterFactories: Set<@JvmSuppressWildcards TypeAdapterFactory>
 ) : ConfigDataSource {
-    private val config: Config by lazy {
-        Config(
-            configModel = GsonBuilder()
-                .apply {
-                    typeAdapterFactories.forEach { registerTypeAdapterFactory(it) }
-                }
-                .create()
-                .fromJson(FileInputStream("config.json").bufferedReader(), ConfigModel::class.java),
-            secretProperties = Properties().also {
-                it.load(FileInputStream("secrets.properties").bufferedReader())
-            }
-        )
-    }
+  private val config: Config by lazy {
+    Config(
+      configModel = GsonBuilder()
+        .apply {
+          typeAdapterFactories.forEach { registerTypeAdapterFactory(it) }
+        }
+        .create()
+        .fromJson(FileInputStream("config.json").bufferedReader(), ConfigModel::class.java),
+      secretProperties = Properties().also {
+        it.load(FileInputStream("secrets.properties").bufferedReader())
+      }
+    )
+  }
 
-    override suspend fun getConfig(): Config {
-        return config
-    }
+  override suspend fun getConfig(): Config {
+    return config
+  }
 }
