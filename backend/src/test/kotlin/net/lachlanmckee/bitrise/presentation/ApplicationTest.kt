@@ -16,12 +16,16 @@ internal class ApplicationTest {
         <!DOCTYPE html>
         <html>
           <head>
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <link href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css" rel="stylesheet">
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
             <link href="/static/styles.css" rel="stylesheet" type="text/css">
           </head>
           <body>
             <h1>Bitrise Test Home</h1>
-            <div><a href="/test-runner">Test Runner</a></div>
-            <div><a href="/test-results">Test Results</a></div>
+            <div><a href="/test-runner" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect green-button">Test Runner</a></div>
+        <br>
+            <div><a href="/test-results" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect green-button">Test Results</a></div>
           </body>
         </html>
 

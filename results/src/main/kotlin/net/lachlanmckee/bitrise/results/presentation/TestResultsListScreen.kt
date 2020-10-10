@@ -24,58 +24,65 @@ internal class TestResultsListScreen(
   ) {
     call.respondHtml {
       head {
+        link(rel = "stylesheet", href = "https://fonts.googleapis.com/icon?family=Material+Icons")
+        link(rel = "stylesheet", href = "https://code.getmdl.io/1.3.0/material.indigo-pink.min.css")
+        script {
+          src = "https://code.getmdl.io/1.3.0/material.min.js"
+        }
         link(rel = "stylesheet", href = "/static/styles.css", type = "text/css")
       }
       body {
         h1 { +"Bitrise Test Results" }
+        p {
+          classes = setOf("heading")
+        }
         div {
           testResultModelList.forEach { build ->
-            span {
-              classes = setOf("heading")
-            }
-            span {
+            div {
               classes = when (build.status) {
-                "success" -> setOf("content", "test-success")
-                "in-progress" -> setOf("content", "test-in-progress")
-                else -> setOf("content", "test-failure")
+                "success" -> setOf("job-result-card", "mdl-card", "mdl-shadow--2dp", "job-success")
+                "in-progress" -> setOf("mdl-card", "mdl-shadow--2dp", "job-result-card", "job-in-progress")
+                else -> setOf("mdl-card", "mdl-shadow--2dp", "job-result-card", "job-failure")
               }
-              b {
-                text("${build.branch} [${build.commitHash}]")
-              }
-              br()
-              br()
-
-              if (!build.jobName.isNullOrBlank()) {
-                text(build.jobName)
-                br()
-              }
-
-              text(build.triggeredAt)
-
-              if (build.finishedAt != null) {
-                text(" - ${build.finishedAt}")
-              }
-
-              br()
-              br()
-
-              a(href = build.bitriseUrl) {
-                target = "_blank"
-                text("Bitrise")
-              }
-
-              if (build.status != "in-progress") {
-                text(" | ")
-                a(href = "/test-results/${build.buildSlug}") {
-                  target = "_blank"
-                  text("Test Results")
+              div {
+                classes = setOf("mdl-card__title")
+                h2 {
+                  classes = setOf("mdl-card__title-text")
+                  text("${build.branch} [${build.commitHash}]")
                 }
               }
-              if (build.status == "error") {
-                text(" | ")
-                a(href = "/test-rerun?build-slug=${build.buildSlug}") {
-                  target = "_blank"
-                  text("Rerun Failures")
+              div {
+                classes = setOf("mdl-card__supporting-text")
+                if (!build.jobName.isNullOrBlank()) {
+                  text(build.jobName)
+                  br()
+                }
+
+                text(build.triggeredAt)
+
+                if (build.finishedAt != null) {
+                  text(" - ${build.finishedAt}")
+                }
+              }
+              val inProgress = build.status != "in-progress"
+              val error = build.status == "error"
+              if (inProgress || error) {
+                div {
+                  if (inProgress) {
+                    classes = setOf("mdl-card__actions mdl-card--border")
+                    a(href = "/test-results/${build.buildSlug}") {
+                      classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "gray-button")
+                      target = "_blank"
+                      text("Details")
+                    }
+                  }
+                  if (error) {
+                    text(" | ")
+                    a(href = "/test-rerun?build-slug=${build.buildSlug}") {
+                      target = "_blank"
+                      text("Rerun Failures")
+                    }
+                  }
                 }
               }
             }

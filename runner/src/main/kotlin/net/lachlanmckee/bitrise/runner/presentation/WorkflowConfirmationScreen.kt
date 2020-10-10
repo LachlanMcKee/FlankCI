@@ -15,6 +15,11 @@ internal class WorkflowConfirmationScreen {
   ) {
     call.respondHtml {
       head {
+        link(rel = "stylesheet", href = "https://fonts.googleapis.com/icon?family=Material+Icons")
+        link(rel = "stylesheet", href = "https://code.getmdl.io/1.3.0/material.indigo-pink.min.css")
+        script {
+          src = "https://code.getmdl.io/1.3.0/material.min.js"
+        }
         link(rel = "stylesheet", href = "/static/styles.css", type = "text/css")
       }
       body {
@@ -58,7 +63,10 @@ internal class WorkflowConfirmationScreen {
             name = "yaml-base64"
             value = Base64.getEncoder().encodeToString(yaml.toByteArray())
           }
-          submitInput { value = "Trigger" }
+          submitInput {
+            classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "green-button")
+            value = "Trigger"
+          }
         }
       }
     }

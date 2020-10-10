@@ -1,3 +1,7 @@
+:root {
+  --main-accent-color: #38b132;
+}
+
 input[type=checkbox] + label {
   margin-right: 10px;
 }
@@ -6,73 +10,103 @@ input[type=checkbox] {
   cursor: pointer;
 }
 fieldset {
-  border: none;
+  border: dashed;
+  border-width: 2px;
+  width: fit-content;
 }
 form {
   font-family: sans-serif;
 }
+body {
+  margin: 20px;
+  background: #fafafa;
+  position: relative;
+}
+p {
+  white-space: pre-wrap;
+}
+
+// Common
+.mdl-textfield__input {
+  width: fit-content !important;
+  border-bottom: 1px solid rgb(56, 177, 50);
+}
+.green-button {
+  color: white !important;
+  background: rgb(56, 177, 50) !important;
+}
+.gray-button {
+  color: black !important;
+  background: lightgrey !important;
+}
+
 .heading {
   font-weight: bold;
   display: inline-block;
   width: 15%;
   vertical-align: top;
-  text-align: right;
-  padding-right: 12px;
+  text-align: left;
 }
-.content {
-  display: inline-block;
-  width: 80%;
+.test-runner-group {
+  padding-bottom: 8px;
 }
 .data-list {
   overflow-x: auto;
   overflow-y: auto;
   max-height: 250px;
   white-space: nowrap;
+  width: fit-content;
 }
-.inline-label {
-  display: inline-block;
-  width: 15%;
-  text-align: right;
-  padding-right: 8px;
-  font-weight: bold;
+
+// Job list
+.jmdl-card {
+  // Need to have this... to be able to style job-result-card
+  // Not sure why
 }
-.test-runner-group {
-  padding-bottom: 8px;
+.job-result-card {
+  width: 90%;
+  height: wrap;
+  margin-top: 10px;
+  background: #f2f1f4;
+  min-height: 0px;
+}
+.job-result-card.job-success > .mdl-card__title {
+  color: #fff;
+  background: #66bb6a;
+  min-height: 0px;
+}
+
+.job-result-card.job-in-progress > .mdl-card__title {
+  color: #fff;
+  background: #ffe082;
+  min-height: 0px;
+}
+
+.job-result-card.job-failure > .mdl-card__title {
+  color: #fff;
+  background: #e57373;
+  min-height: 0px;
+}
+
+
+
+// Test results
+.mdl-data-table td {
+  // Need to have this... for .test-success and .test-failure to take affect...
+  // Not sure why
 }
 .test-success {
-  color: white;
-  background-color: darkgreen;
-  padding: 12px;
-  border: 2px solid black;
-  border-radius: 5px;
+  background: #66bb6a20
 }
 .test-failure {
-  color: white;
-  background-color: darkred;
-  padding: 12px;
-  border: 2px solid black;
-  border-radius: 5px;
+  background: #e5737320
 }
-.test-in-progress {
-  color: white;
-  background-color: #CCCC00;
-  padding: 12px;
-  border: 2px solid black;
-  border-radius: 5px;
+.test-success:hover {
+ background-color: #66bb6a80 !important;
 }
-
-.test-success a {
-    color: white;
+.test-failure:hover {
+ background-color: #e5737380 !important;
 }
-
-.test-failure a {
-    color: white;
-}
-
-.test-in-progress a {
-    color: white;
-}
-
-p {
-  white-space: pre-wrap;
+.mdl-data-table td {
+    text-align: left !important;
 }

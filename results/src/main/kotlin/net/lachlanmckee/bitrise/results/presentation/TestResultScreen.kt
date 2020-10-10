@@ -24,11 +24,15 @@ internal class TestResultScreen(
   ) {
     call.respondHtml {
       head {
+        link(rel = "stylesheet", href = "https://fonts.googleapis.com/icon?family=Material+Icons")
+        link(rel = "stylesheet", href = "https://code.getmdl.io/1.3.0/material.indigo-pink.min.css")
+        script {
+          src = "https://code.getmdl.io/1.3.0/material.min.js"
+        }
         link(rel = "stylesheet", href = "/static/styles.css", type = "text/css")
       }
       body {
         h1 { +"Bitrise Test Result" }
-
         val totalFailures = resultDetailModel.testSuites
           .sumBy { it.failures }
 
@@ -51,9 +55,6 @@ internal class TestResultScreen(
         }
         div {
           span {
-            classes = setOf("heading")
-          }
-          span {
             classes = setOf("content")
             a(href = resultDetailModel.bitriseUrl) {
               target = "_blank"
@@ -63,9 +64,6 @@ internal class TestResultScreen(
         }
         br()
         div {
-          span {
-            classes = setOf("heading")
-          }
           span {
             classes = setOf("content")
             b {
@@ -85,34 +83,50 @@ internal class TestResultScreen(
               }
             }
           }
-          testSuite.testcase?.forEach { testCase ->
-            div {
-              span {
-                classes = setOf("heading")
-                if (testCase.failure != null) {
-                  text("Failure")
-                } else {
-                  text("Success")
+          table {
+            classes = setOf("mdl-data-table", "mdl-js-data-table", "mdl-data-table", "mdl-shadow--2dp")
+            thead {
+              tr {
+                th {
+                  classes = setOf("mdl-data-table__cell--non-numeric")
+                  text("Result")
+                }
+                th {
+                  classes = setOf("mdl-data-table__cell--non-numeric")
+                  text("Test")
                 }
               }
-              span {
-                classes = when {
-                  testCase.failure != null -> {
-                    setOf("content", "test-failure")
+            }
+            tbody {
+              testSuite.testcase?.forEach { testCase ->
+                tr {
+                  classes = when {
+                    testCase.failure != null -> {
+                      setOf("test-failure")
+                    }
+                    testCase.webLink == null -> {
+                      setOf("test-in-progress")
+                    }
+                    else -> {
+                      setOf("test-success")
+                    }
                   }
-                  testCase.webLink == null -> {
-                    setOf("content", "test-in-progress")
+                  td {
+                    if (testCase.failure != null) {
+                      text("Failure")
+                    } else {
+                      text("Success")
+                    }
                   }
-                  else -> {
-                    setOf("content", "test-success")
-                  }
-                }
-                text("${testCase.classname}#${testCase.name}")
-                br()
-                if (testCase.webLink != null) {
-                  a(href = testCase.webLink) {
-                    target = "_blank"
-                    text("Open in Firebase")
+                  td {
+                    text("${testCase.classname}#${testCase.name}")
+                    br()
+                    if (testCase.webLink != null) {
+                      a(href = testCase.webLink) {
+                        target = "_blank"
+                        text("Open in Firebase")
+                      }
+                    }
                   }
                 }
               }
