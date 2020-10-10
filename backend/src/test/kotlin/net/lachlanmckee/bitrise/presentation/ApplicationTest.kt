@@ -28,7 +28,7 @@ internal class ApplicationTest {
             <div><a href="/test-results" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect green-button">Test Results</a></div>
           </body>
         </html>
-        
+
         """.trimIndent(),
         response.content
       )
