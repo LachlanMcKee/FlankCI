@@ -5,6 +5,6 @@ import gsonpath.annotation.AutoGsonAdapter
 
 @AutoGsonAdapter(fieldNamingPolicy = [FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES])
 data class EnvironmentValueResponse(
-  val mappedTo: String,
+  val key: String,
   val value: String
 )

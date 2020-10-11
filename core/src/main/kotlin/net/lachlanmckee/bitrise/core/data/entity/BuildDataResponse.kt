@@ -2,6 +2,7 @@ package net.lachlanmckee.bitrise.core.data.entity
 
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.annotations.SerializedName
+import gsonpath.GsonSafeList
 import gsonpath.annotation.AutoGsonAdapter
 
 @AutoGsonAdapter(fieldNamingPolicy = [FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES])
@@ -15,5 +16,5 @@ data class BuildDataResponse(
   val triggeredAt: String,
   val finishedAt: String?,
   @SerializedName("original_build_params.environments")
-  val originalEnvironmentValueList: List<EnvironmentValueResponse>
+  val originalEnvironmentValueList: GsonSafeList<EnvironmentValueResponse>
 )
