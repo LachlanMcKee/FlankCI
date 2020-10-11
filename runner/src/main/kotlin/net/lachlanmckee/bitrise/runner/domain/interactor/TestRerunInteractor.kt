@@ -40,7 +40,7 @@ class TestRerunInteractor @Inject constructor(
       .asSequence()
       .mapNotNull {
         if (it.failure != null) {
-          it.classname
+          "${it.classname}#${it.name}"
         } else {
           null
         }
