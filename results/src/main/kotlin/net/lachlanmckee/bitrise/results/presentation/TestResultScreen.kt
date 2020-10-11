@@ -81,7 +81,7 @@ internal class TestResultScreen(
             p {
               classes = setOf("content")
               b {
-                text("${testSuite.name}. Success: ${testSuite.successfulTestCount}/${testSuite.totalTests}, Time: ${testSuite.time}")
+                text("${testSuite.name}. Tests: ${testSuite.totalTests}. Total Duration: ${testSuite.time}")
               }
             }
           }
@@ -95,6 +95,10 @@ internal class TestResultScreen(
                 }
                 th {
                   classes = setOf("mdl-data-table__cell--non-numeric")
+                  text("Duration")
+                }
+                th {
+                  classes = setOf("mdl-data-table__cell--non-numeric")
                   text("Test")
                 }
               }
@@ -102,7 +106,7 @@ internal class TestResultScreen(
             tbody {
               testSuite.testCases.forEach { testCase ->
                 tr {
-                  classes = when (testCase.resultType) {
+                  classes = when (testSuite.resultType) {
                     TestResultType.FAILURE -> {
                       setOf("test-failure")
                     }
@@ -115,7 +119,7 @@ internal class TestResultScreen(
                   }
                   td {
                     text(
-                      when (testCase.resultType) {
+                      when (testSuite.resultType) {
                         TestResultType.FAILURE -> {
                           "Failure"
                         }
@@ -127,6 +131,9 @@ internal class TestResultScreen(
                         }
                       }
                     )
+                  }
+                  td {
+                    text(testCase.time)
                   }
                   td {
                     text(testCase.path)

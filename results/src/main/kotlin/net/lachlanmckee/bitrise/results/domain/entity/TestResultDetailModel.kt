@@ -12,13 +12,14 @@ internal data class TestSuiteModel(
   val totalTests: Int,
   val successfulTestCount: Int,
   val time: String,
+  val resultType: TestResultType,
   val testCases: List<TestModel>
 )
 
 internal data class TestModel(
   val path: String,
   val webLink: String?,
-  val resultType: TestResultType
+  val time: String
 )
 
 internal enum class TestResultType {

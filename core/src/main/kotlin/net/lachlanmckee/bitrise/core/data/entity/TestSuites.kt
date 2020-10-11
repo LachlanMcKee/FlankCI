@@ -10,9 +10,6 @@ data class TestSuites(
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class TestSuite(
   val name: String,
-  val tests: Int,
-  val failures: Int,
-  val time: String,
   val testcase: List<TestCase>?
 )
 
