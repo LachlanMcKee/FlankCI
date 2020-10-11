@@ -4,5 +4,8 @@ plugins {
 }
 
 dependencies {
-  implementation(project(":core"))
+  api(project(":core"))
+  api(Dependencies.Ktor.serverTestHost)
+  api(Dependencies.Ktor.clientMock)
+  api(Dependencies.Ktor.clientMockJvm)
 }

@@ -24,7 +24,7 @@ import net.lachlanmckee.bitrise.core.data.mapper.TestSuitesMapper
 import net.lachlanmckee.bitrise.core.data.mapper.TestSuitesMapperImpl
 import javax.inject.Singleton
 
-@Module(includes = [CoreSerializationModule::class, CoreHttpModule::class])
+@Module(includes = [CoreSerializationModule::class, CoreIoModule::class])
 internal abstract class CoreDataModule {
   @Binds
   @Singleton

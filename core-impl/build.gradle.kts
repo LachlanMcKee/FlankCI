@@ -11,7 +11,6 @@ dependencies {
   implementation(Dependencies.Ktor.clientCoreJvm)
   implementation(Dependencies.Ktor.clientApache)
 
-  implementation(Dependencies.Ktor.gson)
   implementation(Dependencies.Ktor.clientJson)
   implementation(Dependencies.Ktor.clientGson)
 

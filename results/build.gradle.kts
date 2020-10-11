@@ -13,4 +13,7 @@ dependencies {
   kapt(Dependencies.Dagger.daggerCompiler)
 
   testImplementation(project(":core-test"))
+  testImplementation(project(":core-impl"))
+  testImplementation(Dependencies.Dagger.dagger)
+  kaptTest(Dependencies.Dagger.daggerCompiler)
 }

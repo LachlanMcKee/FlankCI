@@ -34,22 +34,15 @@ dependencies {
 
   implementation(Dependencies.Ktor.serverNetty)
   implementation(Dependencies.logbackClassic)
-  implementation(Dependencies.Ktor.serverCore)
   implementation(Dependencies.Ktor.htmlBuilder)
   implementation(Dependencies.Ktor.clientCore)
   implementation(Dependencies.Ktor.clientCoreJvm)
   implementation(Dependencies.Ktor.clientApache)
 
-  implementation(Dependencies.Ktor.gson)
-  implementation(Dependencies.Ktor.clientJson)
-  implementation(Dependencies.Ktor.clientGson)
-
   implementation(Dependencies.Dagger.dagger)
   kapt(Dependencies.Dagger.daggerCompiler)
 
-  testImplementation(Dependencies.Ktor.serverTestHost)
-  testImplementation(Dependencies.Ktor.clientMock)
-  testImplementation(Dependencies.Ktor.clientMockJvm)
+  testImplementation(project(":core-test"))
 }
 
 tasks.shadowJar {

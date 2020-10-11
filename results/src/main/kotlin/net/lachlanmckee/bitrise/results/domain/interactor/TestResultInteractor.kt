@@ -2,10 +2,12 @@ package net.lachlanmckee.bitrise.results.domain.interactor
 
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel
+import net.lachlanmckee.bitrise.results.domain.mapper.TestSuiteModelMapper
 import javax.inject.Inject
 
 internal class TestResultInteractor @Inject constructor(
-  private val bitriseDataSource: BitriseDataSource
+  private val bitriseDataSource: BitriseDataSource,
+  private val testSuiteModelMapper: TestSuiteModelMapper
 ) {
   suspend fun execute(buildSlug: String): Result<TestResultDetailModel> {
     return bitriseDataSource
@@ -24,13 +26,10 @@ internal class TestResultInteractor @Inject constructor(
             .getArtifactText(artifactDetails, buildSlug, "CostReport.txt")
             .getOrThrow(),
 
-          testSuites = bitriseDataSource
+          testSuiteModelList = bitriseDataSource
             .getTestResults(buildSlug)
-            .getOrThrow(),
-
-          matrixIds = bitriseDataSource
-            .getArtifactText(artifactDetails, buildSlug, "matrix_ids.json")
             .getOrThrow()
+            .map(testSuiteModelMapper::mapToTestSuiteModel)
         )
       }
   }

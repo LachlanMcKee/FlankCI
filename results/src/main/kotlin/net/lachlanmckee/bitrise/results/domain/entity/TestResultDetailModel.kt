@@ -1,11 +1,26 @@
 package net.lachlanmckee.bitrise.results.domain.entity
 
-import net.lachlanmckee.bitrise.core.data.entity.TestSuite
-
 internal data class TestResultDetailModel(
   val buildSlug: String,
   val bitriseUrl: String,
   val cost: String,
-  val testSuites: List<TestSuite>,
-  val matrixIds: String
+  val testSuiteModelList: List<TestSuiteModel>
 )
+
+internal data class TestSuiteModel(
+  val name: String,
+  val totalTests: Int,
+  val successfulTestCount: Int,
+  val time: String,
+  val testCases: List<TestModel>
+)
+
+internal data class TestModel(
+  val path: String,
+  val webLink: String?,
+  val resultType: TestResultType
+)
+
+internal enum class TestResultType {
+  FAILURE, SKIPPED, SUCCESS
+}
