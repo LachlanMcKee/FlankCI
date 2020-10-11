@@ -5,6 +5,7 @@ import io.ktor.html.*
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel
+import net.lachlanmckee.bitrise.results.domain.entity.TestResultType
 import net.lachlanmckee.bitrise.results.domain.interactor.TestResultInteractor
 
 internal class TestResultScreen(
@@ -33,8 +34,9 @@ internal class TestResultScreen(
       }
       body {
         h1 { +"Bitrise Test Result" }
-        val totalFailures = resultDetailModel.testSuites
-          .sumBy { it.failures }
+
+        val totalFailures = resultDetailModel.testSuiteModelList
+          .sumBy { it.totalTests - it.successfulTestCount }
 
         if (totalFailures > 0) {
           div {
@@ -71,7 +73,7 @@ internal class TestResultScreen(
             }
           }
         }
-        resultDetailModel.testSuites.forEach { testSuite ->
+        resultDetailModel.testSuiteModelList.forEach { testSuite ->
           div {
             p {
               classes = setOf("heading")
@@ -79,7 +81,7 @@ internal class TestResultScreen(
             p {
               classes = setOf("content")
               b {
-                text("${testSuite.name}. Success: ${testSuite.tests - testSuite.failures}/${testSuite.tests}, Time: ${testSuite.time}")
+                text("${testSuite.name}. Success: ${testSuite.successfulTestCount}/${testSuite.totalTests}, Time: ${testSuite.time}")
               }
             }
           }
@@ -98,28 +100,36 @@ internal class TestResultScreen(
               }
             }
             tbody {
-              testSuite.testcase?.forEach { testCase ->
+              testSuite.testCases.forEach { testCase ->
                 tr {
-                  classes = when {
-                    testCase.failure != null -> {
+                  classes = when (testCase.resultType) {
+                    TestResultType.FAILURE -> {
                       setOf("test-failure")
                     }
-                    testCase.webLink == null -> {
+                    TestResultType.SKIPPED -> {
                       setOf("test-in-progress")
                     }
-                    else -> {
+                    TestResultType.SUCCESS -> {
                       setOf("test-success")
                     }
                   }
                   td {
-                    if (testCase.failure != null) {
-                      text("Failure")
-                    } else {
-                      text("Success")
-                    }
+                    text(
+                      when (testCase.resultType) {
+                        TestResultType.FAILURE -> {
+                          "Failure"
+                        }
+                        TestResultType.SKIPPED -> {
+                          "Skipped"
+                        }
+                        TestResultType.SUCCESS -> {
+                          "Success"
+                        }
+                      }
+                    )
                   }
                   td {
-                    text("${testCase.classname}#${testCase.name}")
+                    text(testCase.path)
                     br()
                     if (testCase.webLink != null) {
                       a(href = testCase.webLink) {

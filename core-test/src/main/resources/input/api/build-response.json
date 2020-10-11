@@ -1,0 +1,32 @@
+{
+  "data": {
+    "triggered_at": "2020-10-05T12:00:00Z",
+    "started_on_worker_at": "2020-10-05T12:00:00Z",
+    "environment_prepare_finished_at": "2020-10-05T12:00:00Z",
+    "finished_at": "2020-10-05T12:00:00Z",
+    "slug": "BUILD_SLUG",
+    "status": 2,
+    "status_text": "error",
+    "abort_reason": null,
+    "is_on_hold": false,
+    "branch": "BRANCH",
+    "build_number": 1,
+    "commit_hash": "HASH",
+    "commit_message": null,
+    "tag": null,
+    "triggered_workflow": "trigger_tests",
+    "triggered_by": "curl",
+    "machine_type_id": "elite",
+    "stack_identifier": "linux-docker-android",
+    "original_build_params": {
+      "environments": [],
+      "branch": "SAMPLE_BRANCH",
+      "commit_hash": "HASH",
+      "workflow_id": "trigger_tests"
+    },
+    "pull_request_id": 0,
+    "pull_request_target_branch": null,
+    "pull_request_view_url": null,
+    "commit_view_url": "https://github.com/LachlanMcKee/BitriseTestRunner/commit/HASH"
+  }
+}
