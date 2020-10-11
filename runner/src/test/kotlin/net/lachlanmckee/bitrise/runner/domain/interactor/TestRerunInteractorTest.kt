@@ -58,11 +58,11 @@ internal class TestRerunInteractorTest {
     testWithContentSuccess(
       testSuites = listOf(
         createTestSuite(
-          createFailedTest("com.tests.TestB#test1"),
-          createFailedTest("com.tests.TestA#test1")
+          createFailedTest("com.tests.TestB", "test1"),
+          createFailedTest("com.tests.TestA", "test1")
         ),
         createTestSuite(
-          createFailedTest("com.tests.TestA#test1")
+          createFailedTest("com.tests.TestA", "test1")
         )
       ),
       expectedTests = listOf(
@@ -148,9 +148,9 @@ internal class TestRerunInteractorTest {
     )
   }
 
-  private fun createFailedTest(className: String): TestCase {
+  private fun createFailedTest(className: String, name: String): TestCase {
     return TestCase(
-      name = "name",
+      name = name,
       classname = className,
       time = "time",
       webLink = null,
