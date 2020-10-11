@@ -29,7 +29,7 @@ internal class TestResultInteractor @Inject constructor(
           testSuiteModelList = bitriseDataSource
             .getTestResults(buildSlug)
             .getOrThrow()
-            .map(testSuiteModelMapper::mapToTestSuiteModel)
+            .let(testSuiteModelMapper::mapToTestSuiteModelList)
         )
       }
   }

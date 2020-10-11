@@ -93,9 +93,6 @@ internal class TestRerunInteractorTest {
       testSuites = listOf(
         TestSuite(
           name = "suite",
-          tests = 0,
-          failures = 1,
-          time = "time",
           testcase = null
         ),
         createTestSuite()
@@ -131,9 +128,6 @@ internal class TestRerunInteractorTest {
   private fun createTestSuite(vararg testcase: TestCase): TestSuite {
     return TestSuite(
       name = "suite",
-      tests = testcase.size,
-      failures = 1,
-      time = "time",
       testcase = testcase.toList()
     )
   }
