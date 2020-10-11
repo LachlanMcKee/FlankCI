@@ -1,5 +1,6 @@
 package net.lachlanmckee.bitrise.core.domain.mapper
 
+import gsonpath.GsonSafeList
 import net.lachlanmckee.bitrise.core.data.entity.BuildDataResponse
 import net.lachlanmckee.bitrise.core.data.entity.BuildsData
 import net.lachlanmckee.bitrise.core.data.entity.EnvironmentValueResponse
@@ -31,9 +32,9 @@ internal class BuildsMapperImplTest {
           slug = "slug-dev-1",
           triggeredAt = "2020-09-01T16:00:00Z",
           finishedAt = "2020-09-01T17:00:00Z",
-          originalEnvironmentValueList = listOf(
-            EnvironmentValueResponse("ENV1", "VALUE1")
-          )
+          originalEnvironmentValueList = GsonSafeList<EnvironmentValueResponse>().apply {
+            add(EnvironmentValueResponse("ENV1", "VALUE1"))
+          }
         ),
         BuildDataResponse(
           branch = "dev",
@@ -44,7 +45,7 @@ internal class BuildsMapperImplTest {
           slug = "slug-dev-2",
           triggeredAt = "2020-09-01T16:00:00Z",
           finishedAt = "2020-09-01T17:00:00Z",
-          originalEnvironmentValueList = emptyList()
+          originalEnvironmentValueList = GsonSafeList<EnvironmentValueResponse>()
         ),
         BuildDataResponse(
           branch = "dev",
@@ -55,7 +56,7 @@ internal class BuildsMapperImplTest {
           slug = "slug-dev-3",
           triggeredAt = "2020-09-01T16:00:00Z",
           finishedAt = "2020-09-01T17:00:00Z",
-          originalEnvironmentValueList = emptyList()
+          originalEnvironmentValueList = GsonSafeList<EnvironmentValueResponse>()
         ),
         BuildDataResponse(
           branch = "feature1",
@@ -66,7 +67,7 @@ internal class BuildsMapperImplTest {
           slug = "slug-feature-1",
           triggeredAt = "2020-09-01T16:00:00Z",
           finishedAt = "2020-09-01T17:00:00Z",
-          originalEnvironmentValueList = emptyList()
+          originalEnvironmentValueList = GsonSafeList<EnvironmentValueResponse>()
         )
       ),
       BuildsData(

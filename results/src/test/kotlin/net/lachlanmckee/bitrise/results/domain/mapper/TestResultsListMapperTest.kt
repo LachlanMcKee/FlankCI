@@ -1,5 +1,6 @@
 package net.lachlanmckee.bitrise.results.domain.mapper
 
+import gsonpath.GsonSafeList
 import net.lachlanmckee.bitrise.core.data.entity.BuildDataResponse
 import net.lachlanmckee.bitrise.core.data.entity.EnvironmentValueResponse
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
@@ -25,9 +26,9 @@ internal class TestResultsListMapperTest {
           slug = "slug",
           triggeredAt = "triggeredAt",
           finishedAt = "finishedAt",
-          originalEnvironmentValueList = listOf(
-            EnvironmentValueResponse("ENV1", "VAL1")
-          )
+          originalEnvironmentValueList = GsonSafeList<EnvironmentValueResponse>().apply {
+            add(EnvironmentValueResponse("ENV1", "VALUE1"))
+          }
         )
       ),
       listOf(
@@ -58,9 +59,9 @@ internal class TestResultsListMapperTest {
           slug = "slug",
           triggeredAt = "triggeredAt",
           finishedAt = "finishedAt",
-          originalEnvironmentValueList = listOf(
-            EnvironmentValueResponse("JOB_NAME", "JOB1")
-          )
+          originalEnvironmentValueList = GsonSafeList<EnvironmentValueResponse>().apply {
+            add(EnvironmentValueResponse("JOB_NAME", "JOB1"))
+          }
         )
       ),
       listOf(

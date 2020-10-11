@@ -12,7 +12,7 @@ dependencies {
   implementation(Dependencies.Ktor.clientGson)
 
   // Json parsing
-  implementation(Dependencies.GsonPath.gsonpath)
+  api(Dependencies.GsonPath.gsonpath)
   implementation(Dependencies.GsonPath.gsonpathKt)
   kapt(Dependencies.GsonPath.gsonpathCompiler)
 

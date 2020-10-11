@@ -52,9 +52,8 @@
       "original_build_params": {
         "environments": [
           {
-            "mapped_to": "JOB_NAME",
-            "value": "custom_job_name",
-            "is_expand": false
+            "key": "JOB_NAME",
+            "value": "custom_job_name"
           }
         ],
         "branch": "BRANCH_2",
