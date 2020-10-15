@@ -1,7 +1,7 @@
 package net.lachlanmckee.bitrise.results.presentation
 
-import io.ktor.application.ApplicationCall
-import io.ktor.html.respondHtml
+import io.ktor.application.*
+import io.ktor.html.*
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
@@ -37,58 +37,59 @@ internal class TestResultsListScreen(
           classes = setOf("heading")
         }
         div {
-          testResultModelList.forEach { build ->
-            div {
-              classes = when (build.status) {
-                "success" -> setOf("job-result-card", "mdl-card", "mdl-shadow--2dp", "job-success")
-                "in-progress" -> setOf("mdl-card", "mdl-shadow--2dp", "job-result-card", "job-in-progress")
-                else -> setOf("mdl-card", "mdl-shadow--2dp", "job-result-card", "job-failure")
-              }
-              div {
-                classes = setOf("mdl-card__title")
-                h2 {
-                  classes = setOf("mdl-card__title-text")
-                  text("${build.branch} [${build.commitHash}]")
-                }
-              }
-              div {
-                classes = setOf("mdl-card__supporting-text")
-                if (!build.jobName.isNullOrBlank()) {
-                  text(build.jobName)
-                  br()
-                }
-
-                text(build.triggeredAt)
-
-                if (build.finishedAt != null) {
-                  text(" - ${build.finishedAt}")
-                }
-              }
-              val inProgress = build.status != "in-progress"
-              val error = build.status == "error"
-              if (inProgress || error) {
-                div {
-                  if (inProgress) {
-                    classes = setOf("mdl-card__actions mdl-card--border")
-                    a(href = "/test-results/${build.buildSlug}") {
-                      classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "gray-button")
-                      target = "_blank"
-                      text("Details")
-                    }
-                  }
-                  if (error) {
-                    text(" | ")
-                    a(href = "/test-rerun?build-slug=${build.buildSlug}") {
-                      target = "_blank"
-                      text("Rerun Failures")
-                    }
-                  }
-                }
-              }
-            }
-          }
+          testResultModelList.forEach { build -> this@body.testResult(build) }
         }
       }
+    }
+  }
+
+  private fun BODY.testResult(build: TestResultModel) {
+    div {
+      classes = when (build.status) {
+        "success" -> setOf("job-result-card", "mdl-card", "mdl-shadow--2dp", "job-success")
+        "in-progress" -> setOf("mdl-card", "mdl-shadow--2dp", "job-result-card", "job-in-progress")
+        else -> setOf("mdl-card", "mdl-shadow--2dp", "job-result-card", "job-failure")
+      }
+      div {
+        classes = setOf("mdl-card__title")
+        h2 {
+          classes = setOf("mdl-card__title-text")
+          text("${build.branch} [${build.commitHash}]")
+        }
+      }
+      div {
+        classes = setOf("mdl-card__supporting-text")
+        if (!build.jobName.isNullOrBlank()) {
+          text(build.jobName)
+          br()
+        }
+
+        text(build.triggeredAt)
+
+        if (build.finishedAt != null) {
+          text(" - ${build.finishedAt}")
+        }
+      }
+      div {
+        if (build.status != "in-progress") {
+          classes = setOf("mdl-card__actions mdl-card--border")
+          this@testResult.button("Test Results", "/test-results/${build.buildSlug}")
+          text(" ")
+        }
+        this@testResult.button("Bitrise", build.bitriseUrl)
+        if (build.status == "error") {
+          text(" ")
+          this@testResult.button("Rerun Failures", "/test-rerun?build-slug=${build.buildSlug}")
+        }
+      }
+    }
+  }
+
+  private fun BODY.button(label: String, url: String) {
+    a(href = url) {
+      classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "gray-button")
+      target = "_blank"
+      text(label)
     }
   }
 }
