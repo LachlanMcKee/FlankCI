@@ -1,0 +1,3 @@
+Log line 1
+https://console.firebase.google.com/project/foobar
+Log line 2

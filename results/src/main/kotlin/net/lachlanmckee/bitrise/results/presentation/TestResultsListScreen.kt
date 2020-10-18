@@ -74,22 +74,12 @@ internal class TestResultsListScreen(
         if (build.status != "in-progress") {
           classes = setOf("mdl-card__actions mdl-card--border")
           this@testResult.button("Test Results", "/test-results/${build.buildSlug}")
-          text(" ")
         }
         this@testResult.button("Bitrise", build.bitriseUrl)
         if (build.status == "error") {
-          text(" ")
           this@testResult.button("Rerun Failures", "/test-rerun?build-slug=${build.buildSlug}")
         }
       }
-    }
-  }
-
-  private fun BODY.button(label: String, url: String) {
-    a(href = url) {
-      classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "gray-button")
-      target = "_blank"
-      text(label)
     }
   }
 }
