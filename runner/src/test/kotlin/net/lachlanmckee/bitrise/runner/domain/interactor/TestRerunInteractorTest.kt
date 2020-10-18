@@ -28,8 +28,9 @@ internal class TestRerunInteractorTest {
 
     assertEquals(exception, result.exceptionOrNull())
 
-    coVerifySequence {
+    coVerify {
       bitriseDataSource.getBuildDetails("buildSlug")
+      bitriseDataSource.getTestResults("buildSlug")
     }
   }
 
@@ -47,7 +48,7 @@ internal class TestRerunInteractorTest {
 
     assertEquals(exception, result.exceptionOrNull())
 
-    coVerifySequence {
+    coVerify {
       bitriseDataSource.getBuildDetails("buildSlug")
       bitriseDataSource.getTestResults("buildSlug")
     }
@@ -119,7 +120,7 @@ internal class TestRerunInteractorTest {
       result.getOrNull()
     )
 
-    coVerifySequence {
+    coVerify {
       bitriseDataSource.getBuildDetails("buildSlug")
       bitriseDataSource.getTestResults("buildSlug")
     }
