@@ -19,6 +19,11 @@ internal class BitriseDataSourceImpl @Inject constructor(
     return bitriseService.getBuildDetails(buildSlug)
   }
 
+  override suspend fun getBuildLog(buildSlug: String): Result<String> {
+    return bitriseService.getBuildLog(buildSlug)
+      .mapCatching { bitriseService.getArtifactText(it.expiringRawLogUrl).getOrThrow() }
+  }
+
   override suspend fun getArtifactDetails(buildSlug: String): Result<BitriseArtifactsListResponse> {
     return bitriseService.getArtifactDetails(buildSlug)
   }
@@ -54,7 +59,7 @@ internal class BitriseDataSourceImpl @Inject constructor(
 
   override suspend fun getTestResults(buildSlug: String): Result<List<TestSuite>> {
     return getArtifactDetails(buildSlug)
-      .map { artifactDetails ->
+      .mapCatching { artifactDetails ->
         getArtifactText(artifactDetails, buildSlug, "JUnitReport.xml")
           .getOrThrow()
       }

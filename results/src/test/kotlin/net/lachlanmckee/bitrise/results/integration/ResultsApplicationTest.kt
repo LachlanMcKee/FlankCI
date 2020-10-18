@@ -1,5 +1,6 @@
 package net.lachlanmckee.bitrise.results.integration
 
+import io.ktor.client.engine.mock.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import net.lachlanmckee.bitrise.*
@@ -27,7 +28,7 @@ internal class ResultsApplicationTest {
   }
 
   @Test
-  fun testResult() = withTestApplication(
+  fun testResultWithValidContent() = withTestApplication(
     createTestHttpClientFactory { request ->
       when (request.url.fullPath) {
         "/v0.1/apps/APP_ID/builds/BUILD_SLUG/artifacts" -> {
@@ -45,13 +46,42 @@ internal class ResultsApplicationTest {
         "/builds/BUILD_SLUG/artifacts/ARTIFACT_SLUG_1/JUnitReport.xml" -> {
           respondJson("input/api/junit-report.xml")
         }
+        "/v0.1/apps/APP_ID/builds/BUILD_SLUG/log" -> {
+          respondJson("input/api/build-log-response.json")
+        }
+        "/build-logs-v2/BUILD_LOG_1" -> {
+          respondJson("input/api/build-log.txt")
+        }
         else -> error("Unhandled ${request.url.fullPath}")
       }
     }
   ) {
     with(handleRequest(HttpMethod.Get, "/test-results/BUILD_SLUG")) {
       assertEquals(HttpStatusCode.OK, response.status())
-      assertContentEquals(response, "output/test-result/expected.html")
+      assertContentEquals(response, "output/test-result/success.html")
+    }
+  }
+
+  @Test
+  fun testResultWithFailureToFetchTests() = withTestApplication(
+    createTestHttpClientFactory { request ->
+      when (request.url.fullPath) {
+        "/v0.1/apps/APP_ID/builds/BUILD_SLUG/artifacts" -> {
+          respondError(HttpStatusCode.InternalServerError)
+        }
+        "/v0.1/apps/APP_ID/builds/BUILD_SLUG/log" -> {
+          respondJson("input/api/build-log-response.json")
+        }
+        "/build-logs-v2/BUILD_LOG_1" -> {
+          respondJson("input/api/build-log.txt")
+        }
+        else -> error("Unhandled ${request.url.fullPath}")
+      }
+    }
+  ) {
+    with(handleRequest(HttpMethod.Get, "/test-results/BUILD_SLUG")) {
+      assertEquals(HttpStatusCode.OK, response.status())
+      assertContentEquals(response, "output/test-result/failure-no-tests-found.html")
     }
   }
 

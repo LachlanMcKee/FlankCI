@@ -2,9 +2,7 @@ package net.lachlanmckee.bitrise.results.domain.mapper
 
 import net.lachlanmckee.bitrise.core.data.entity.TestCase
 import net.lachlanmckee.bitrise.core.data.entity.TestSuite
-import net.lachlanmckee.bitrise.results.domain.entity.TestModel
-import net.lachlanmckee.bitrise.results.domain.entity.TestResultType
-import net.lachlanmckee.bitrise.results.domain.entity.TestSuiteModel
+import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.*
 import javax.inject.Inject
 
 internal class TestSuiteModelMapper @Inject constructor() {
@@ -30,9 +28,6 @@ internal class TestSuiteModelMapper @Inject constructor() {
         TestSuiteModel(
           name = testGroup.key.name,
           totalTests = testGroup.value.count(),
-          successfulTestCount = testGroup.value.count {
-            it.failure == null && it.webLink != null
-          },
           time = String.format("%.2f", testGroup.value.sumByDouble { it.time.toDouble() }),
           resultType = testGroup.key.resultType,
           testCases = testGroup.value

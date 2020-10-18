@@ -2,9 +2,7 @@ package net.lachlanmckee.bitrise.results.domain.mapper
 
 import net.lachlanmckee.bitrise.core.data.entity.TestCase
 import net.lachlanmckee.bitrise.core.data.entity.TestSuite
-import net.lachlanmckee.bitrise.results.domain.entity.TestModel
-import net.lachlanmckee.bitrise.results.domain.entity.TestResultType
-import net.lachlanmckee.bitrise.results.domain.entity.TestSuiteModel
+import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.*
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -85,7 +83,6 @@ internal class TestSuiteModelMapperTest {
       TestSuiteModel(
         name = "Device1",
         totalTests = 1,
-        successfulTestCount = 0,
         time = "5.00",
         resultType = TestResultType.FAILURE,
         testCases = listOf(
@@ -99,7 +96,6 @@ internal class TestSuiteModelMapperTest {
       TestSuiteModel(
         name = "Device2",
         totalTests = 1,
-        successfulTestCount = 0,
         time = "5.00",
         resultType = TestResultType.FAILURE,
         testCases = listOf(
@@ -113,7 +109,6 @@ internal class TestSuiteModelMapperTest {
       TestSuiteModel(
         name = "Device1",
         totalTests = 2,
-        successfulTestCount = 2,
         time = "10.00",
         resultType = TestResultType.SUCCESS,
         testCases = listOf(
@@ -132,7 +127,6 @@ internal class TestSuiteModelMapperTest {
       TestSuiteModel(
         name = "Device2",
         totalTests = 2,
-        successfulTestCount = 2,
         time = "10.00",
         resultType = TestResultType.SUCCESS,
         testCases = listOf(

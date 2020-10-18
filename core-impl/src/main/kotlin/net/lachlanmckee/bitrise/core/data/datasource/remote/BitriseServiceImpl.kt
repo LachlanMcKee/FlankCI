@@ -46,6 +46,14 @@ internal class BitriseServiceImpl(
         .data
     }
 
+  override suspend fun getBuildLog(buildSlug: String): Result<BuildLogResponse> =
+    kotlin.runCatching {
+      client
+        .get<BuildLogResponse>("${createAppUrl()}/builds/$buildSlug/log") {
+          auth()
+        }
+    }
+
   override suspend fun getArtifactDetails(buildSlug: String): Result<BitriseArtifactsListResponse> =
     kotlin.runCatching {
       client

@@ -7,6 +7,8 @@ interface BitriseDataSource {
 
   suspend fun getBuildDetails(buildSlug: String): Result<BuildDataResponse>
 
+  suspend fun getBuildLog(buildSlug: String): Result<String>
+
   suspend fun getArtifactDetails(buildSlug: String): Result<BitriseArtifactsListResponse>
 
   suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<BitriseArtifactResponse>
