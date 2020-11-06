@@ -8,6 +8,6 @@
 *.ipr
 *.iws
 
-/config.json
+/config*.json
 /secrets.properties
 *.yaml

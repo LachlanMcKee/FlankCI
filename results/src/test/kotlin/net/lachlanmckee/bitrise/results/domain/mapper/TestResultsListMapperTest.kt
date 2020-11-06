@@ -79,6 +79,37 @@ internal class TestResultsListMapperTest {
     )
   }
 
+  @Test
+  fun givenBuildDataWithoutEnvironmentValues_whenMap_thenExpectListResultModelsWithoutJobName() {
+    testMapBuilds(
+      listOf(
+        BuildDataResponse(
+          branch = "branch",
+          statusText = "statusText",
+          commitHash = "commitHash",
+          commitMessage = "commitMessage",
+          buildNumber = 1,
+          slug = "slug",
+          triggeredAt = "triggeredAt",
+          finishedAt = "finishedAt",
+          originalEnvironmentValueList = null
+        )
+      ),
+      listOf(
+        TestResultModel(
+          branch = "branch",
+          status = "statusText",
+          commitHash = "commitHash",
+          triggeredAt = "triggeredAt",
+          finishedAt = "finishedAt",
+          buildSlug = "slug",
+          jobName = null,
+          bitriseUrl = "https://app.bitrise.io/build/slug"
+        )
+      )
+    )
+  }
+
   private fun testMapBuilds(data: List<BuildDataResponse>, expected: List<TestResultModel>) {
     assertEquals(expected, TestResultsListMapper().mapToTestResultsList(data))
   }

@@ -15,7 +15,7 @@ internal class TestResultsListMapper @Inject constructor() {
         finishedAt = build.finishedAt,
         buildSlug = build.slug,
         jobName = build.originalEnvironmentValueList
-          .find { envValue -> envValue.key == "JOB_NAME" }
+          ?.find { envValue -> envValue.key == "JOB_NAME" }
           ?.value,
         bitriseUrl = "https://app.bitrise.io/build/${build.slug}"
       )

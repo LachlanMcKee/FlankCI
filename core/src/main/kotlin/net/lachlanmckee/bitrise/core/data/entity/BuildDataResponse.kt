@@ -16,5 +16,5 @@ data class BuildDataResponse(
   val triggeredAt: String,
   val finishedAt: String?,
   @SerializedName("original_build_params.environments")
-  val originalEnvironmentValueList: GsonSafeList<EnvironmentValueResponse>
+  val originalEnvironmentValueList: GsonSafeList<EnvironmentValueResponse>?
 )
