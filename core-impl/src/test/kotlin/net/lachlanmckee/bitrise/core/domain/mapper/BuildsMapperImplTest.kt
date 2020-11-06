@@ -45,7 +45,7 @@ internal class BuildsMapperImplTest {
           slug = "slug-dev-2",
           triggeredAt = "2020-09-01T16:00:00Z",
           finishedAt = "2020-09-01T17:00:00Z",
-          originalEnvironmentValueList = GsonSafeList<EnvironmentValueResponse>()
+          originalEnvironmentValueList = GsonSafeList()
         ),
         BuildDataResponse(
           branch = "dev",
@@ -56,7 +56,7 @@ internal class BuildsMapperImplTest {
           slug = "slug-dev-3",
           triggeredAt = "2020-09-01T16:00:00Z",
           finishedAt = "2020-09-01T17:00:00Z",
-          originalEnvironmentValueList = GsonSafeList<EnvironmentValueResponse>()
+          originalEnvironmentValueList = GsonSafeList()
         ),
         BuildDataResponse(
           branch = "feature1",
@@ -67,7 +67,7 @@ internal class BuildsMapperImplTest {
           slug = "slug-feature-1",
           triggeredAt = "2020-09-01T16:00:00Z",
           finishedAt = "2020-09-01T17:00:00Z",
-          originalEnvironmentValueList = GsonSafeList<EnvironmentValueResponse>()
+          originalEnvironmentValueList = null
         )
       ),
       BuildsData(

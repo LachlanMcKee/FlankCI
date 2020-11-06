@@ -36,9 +36,11 @@ internal class BuildsMapperImpl @Inject constructor() : BuildsMapper {
       buildSlug = response.slug,
       triggeredAt = response.triggeredAt,
       finishedAt = response.finishedAt,
-      originalEnvironmentValueList = response.originalEnvironmentValueList.map { env ->
-        BuildsData.EnvironmentValue(env.key, env.value)
-      }
+      originalEnvironmentValueList = response.originalEnvironmentValueList
+        ?.map { env ->
+          BuildsData.EnvironmentValue(env.key, env.value)
+        }
+        ?: emptyList()
     )
   }
 
