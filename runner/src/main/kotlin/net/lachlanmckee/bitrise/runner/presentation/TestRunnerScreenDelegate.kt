@@ -56,7 +56,7 @@ internal class TestRunnerScreenDelegate(private val optionsProviderFunc: suspend
             }
           }
 
-          this@body.addOptions(options)
+          addOptions(options)
 
           input {
             id = "root-package"
@@ -94,7 +94,7 @@ internal class TestRunnerScreenDelegate(private val optionsProviderFunc: suspend
     }
   }
 
-  private fun BODY.addOptions(options: List<ConfigModel.Option>) {
+  private fun FORM.addOptions(options: List<ConfigModel.Option>) {
     options.forEachIndexed { index, option ->
       when (option) {
         is ConfigModel.Option.Checkbox -> {

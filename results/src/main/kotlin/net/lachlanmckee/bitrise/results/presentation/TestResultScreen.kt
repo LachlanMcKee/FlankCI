@@ -5,9 +5,7 @@ import io.ktor.html.*
 import kotlinx.html.*
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel
-import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.TestModel
-import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.TestResultType
-import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.TestSuiteModel
+import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.*
 import net.lachlanmckee.bitrise.results.domain.interactor.TestResultInteractor
 
 internal class TestResultScreen(
@@ -48,6 +46,9 @@ internal class TestResultScreen(
         }
       }
       resultDetailModel.testSuiteModelList.forEach { testSuite -> testSuiteElement(testSuite) }
+
+      script(src = "/static/test-result-script.js") {
+      }
     }
   }
 
@@ -85,11 +86,11 @@ internal class TestResultScreen(
         h1 { +"Bitrise Test Result" }
 
         div {
-          this@body.button("Bitrise", resultDetailModel.bitriseUrl)
-          this@body.button("Firebase", resultDetailModel.firebaseUrl)
+          button("Bitrise", resultDetailModel.bitriseUrl)
+          button("Firebase", resultDetailModel.firebaseUrl)
 
           if (resultDetailModel.totalFailures > 0) {
-            this@body.button(
+            button(
               "Rerun ${resultDetailModel.totalFailures} failures",
               "/test-rerun?build-slug=${resultDetailModel.buildSlug}"
             )
@@ -132,12 +133,12 @@ internal class TestResultScreen(
         }
       }
       tbody {
-        testSuite.testCases.forEach { testCase -> this@table.testCaseElement(testSuite, testCase) }
+        testSuite.testCases.forEachIndexed { index, testCase -> this@table.testCaseElement(testSuite, testCase, index) }
       }
     }
   }
 
-  private fun TABLE.testCaseElement(testSuite: TestSuiteModel, testCase: TestModel) {
+  private fun TABLE.testCaseElement(testSuite: TestSuiteModel, testCase: TestModel, index: Int) {
     tr {
       classes = when (testSuite.resultType) {
         TestResultType.FAILURE -> {
@@ -172,10 +173,49 @@ internal class TestResultScreen(
         text(testCase.path)
         br()
         if (testCase.webLink != null) {
-          a(href = testCase.webLink) {
-            target = "_blank"
-            text("Open in Firebase")
-          }
+          button("Firebase Report", testCase.webLink, gray = false)
+        }
+        if (testCase.failure != null) {
+          failureDialog(testCase.failure, index)
+        }
+      }
+    }
+  }
+
+  private fun HtmlBlockTag.failureDialog(failure: String, index: Int) {
+    a {
+      classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect")
+      onClick = "openDialog($index)"
+      text("Failure Reason")
+    }
+
+    dialog {
+      id = "dialog$index"
+      classes = setOf("mdl-dialog", "failure-dialog")
+
+      h4 {
+        classes = setOf("mdl-dialog__title", "failure-dialog-title")
+        text("Test Failure")
+      }
+
+      div {
+        classes = setOf("mdl-dialog__content", "failure-dialog-content")
+        p {
+          failure
+            .split("\n")
+            .forEach { failureLine ->
+              text(failureLine)
+              br()
+            }
+        }
+      }
+
+      div {
+        classes = setOf("mdl-dialog__actions")
+        button {
+          classes = setOf("mdl-button", "close")
+          type = ButtonType.button
+          text("Close")
         }
       }
     }

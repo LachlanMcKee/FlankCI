@@ -45,6 +45,7 @@ internal class TestSuiteModelMapper @Inject constructor() {
     return TestModel(
       path = "${testCase.classname}#${testCase.name}",
       webLink = testCase.webLink?.trim(),
+      failure = testCase.failure,
       time = testCase.time
     )
   }

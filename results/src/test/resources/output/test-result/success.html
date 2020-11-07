@@ -29,17 +29,41 @@ $0.40 for 20m
     <tr class="test-failure">
         <td>Failure</td>
         <td>6.000</td>
-        <td>com.example.TestClass1#testB<br><a href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-2/testcases/1" target="_blank">Open in Firebase</a></td>
+        <td>com.example.TestClass1#testB<br><a href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-2/testcases/1" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" target="_blank">Firebase Report</a> <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(0)">Failure Reason</a>
+            <dialog id="dialog0" class="mdl-dialog failure-dialog">
+                <h4 class="mdl-dialog__title failure-dialog-title">Test Failure</h4>
+                <div class="mdl-dialog__content failure-dialog-content">
+                    <p>Failure reason 1<br></p>
+                </div>
+                <div class="mdl-dialog__actions"><button class="mdl-button close" type="button">Close</button></div>
+            </dialog>
+        </td>
     </tr>
     <tr class="test-failure">
         <td>Failure</td>
         <td>6.000</td>
-        <td>com.example.TestClass1#testB<br><a href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-3/testcases/1" target="_blank">Open in Firebase</a></td>
+        <td>com.example.TestClass1#testB<br><a href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-3/testcases/1" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" target="_blank">Firebase Report</a> <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(1)">Failure Reason</a>
+            <dialog id="dialog1" class="mdl-dialog failure-dialog">
+                <h4 class="mdl-dialog__title failure-dialog-title">Test Failure</h4>
+                <div class="mdl-dialog__content failure-dialog-content">
+                    <p>Failure reason 2<br></p>
+                </div>
+                <div class="mdl-dialog__actions"><button class="mdl-button close" type="button">Close</button></div>
+            </dialog>
+        </td>
     </tr>
     <tr class="test-failure">
         <td>Failure</td>
         <td>6.000</td>
-        <td>com.example.TestClass2#testA<br><a href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-3/testcases/2" target="_blank">Open in Firebase</a></td>
+        <td>com.example.TestClass2#testA<br><a href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-3/testcases/2" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" target="_blank">Firebase Report</a> <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(2)">Failure Reason</a>
+            <dialog id="dialog2" class="mdl-dialog failure-dialog">
+                <h4 class="mdl-dialog__title failure-dialog-title">Test Failure</h4>
+                <div class="mdl-dialog__content failure-dialog-content">
+                    <p>Failure reason 3<br></p>
+                </div>
+                <div class="mdl-dialog__actions"><button class="mdl-button close" type="button">Close</button></div>
+            </dialog>
+        </td>
     </tr>
     </tbody>
 </table>
@@ -79,9 +103,10 @@ $0.40 for 20m
     <tr class="test-success">
         <td>Success</td>
         <td>5.000</td>
-        <td>com.example.TestClass1#testA<br><a href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-1/testcases/1" target="_blank">Open in Firebase</a></td>
+        <td>com.example.TestClass1#testA<br><a href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-1/testcases/1" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" target="_blank">Firebase Report</a> </td>
     </tr>
     </tbody>
 </table>
+<script src="/static/test-result-script.js"></script>
 </body>
 </html>
