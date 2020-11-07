@@ -1,6 +1,7 @@
 package net.lachlanmckee.bitrise.runner.domain.mapper
 
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
+import net.lachlanmckee.bitrise.core.data.entity.Config
 import net.lachlanmckee.bitrise.core.data.entity.ConfigModel
 import net.lachlanmckee.bitrise.runner.domain.entity.FlankDataModel
 import net.lachlanmckee.bitrise.runner.domain.entity.GeneratedFlankConfig
@@ -37,8 +38,9 @@ internal class FlankConfigMapper @Inject constructor(
     addYaml(yaml, mergedYaml, testData.commonYamlFiles)
     addYaml(yaml, mergedYaml, annotationBasedYamlFileNames)
 
+    val configOptions = getConfigOptions(config, flankDataModel)
     flankDataModel.checkboxOptions.forEach { (indexKey, isChecked) ->
-      val checkboxOption = config.testData.options[indexKey] as ConfigModel.Option.Checkbox
+      val checkboxOption = configOptions[indexKey] as ConfigModel.Option.Checkbox
       if (isChecked) {
         addYaml(yaml, mergedYaml, checkboxOption.checkedCheckBoxContent.yamlFiles)
         jobNames.add(checkboxOption.checkedCheckBoxContent.jobLabel)
@@ -49,7 +51,7 @@ internal class FlankConfigMapper @Inject constructor(
     }
 
     flankDataModel.dropDownOptions.forEach { (indexKey, optionIndex) ->
-      val dropDownOption = config.testData.options[indexKey] as ConfigModel.Option.DropDown
+      val dropDownOption = configOptions[indexKey] as ConfigModel.Option.DropDown
       val dropDownValue = dropDownOption.values[optionIndex]
       addYaml(yaml, mergedYaml, dropDownValue.yamlFiles)
       jobNames.add(dropDownValue.jobLabel)
@@ -67,6 +69,16 @@ internal class FlankConfigMapper @Inject constructor(
         .filter { it.isNotEmpty() }
         .joinToString(separator = "-")
     )
+  }
+
+  private fun getConfigOptions(config: Config, flankDataModel: FlankDataModel): List<ConfigModel.Option> {
+    return config.testData.options.run {
+      if (flankDataModel.isRerun) {
+        rerun ?: standard
+      } else {
+        standard
+      }
+    }
   }
 
   private fun addYaml(yaml: Yaml, yamlMap: MutableMap<String, Any>, fileNames: List<String>) {

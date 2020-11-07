@@ -6,7 +6,9 @@ import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
 
 internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) {
   private val delegate by lazy {
-    TestRunnerScreenDelegate(configDataSource)
+    TestRunnerScreenDelegate {
+      configDataSource.getConfig().testData.options.standard
+    }
   }
 
   suspend fun respondHtml(call: ApplicationCall) {

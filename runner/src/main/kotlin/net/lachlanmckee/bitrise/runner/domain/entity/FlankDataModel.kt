@@ -1,6 +1,7 @@
 package net.lachlanmckee.bitrise.runner.domain.entity
 
 internal data class FlankDataModel(
+  val isRerun: Boolean,
   val branch: String,
   val buildSlug: String,
   val commitHash: String,

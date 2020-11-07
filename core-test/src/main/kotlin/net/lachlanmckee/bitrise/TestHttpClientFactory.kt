@@ -20,9 +20,10 @@ fun createTestHttpClientFactory(
   }
 }
 
-object TestFileReader : FileReader {
+class TestFileReader(private val overrides: Map<String, String> = emptyMap()) : FileReader {
   override fun read(name: String): BufferedReader {
-    return ClassLoader.getSystemClassLoader().getResourceAsStream("input/$name")!!.bufferedReader()
+    val resourceName: String = overrides[name] ?: name
+    return ClassLoader.getSystemClassLoader().getResourceAsStream("input/$resourceName")!!.bufferedReader()
   }
 }
 

@@ -62,6 +62,22 @@
             }
           ]
         }
+      ],
+      "rerun": [
+        {
+          "type": "checkbox",
+          "label": "Feature1",
+          "checkedCheckBoxContent": {
+            "jobLabel": "feature1",
+            "yamlFiles": [
+              "flank-other.yaml"
+            ]
+          },
+          "uncheckedCheckBoxContent": {
+            "jobLabel": "",
+            "yamlFiles": []
+          }
+        }
       ]
     }
   }

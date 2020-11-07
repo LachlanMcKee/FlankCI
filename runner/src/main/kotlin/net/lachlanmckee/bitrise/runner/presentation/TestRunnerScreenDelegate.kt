@@ -3,12 +3,11 @@ package net.lachlanmckee.bitrise.runner.presentation
 import io.ktor.application.*
 import io.ktor.html.*
 import kotlinx.html.*
-import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
 import net.lachlanmckee.bitrise.core.data.entity.ConfigModel
 
-internal class TestRunnerScreenDelegate(private val configDataSource: ConfigDataSource) {
+internal class TestRunnerScreenDelegate(private val optionsProviderFunc: suspend () -> List<ConfigModel.Option>) {
   suspend fun respondHtml(call: ApplicationCall, extraContentProvider: BODY.() -> Unit) {
-    val options: List<ConfigModel.Option> = configDataSource.getConfig().testData.options
+    val options: List<ConfigModel.Option> = optionsProviderFunc()
     call.respondHtml {
       head {
         link(rel = "stylesheet", href = "/static/styles.css", type = "text/css")
