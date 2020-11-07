@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="/static/styles.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Bitrise Test Runner</h1>
+<form action="/trigger-tests" enctype="multipart/form-data" method="post" accept-charset="utf-8" target="_blank">
+    <div class="test-runner-group"><label class="inline-label" for="branch-select">Branch: </label><select id="branch-select" name="branch-select"></select></div>
+    <div class="test-runner-group"><label class="inline-label" for="build-select">Build: </label><select id="build-select" name="build-select"></select></div>
+    <div class="test-runner-group">
+        <p class="heading">Artifacts:</p>
+        <p class="content" id="artifact-details"></p>
+    </div>
+    <div class="test-runner-group"><label class="inline-label" for="option-checkbox-0">Feature1:</label><input type="hidden" id="option-checkbox-0-hidden" name="option-checkbox-0-hidden" value="off"><input type="checkbox" id="option-checkbox-0" name="option-checkbox-0"></div>
+    <div class="test-runner-group"><label class="inline-label" for="option-drop-down-1">Presets:</label><select id="option-drop-down-1" name="option-drop-down-1"><option value="0"></option><option value="1">Smoke</option></select></div>
+    <input id="root-package" name="rootPackage" type="hidden"><input id="build-slug" name="buildSlug" type="hidden"><input id="commit-hash" name="commitHash" type="hidden"><input id="defaultBranch" name="defaultBranch" type="hidden" value="BRANCH"><input id="isRerun" name="isRerun" type="hidden" value="true">
+    <p id="classes-heading" class="heading">Classes</p>
+    <div class="test-runner-group classes data-list content">
+        <fieldset id="classes-field-set">
+            <div><input placeholder="full_class0" type="checkbox" id="full_class0" name="full_class" value="com.example.TestClass1#testB"><label for="full_class0">com.example.TestClass1#testB</label></div>
+            <div><input placeholder="full_class1" type="checkbox" id="full_class1" name="full_class" value="com.example.TestClass2#testA"><label for="full_class1">com.example.TestClass2#testA</label></div>
+        </fieldset>
+    </div>
+    <div>
+        <p class="test-runner-group heading"></p>
+        <p class="content"><input type="submit" value="Trigger Tests"></p>
+    </div>
+</form>
+<script src="/static/test-runner-script.js"></script>
+</body>
+</html>

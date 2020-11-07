@@ -13,7 +13,10 @@ internal class TestRerunScreen(
   private val testRerunInteractor: TestRerunInteractor
 ) {
   private val delegate by lazy {
-    TestRunnerScreenDelegate(configDataSource)
+    TestRunnerScreenDelegate {
+      val options = configDataSource.getConfig().testData.options
+      options.rerun ?: options.standard
+    }
   }
 
   suspend fun respondHtml(call: ApplicationCall, buildSlug: String) {
@@ -33,6 +36,12 @@ internal class TestRerunScreen(
       name = "defaultBranch"
       type = InputType.hidden
       value = rerunModel.branch
+    }
+    input {
+      id = "isRerun"
+      name = "isRerun"
+      type = InputType.hidden
+      value = "true"
     }
 
     p {

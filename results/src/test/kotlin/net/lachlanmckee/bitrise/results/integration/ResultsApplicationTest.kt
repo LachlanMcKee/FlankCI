@@ -91,7 +91,7 @@ internal class ResultsApplicationTest {
   ): R {
     val component: ResultsTestComponent = DaggerResultsTestComponent
       .builder()
-      .coreIoModule(CoreIoModule(testHttpClientFactory, TestFileReader))
+      .coreIoModule(CoreIoModule(testHttpClientFactory, TestFileReader()))
       .build()
 
     return withTestApplication(component.typeAdapterFactories(), component.routeProviders(), test)

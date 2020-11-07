@@ -23,7 +23,7 @@ data class ConfigModel(
     val allowTestingWithoutFilters: Boolean,
     val commonYamlFiles: List<String>,
     val annotationBasedYaml: AnnotationBasedYaml,
-    val options: List<Option>
+    val options: Options
   )
 
   @AutoGsonAdapter
@@ -37,6 +37,12 @@ data class ConfigModel(
     val annotation: String,
     val jobLabel: String,
     val yamlFiles: List<String>
+  )
+
+  @AutoGsonAdapter
+  data class Options(
+    val standard: List<Option>,
+    val rerun: List<Option>?
   )
 
   @GsonSubtype(jsonKeys = ["type"])

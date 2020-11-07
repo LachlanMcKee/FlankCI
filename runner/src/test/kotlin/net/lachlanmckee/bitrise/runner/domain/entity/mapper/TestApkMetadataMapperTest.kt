@@ -26,7 +26,10 @@ class TestApkMetadataMapperTest {
         options = emptyList(),
         fallbackYamlFiles = emptyList()
       ),
-      options = emptyList()
+      options = ConfigModel.Options(
+        standard = emptyList(),
+        rerun = null
+      )
     )
     val metadata = testMapper(testData, emptyList())
     assertEquals(
@@ -51,7 +54,10 @@ class TestApkMetadataMapperTest {
         options = emptyList(),
         fallbackYamlFiles = emptyList()
       ),
-      options = emptyList()
+      options = ConfigModel.Options(
+        standard = emptyList(),
+        rerun = null
+      )
     )
     val metadata = testMapper(
       testData,
@@ -98,7 +104,10 @@ class TestApkMetadataMapperTest {
         options = emptyList(),
         fallbackYamlFiles = emptyList()
       ),
-      options = emptyList()
+      options = ConfigModel.Options(
+        standard = emptyList(),
+        rerun = null
+      )
     )
     val metadata = testMapper(
       testData,
@@ -204,7 +213,10 @@ class TestApkMetadataMapperTest {
         options = emptyList(),
         fallbackYamlFiles = emptyList()
       ),
-      options = emptyList()
+      options = ConfigModel.Options(
+        standard = emptyList(),
+        rerun = null
+      )
     )
     val metadata = testMapper(
       testData,
@@ -243,7 +255,10 @@ class TestApkMetadataMapperTest {
         options = emptyList(),
         fallbackYamlFiles = emptyList()
       ),
-      options = emptyList()
+      options = ConfigModel.Options(
+        standard = emptyList(),
+        rerun = null
+      )
     )
     val metadata = testMapper(
       testData,

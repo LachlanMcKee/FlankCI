@@ -9,6 +9,7 @@ internal class FlankDataMapper @Inject constructor(
   private val formDataCollector: FormDataCollector
 ) {
   suspend fun mapToFlankData(multipart: MultiPartData): FlankDataModel {
+    var isRerun = false
     var branch: String? = null
     var buildSlug: String? = null
     var commitHash: String? = null
@@ -22,6 +23,7 @@ internal class FlankDataMapper @Inject constructor(
 
     formDataCollector.collectData(multipart) { name, value ->
       when {
+        name == "isRerun" -> isRerun = value.toBoolean()
         name == "branch-select" -> branch = value
         name == "buildSlug" -> buildSlug = value
         name == "commitHash" -> commitHash = value
@@ -50,6 +52,7 @@ internal class FlankDataMapper @Inject constructor(
     }
 
     return FlankDataModel(
+      isRerun = isRerun,
       branch = requireNotNull(branch) { "Branch must exist" },
       buildSlug = requireNotNull(buildSlug) { "Build slug must exist" },
       commitHash = requireNotNull(commitHash) { "Commit hash must exist" },
