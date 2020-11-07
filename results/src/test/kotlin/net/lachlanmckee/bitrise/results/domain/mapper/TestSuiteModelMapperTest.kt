@@ -89,6 +89,7 @@ internal class TestSuiteModelMapperTest {
           TestModel(
             path = "com.example.TestClass3#testC",
             webLink = "link",
+            failure = "failureReason",
             time = "5.00"
           )
         )
@@ -102,6 +103,7 @@ internal class TestSuiteModelMapperTest {
           TestModel(
             path = "com.example.TestClass2#testB",
             webLink = "link",
+            failure = "failureReason",
             time = "5.00"
           )
         )
@@ -115,11 +117,13 @@ internal class TestSuiteModelMapperTest {
           TestModel(
             path = "com.example.TestClass1#testA",
             webLink = "link",
+            failure = null,
             time = "5.00"
           ),
           TestModel(
             path = "com.example.TestClass2#testB",
             webLink = "link",
+            failure = null,
             time = "5.00"
           )
         )
@@ -133,11 +137,13 @@ internal class TestSuiteModelMapperTest {
           TestModel(
             path = "com.example.TestClass1#testA",
             webLink = "link",
+            failure = null,
             time = "5.00"
           ),
           TestModel(
             path = "com.example.TestClass3#testC",
             webLink = "link",
+            failure = null,
             time = "5.00"
           )
         )

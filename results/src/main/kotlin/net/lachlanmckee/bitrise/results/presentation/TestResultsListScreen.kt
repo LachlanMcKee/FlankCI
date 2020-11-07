@@ -37,13 +37,13 @@ internal class TestResultsListScreen(
           classes = setOf("heading")
         }
         div {
-          testResultModelList.forEach { build -> this@body.testResult(build) }
+          testResultModelList.forEach { build -> testResult(build) }
         }
       }
     }
   }
 
-  private fun BODY.testResult(build: TestResultModel) {
+  private fun DIV.testResult(build: TestResultModel) {
     div {
       classes = when (build.status) {
         "success" -> setOf("job-result-card", "mdl-card", "mdl-shadow--2dp", "job-success")
@@ -54,7 +54,7 @@ internal class TestResultsListScreen(
         classes = setOf("mdl-card__title")
         h2 {
           classes = setOf("mdl-card__title-text")
-          text("${build.branch} [${build.commitHash}]")
+          text(build.branch)
         }
       }
       div {
@@ -73,11 +73,11 @@ internal class TestResultsListScreen(
       div {
         if (build.status != "in-progress") {
           classes = setOf("mdl-card__actions mdl-card--border")
-          this@testResult.button("Test Results", "/test-results/${build.buildSlug}")
+          button("Test Results", "/test-results/${build.buildSlug}")
         }
-        this@testResult.button("Bitrise", build.bitriseUrl)
+        button("Bitrise", build.bitriseUrl)
         if (build.status == "error") {
-          this@testResult.button("Rerun Failures", "/test-rerun?build-slug=${build.buildSlug}")
+          button("Rerun Failures", "/test-rerun?build-slug=${build.buildSlug}")
         }
       }
     }

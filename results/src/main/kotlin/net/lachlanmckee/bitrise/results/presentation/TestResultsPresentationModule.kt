@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
 import io.ktor.application.call
+import io.ktor.http.content.*
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
@@ -15,6 +16,17 @@ import javax.inject.Singleton
 
 @Module(includes = [TestResultsDomainModule::class])
 object TestResultsPresentationModule {
+  @Provides
+  @Singleton
+  @IntoSet
+  internal fun provideJavascriptRouteProvider(): RouteProvider = object : RouteProvider {
+    override fun provideRoute(): Routing.() -> Unit = {
+      static("/static") {
+        resource("test-result-script.js")
+      }
+    }
+  }
+
   @Provides
   @Singleton
   @IntoSet

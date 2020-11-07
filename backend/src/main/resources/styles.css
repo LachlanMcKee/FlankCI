@@ -110,3 +110,16 @@ p {
 .mdl-data-table td {
     text-align: left !important;
 }
+
+.failure-dialog {
+ width: 80%;
+}
+
+.failure-dialog-title {
+ margin-bottom: 20px;
+}
+
+.failure-dialog-content {
+ height: 400px;
+ overflow: auto;
+}

@@ -26,6 +26,7 @@ internal sealed class TestResultDetailModel {
     internal data class TestModel(
       val path: String,
       val webLink: String?,
+      val failure: String?,
       val time: String
     )
 
