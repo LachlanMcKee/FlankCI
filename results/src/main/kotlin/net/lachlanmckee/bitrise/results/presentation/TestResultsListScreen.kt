@@ -73,11 +73,11 @@ internal class TestResultsListScreen(
       div {
         if (build.status != "in-progress") {
           classes = setOf("mdl-card__actions mdl-card--border")
-          button("Test Results", "/test-results/${build.buildSlug}")
+          linkButton("Test Results", "/test-results/${build.buildSlug}")
         }
-        button("Bitrise", build.bitriseUrl)
+        linkButton("Bitrise", build.bitriseUrl)
         if (build.status == "error") {
-          button("Rerun Failures", "/test-rerun?build-slug=${build.buildSlug}")
+          linkButton("Rerun Failures", "/test-rerun?build-slug=${build.buildSlug}")
         }
       }
     }

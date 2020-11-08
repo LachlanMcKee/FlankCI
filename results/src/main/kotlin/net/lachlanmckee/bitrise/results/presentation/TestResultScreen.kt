@@ -86,11 +86,16 @@ internal class TestResultScreen(
         h1 { +"Bitrise Test Result" }
 
         div {
-          button("Bitrise", resultDetailModel.bitriseUrl)
-          button("Firebase", resultDetailModel.firebaseUrl)
+          linkButton("Bitrise", resultDetailModel.bitriseUrl)
+          linkButton("Firebase", resultDetailModel.firebaseUrl)
+
+          resultDetailModel.yaml?.also { yaml ->
+            jsButton("YAML", "openDialog('Yaml')")
+            dialog("dialogYaml", "YAML", yaml.split("\n"))
+          }
 
           if (resultDetailModel.totalFailures > 0) {
-            button(
+            linkButton(
               "Rerun ${resultDetailModel.totalFailures} failures",
               "/test-rerun?build-slug=${resultDetailModel.buildSlug}"
             )
@@ -125,6 +130,12 @@ internal class TestResultScreen(
           th {
             classes = setOf("mdl-data-table__cell--non-numeric")
             text("Duration")
+          }
+          if (testSuite.resultType != TestResultType.SKIPPED) {
+            th {
+              classes = setOf("mdl-data-table__cell--non-numeric")
+              text("Links")
+            }
           }
           th {
             classes = setOf("mdl-data-table__cell--non-numeric")
@@ -169,42 +180,47 @@ internal class TestResultScreen(
       td {
         text(testCase.time)
       }
+      if (testSuite.resultType != TestResultType.SKIPPED) {
+        td {
+          if (testCase.webLink != null) {
+            linkButton("Firebase Report", testCase.webLink, gray = false)
+
+            if (testCase.failure != null) {
+              br()
+            }
+          }
+          if (testCase.failure != null) {
+            failureDialog(testCase.failure, index)
+          }
+        }
+      }
       td {
         text(testCase.path)
-        br()
-        if (testCase.webLink != null) {
-          button("Firebase Report", testCase.webLink, gray = false)
-        }
-        if (testCase.failure != null) {
-          failureDialog(testCase.failure, index)
-        }
       }
     }
   }
 
   private fun HtmlBlockTag.failureDialog(failure: String, index: Int) {
-    a {
-      classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect")
-      onClick = "openDialog($index)"
-      text("Failure Reason")
-    }
+    jsButton("Failure Reason", "openDialog($index)", gray = false)
+    dialog("dialog$index", "Test Failure", failure.split("\n"))
+  }
 
+  private fun HtmlBlockTag.dialog(id: String, title: String, text: List<String>) {
     dialog {
-      id = "dialog$index"
+      this.id = id
       classes = setOf("mdl-dialog", "failure-dialog")
 
       h4 {
         classes = setOf("mdl-dialog__title", "failure-dialog-title")
-        text("Test Failure")
+        text(title)
       }
 
       div {
         classes = setOf("mdl-dialog__content", "failure-dialog-content")
         p {
-          failure
-            .split("\n")
-            .forEach { failureLine ->
-              text(failureLine)
+          text
+            .forEach { line ->
+              text(line)
               br()
             }
         }

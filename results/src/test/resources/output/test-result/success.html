@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>Bitrise Test Result</h1>
-<div><a href="https://app.bitrise.io/build/BUILD_SLUG" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect gray-button" target="_blank">Bitrise</a> <a href="https://console.firebase.google.com/project/foobar" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect gray-button" target="_blank">Firebase</a> <a href="/test-rerun?build-slug=BUILD_SLUG" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect gray-button" target="_blank">Rerun 3 failures</a> </div>
+<div><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect gray-button" href="https://app.bitrise.io/build/BUILD_SLUG" target="_blank">Bitrise</a> <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect gray-button" href="https://console.firebase.google.com/project/foobar" target="_blank">Firebase</a> <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect gray-button" href="/test-rerun?build-slug=BUILD_SLUG" target="_blank">Rerun 3 failures</a> </div>
 <br>
 <div><span class="content"><b>  Virtual devices
 $0.40 for 20m
@@ -22,6 +22,7 @@ $0.40 for 20m
     <tr>
         <th class="mdl-data-table__cell--non-numeric">Result</th>
         <th class="mdl-data-table__cell--non-numeric">Duration</th>
+        <th class="mdl-data-table__cell--non-numeric">Links</th>
         <th class="mdl-data-table__cell--non-numeric">Test</th>
     </tr>
     </thead>
@@ -29,7 +30,7 @@ $0.40 for 20m
     <tr class="test-failure">
         <td>Failure</td>
         <td>6.000</td>
-        <td>com.example.TestClass1#testB<br><a href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-2/testcases/1" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" target="_blank">Firebase Report</a> <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(0)">Failure Reason</a>
+        <td><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-2/testcases/1" target="_blank">Firebase Report</a> <br><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(0)">Failure Reason</a>
             <dialog id="dialog0" class="mdl-dialog failure-dialog">
                 <h4 class="mdl-dialog__title failure-dialog-title">Test Failure</h4>
                 <div class="mdl-dialog__content failure-dialog-content">
@@ -38,11 +39,12 @@ $0.40 for 20m
                 <div class="mdl-dialog__actions"><button class="mdl-button close" type="button">Close</button></div>
             </dialog>
         </td>
+        <td>com.example.TestClass1#testB</td>
     </tr>
     <tr class="test-failure">
         <td>Failure</td>
         <td>6.000</td>
-        <td>com.example.TestClass1#testB<br><a href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-3/testcases/1" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" target="_blank">Firebase Report</a> <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(1)">Failure Reason</a>
+        <td><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-3/testcases/1" target="_blank">Firebase Report</a> <br><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(1)">Failure Reason</a>
             <dialog id="dialog1" class="mdl-dialog failure-dialog">
                 <h4 class="mdl-dialog__title failure-dialog-title">Test Failure</h4>
                 <div class="mdl-dialog__content failure-dialog-content">
@@ -51,11 +53,12 @@ $0.40 for 20m
                 <div class="mdl-dialog__actions"><button class="mdl-button close" type="button">Close</button></div>
             </dialog>
         </td>
+        <td>com.example.TestClass1#testB</td>
     </tr>
     <tr class="test-failure">
         <td>Failure</td>
         <td>6.000</td>
-        <td>com.example.TestClass2#testA<br><a href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-3/testcases/2" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" target="_blank">Firebase Report</a> <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(2)">Failure Reason</a>
+        <td><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-3/testcases/2" target="_blank">Firebase Report</a> <br><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(2)">Failure Reason</a>
             <dialog id="dialog2" class="mdl-dialog failure-dialog">
                 <h4 class="mdl-dialog__title failure-dialog-title">Test Failure</h4>
                 <div class="mdl-dialog__content failure-dialog-content">
@@ -64,6 +67,7 @@ $0.40 for 20m
                 <div class="mdl-dialog__actions"><button class="mdl-button close" type="button">Close</button></div>
             </dialog>
         </td>
+        <td>com.example.TestClass2#testA</td>
     </tr>
     </tbody>
 </table>
@@ -83,7 +87,7 @@ $0.40 for 20m
     <tr class="test-in-progress">
         <td>Skipped</td>
         <td>5.000</td>
-        <td>com.example.TestClass1#testSkipped<br></td>
+        <td>com.example.TestClass1#testSkipped</td>
     </tr>
     </tbody>
 </table>
@@ -96,6 +100,7 @@ $0.40 for 20m
     <tr>
         <th class="mdl-data-table__cell--non-numeric">Result</th>
         <th class="mdl-data-table__cell--non-numeric">Duration</th>
+        <th class="mdl-data-table__cell--non-numeric">Links</th>
         <th class="mdl-data-table__cell--non-numeric">Test</th>
     </tr>
     </thead>
@@ -103,7 +108,8 @@ $0.40 for 20m
     <tr class="test-success">
         <td>Success</td>
         <td>5.000</td>
-        <td>com.example.TestClass1#testA<br><a href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-1/testcases/1" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" target="_blank">Firebase Report</a> </td>
+        <td><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-1/testcases/1" target="_blank">Firebase Report</a> </td>
+        <td>com.example.TestClass1#testA</td>
     </tr>
     </tbody>
 </table>

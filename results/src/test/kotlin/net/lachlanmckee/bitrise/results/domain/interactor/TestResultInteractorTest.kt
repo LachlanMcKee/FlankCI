@@ -24,13 +24,8 @@ internal class TestResultInteractorTest {
   fun givenAllResponsesSucceed_whenExecute_thenExpectTestResultDetailModel() = runBlocking {
     val artifactsResponse = BitriseArtifactsListResponse(listOf())
     coEvery { bitriseDataSource.getArtifactDetails("buildSlug") } returns Result.success(artifactsResponse)
-    coEvery {
-      bitriseDataSource.getArtifactText(
-        artifactsResponse,
-        "buildSlug",
-        "CostReport.txt"
-      )
-    } returns Result.success("cost")
+    mockArtifactText(artifactsResponse, "flank.yml", "flank")
+    mockArtifactText(artifactsResponse, "CostReport.txt", "cost")
     coEvery { bitriseDataSource.getBuildLog("buildSlug") } returns Result.success("buildLog")
 
     val testResults = listOf<TestSuite>()
@@ -62,6 +57,7 @@ internal class TestResultInteractorTest {
       TestResultDetailModel.WithResults(
         buildSlug = "buildSlug",
         bitriseUrl = "https://app.bitrise.io/build/buildSlug",
+        yaml = "flank",
         cost = "cost",
         firebaseUrl = "firebaseUrl",
         totalFailures = 1,
@@ -69,5 +65,15 @@ internal class TestResultInteractorTest {
       ),
       result.getOrThrow()
     )
+  }
+
+  private fun mockArtifactText(
+    artifactsResponse: BitriseArtifactsListResponse,
+    fileName: String,
+    content: String
+  ) {
+    coEvery {
+      bitriseDataSource.getArtifactText(artifactsResponse, "buildSlug", fileName)
+    } returns Result.success(content)
   }
 }
