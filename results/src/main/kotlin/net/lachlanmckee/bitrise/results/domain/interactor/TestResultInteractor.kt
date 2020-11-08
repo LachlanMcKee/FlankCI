@@ -22,10 +22,12 @@ internal class TestResultInteractor @Inject constructor(
   private suspend fun createTestResultModel(
     buildSlug: String
   ): TestResultDetailModel {
-    val costResponse = getCostAsync(buildSlug)
+    val yamlResponse = getArtifactTextAsync(buildSlug, "flank.yml")
+    val costResponse = getArtifactTextAsync(buildSlug, "CostReport.txt")
     val testSuiteModelListResponse = getTestSuiteModelListAsync(buildSlug)
     val firebaseUrlResponse = getFirebaseUrlAsync(buildSlug)
 
+    val yamlResult = yamlResponse.await()
     val costResult = costResponse.await()
     val testSuiteModelListResult = testSuiteModelListResponse.await()
     val firebaseUrl = firebaseUrlResponse.awaitGetOrThrow()
@@ -45,6 +47,7 @@ internal class TestResultInteractor @Inject constructor(
             0
           }
         },
+        yaml = yamlResult.getOrNull(),
         cost = costResult.getOrNull(),
         testSuiteModelList = testSuiteModelList
       )
@@ -57,15 +60,16 @@ internal class TestResultInteractor @Inject constructor(
     }
   }
 
-  private fun getCostAsync(
-    buildSlug: String
+  private fun getArtifactTextAsync(
+    buildSlug: String,
+    fileName: String
   ): Deferred<Result<String>> {
     return GlobalScope.async {
       bitriseDataSource
         .getArtifactDetails(buildSlug)
         .mapCatching { artifactDetails ->
           bitriseDataSource
-            .getArtifactText(artifactDetails, buildSlug, "CostReport.txt")
+            .getArtifactText(artifactDetails, buildSlug, fileName)
             .getOrThrow()
         }
     }

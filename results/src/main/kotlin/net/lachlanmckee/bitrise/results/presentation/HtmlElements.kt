@@ -1,19 +1,30 @@
 package net.lachlanmckee.bitrise.results.presentation
 
-import kotlinx.html.HtmlBlockTag
-import kotlinx.html.a
-import kotlinx.html.classes
+import kotlinx.html.*
 
-fun HtmlBlockTag.button(label: String, url: String, gray: Boolean = true) {
-  a(href = url) {
+fun HtmlBlockTag.button(label: String, gray: Boolean, func: A.() -> Unit) {
+  a {
     classes = mutableSetOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect")
       .apply {
         if (gray) {
           add("gray-button")
         }
       }
-    target = "_blank"
+    func(this)
     text(label)
   }
   text(" ")
+}
+
+fun HtmlBlockTag.linkButton(label: String, url: String, gray: Boolean = true) {
+  button(label, gray) {
+    href = url
+    target = "_blank"
+  }
+}
+
+fun HtmlBlockTag.jsButton(label: String, onClick: String, gray: Boolean = true) {
+  button(label, gray) {
+    this.onClick = onClick
+  }
 }

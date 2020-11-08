@@ -33,5 +33,9 @@ fun assertContentEquals(response: TestApplicationResponse, contentFilePath: Stri
 }
 
 private fun String.removeWhiteSpaces(): String {
-  return lineSequence().joinToString("\n") { it.replace("^\\s+".toRegex(), "") }
+  return lineSequence().joinToString("\n") { line ->
+    line
+      .replace("^\\s+".toRegex(), "")
+      .replace("\\s+$".toRegex(), "")
+  }
 }
