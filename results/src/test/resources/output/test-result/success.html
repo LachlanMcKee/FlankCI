@@ -2,117 +2,128 @@
 <html>
 <head>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css" rel="stylesheet">
+    <link href="https://code.getmdl.io/1.3.0/material.teal-indigo.min.css" rel="stylesheet">
     <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <link href="/static/styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h1>Bitrise Test Result</h1>
-<div><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect gray-button" href="https://app.bitrise.io/build/BUILD_SLUG" target="_blank">Bitrise</a> <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect gray-button" href="https://console.firebase.google.com/project/foobar" target="_blank">Firebase</a> <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect gray-button" href="/test-rerun?build-slug=BUILD_SLUG" target="_blank">Rerun 3 failures</a> </div>
-<br>
-<div><span class="content"><b>  Virtual devices
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row"><span class="mdl-layout-title">Bitrise Test Result</span>
+            <nav class="mdl-navigation"><a href="https://app.bitrise.io/build/BUILD_SLUG" target="_blank" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">build</i><span>Bitrise</span></a><a href="https://console.firebase.google.com/project/foobar" target="_blank" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">local_fire_department</i><span>Firebase</span></a><a href="#" onclick="openDialog('Yaml')" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">text_snippet</i><span>YAML</span></a><a href="/test-rerun?build-slug=BUILD_SLUG" target="_blank" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">replay</i><span>Rerun 3 failures</span></a></nav>
+        </div>
+    </header>
+    <div class="mdl-layout__drawer"><span class="mdl-layout-title">Bitrise Test Result</span>
+        <nav class="mdl-navigation"><a href="/" target="_self" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">home</i><span>Home</span></a><a href="/test-results" target="_self" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">poll</i><span>Test Results</span></a><a href="/test-runner" target="_self" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">directions_run</i><span>Test Runner</span></a><a href="https://app.bitrise.io/build/BUILD_SLUG" target="_blank" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">build</i><span>Bitrise</span></a><a href="https://console.firebase.google.com/project/foobar" target="_blank" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">local_fire_department</i><span>Firebase</span></a><a href="#" onclick="openDialog('Yaml')" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">text_snippet</i><span>YAML</span></a><a href="/test-rerun?build-slug=BUILD_SLUG" target="_blank" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">replay</i><span>Rerun 3 failures</span></a></nav>
+    </div>
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <div><span class="content"><b>  Virtual devices
 $0.40 for 20m
 </b></span></div>
-<div>
-    <p class="heading"></p>
-    <p class="content"><b>Pixel2-28-en-portrait. Tests: 3. Total Duration: 18.00</b></p>
+            <div>
+                <p class="heading"></p>
+                <p class="content"><b>Pixel2-28-en-portrait. Tests: 3. Total Duration: 18.00</b></p>
+            </div>
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Result</th>
+                    <th class="mdl-data-table__cell--non-numeric">Duration</th>
+                    <th class="mdl-data-table__cell--non-numeric">Links</th>
+                    <th class="mdl-data-table__cell--non-numeric">Test</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="test-failure">
+                    <td>Failure</td>
+                    <td>6.000</td>
+                    <td><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-2/testcases/1" target="_blank">Firebase Report</a> <br><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(0)">Failure Reason</a>
+                        <dialog id="dialog0" class="mdl-dialog failure-dialog">
+                            <h4 class="mdl-dialog__title failure-dialog-title">Test Failure</h4>
+                            <div class="mdl-dialog__content failure-dialog-content">
+                                <p>Failure reason 1<br></p>
+                            </div>
+                            <div class="mdl-dialog__actions"><button class="mdl-button close" type="button">Close</button></div>
+                        </dialog>
+                    </td>
+                    <td>com.example.TestClass1#testB</td>
+                </tr>
+                <tr class="test-failure">
+                    <td>Failure</td>
+                    <td>6.000</td>
+                    <td><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-3/testcases/1" target="_blank">Firebase Report</a> <br><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(1)">Failure Reason</a>
+                        <dialog id="dialog1" class="mdl-dialog failure-dialog">
+                            <h4 class="mdl-dialog__title failure-dialog-title">Test Failure</h4>
+                            <div class="mdl-dialog__content failure-dialog-content">
+                                <p>Failure reason 2<br></p>
+                            </div>
+                            <div class="mdl-dialog__actions"><button class="mdl-button close" type="button">Close</button></div>
+                        </dialog>
+                    </td>
+                    <td>com.example.TestClass1#testB</td>
+                </tr>
+                <tr class="test-failure">
+                    <td>Failure</td>
+                    <td>6.000</td>
+                    <td><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-3/testcases/2" target="_blank">Firebase Report</a> <br><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(2)">Failure Reason</a>
+                        <dialog id="dialog2" class="mdl-dialog failure-dialog">
+                            <h4 class="mdl-dialog__title failure-dialog-title">Test Failure</h4>
+                            <div class="mdl-dialog__content failure-dialog-content">
+                                <p>Failure reason 3<br></p>
+                            </div>
+                            <div class="mdl-dialog__actions"><button class="mdl-button close" type="button">Close</button></div>
+                        </dialog>
+                    </td>
+                    <td>com.example.TestClass2#testA</td>
+                </tr>
+                </tbody>
+            </table>
+            <div>
+                <p class="heading"></p>
+                <p class="content"><b>Pixel2-28-en-portrait. Tests: 1. Total Duration: 5.00</b></p>
+            </div>
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Result</th>
+                    <th class="mdl-data-table__cell--non-numeric">Duration</th>
+                    <th class="mdl-data-table__cell--non-numeric">Test</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="test-in-progress">
+                    <td>Skipped</td>
+                    <td>5.000</td>
+                    <td>com.example.TestClass1#testSkipped</td>
+                </tr>
+                </tbody>
+            </table>
+            <div>
+                <p class="heading"></p>
+                <p class="content"><b>Pixel2-28-en-portrait. Tests: 1. Total Duration: 5.00</b></p>
+            </div>
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Result</th>
+                    <th class="mdl-data-table__cell--non-numeric">Duration</th>
+                    <th class="mdl-data-table__cell--non-numeric">Links</th>
+                    <th class="mdl-data-table__cell--non-numeric">Test</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="test-success">
+                    <td>Success</td>
+                    <td>5.000</td>
+                    <td><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-1/testcases/1" target="_blank">Firebase Report</a> </td>
+                    <td>com.example.TestClass1#testA</td>
+                </tr>
+                </tbody>
+            </table>
+            <script src="/static/test-result-script.js"></script>
+        </div>
+    </main>
 </div>
-<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-    <thead>
-    <tr>
-        <th class="mdl-data-table__cell--non-numeric">Result</th>
-        <th class="mdl-data-table__cell--non-numeric">Duration</th>
-        <th class="mdl-data-table__cell--non-numeric">Links</th>
-        <th class="mdl-data-table__cell--non-numeric">Test</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr class="test-failure">
-        <td>Failure</td>
-        <td>6.000</td>
-        <td><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-2/testcases/1" target="_blank">Firebase Report</a> <br><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(0)">Failure Reason</a>
-            <dialog id="dialog0" class="mdl-dialog failure-dialog">
-                <h4 class="mdl-dialog__title failure-dialog-title">Test Failure</h4>
-                <div class="mdl-dialog__content failure-dialog-content">
-                    <p>Failure reason 1<br></p>
-                </div>
-                <div class="mdl-dialog__actions"><button class="mdl-button close" type="button">Close</button></div>
-            </dialog>
-        </td>
-        <td>com.example.TestClass1#testB</td>
-    </tr>
-    <tr class="test-failure">
-        <td>Failure</td>
-        <td>6.000</td>
-        <td><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-3/testcases/1" target="_blank">Firebase Report</a> <br><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(1)">Failure Reason</a>
-            <dialog id="dialog1" class="mdl-dialog failure-dialog">
-                <h4 class="mdl-dialog__title failure-dialog-title">Test Failure</h4>
-                <div class="mdl-dialog__content failure-dialog-content">
-                    <p>Failure reason 2<br></p>
-                </div>
-                <div class="mdl-dialog__actions"><button class="mdl-button close" type="button">Close</button></div>
-            </dialog>
-        </td>
-        <td>com.example.TestClass1#testB</td>
-    </tr>
-    <tr class="test-failure">
-        <td>Failure</td>
-        <td>6.000</td>
-        <td><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-3/testcases/2" target="_blank">Firebase Report</a> <br><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="openDialog(2)">Failure Reason</a>
-            <dialog id="dialog2" class="mdl-dialog failure-dialog">
-                <h4 class="mdl-dialog__title failure-dialog-title">Test Failure</h4>
-                <div class="mdl-dialog__content failure-dialog-content">
-                    <p>Failure reason 3<br></p>
-                </div>
-                <div class="mdl-dialog__actions"><button class="mdl-button close" type="button">Close</button></div>
-            </dialog>
-        </td>
-        <td>com.example.TestClass2#testA</td>
-    </tr>
-    </tbody>
-</table>
-<div>
-    <p class="heading"></p>
-    <p class="content"><b>Pixel2-28-en-portrait. Tests: 1. Total Duration: 5.00</b></p>
-</div>
-<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-    <thead>
-    <tr>
-        <th class="mdl-data-table__cell--non-numeric">Result</th>
-        <th class="mdl-data-table__cell--non-numeric">Duration</th>
-        <th class="mdl-data-table__cell--non-numeric">Test</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr class="test-in-progress">
-        <td>Skipped</td>
-        <td>5.000</td>
-        <td>com.example.TestClass1#testSkipped</td>
-    </tr>
-    </tbody>
-</table>
-<div>
-    <p class="heading"></p>
-    <p class="content"><b>Pixel2-28-en-portrait. Tests: 1. Total Duration: 5.00</b></p>
-</div>
-<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-    <thead>
-    <tr>
-        <th class="mdl-data-table__cell--non-numeric">Result</th>
-        <th class="mdl-data-table__cell--non-numeric">Duration</th>
-        <th class="mdl-data-table__cell--non-numeric">Links</th>
-        <th class="mdl-data-table__cell--non-numeric">Test</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr class="test-success">
-        <td>Success</td>
-        <td>5.000</td>
-        <td><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="https://console.firebase.google.com/project/fake-project-id/testlab/histories/history-id/matrices/matrices-id/executions/execution-1/testcases/1" target="_blank">Firebase Report</a> </td>
-        <td>com.example.TestClass1#testA</td>
-    </tr>
-    </tbody>
-</table>
-<script src="/static/test-result-script.js"></script>
 </body>
 </html>

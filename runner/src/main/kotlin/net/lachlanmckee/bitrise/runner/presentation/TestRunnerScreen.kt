@@ -17,7 +17,7 @@ internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) 
     }
   }
 
-  private fun BODY.addTestRunOptions() {
+  private fun HtmlBlockTag.addTestRunOptions() {
     div {
       classes = setOf("test-runner-group")
       p {

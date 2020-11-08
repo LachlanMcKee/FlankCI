@@ -1,4 +1,4 @@
-package net.lachlanmckee.bitrise.results.presentation
+package net.lachlanmckee.bitrise.core.presentation
 
 import kotlinx.html.*
 

@@ -3,7 +3,7 @@ package net.lachlanmckee.bitrise.results.presentation
 import io.ktor.application.*
 import io.ktor.html.*
 import kotlinx.html.*
-import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
+import net.lachlanmckee.bitrise.core.presentation.*
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.*
 import net.lachlanmckee.bitrise.results.domain.interactor.TestResultInteractor
@@ -71,43 +71,70 @@ internal class TestResultScreen(
   private suspend fun renderTemplate(
     call: ApplicationCall,
     resultDetailModel: TestResultDetailModel,
-    extraContentFunc: BODY.() -> Unit
+    extraContentFunc: HtmlBlockTag.() -> Unit
   ) {
     call.respondHtml {
-      head {
-        link(rel = "stylesheet", href = "https://fonts.googleapis.com/icon?family=Material+Icons")
-        link(rel = "stylesheet", href = "https://code.getmdl.io/1.3.0/material.indigo-pink.min.css")
-        script {
-          src = "https://code.getmdl.io/1.3.0/material.min.js"
-        }
-        link(rel = "stylesheet", href = "/static/styles.css", type = "text/css")
-      }
-      body {
-        h1 { +"Bitrise Test Result" }
-
-        div {
-          linkButton("Bitrise", resultDetailModel.bitriseUrl)
-          linkButton("Firebase", resultDetailModel.firebaseUrl)
-
-          resultDetailModel.yaml?.also { yaml ->
-            jsButton("YAML", "openDialog('Yaml')")
-            dialog("dialogYaml", "YAML", yaml.split("\n"))
-          }
-
-          if (resultDetailModel.totalFailures > 0) {
-            linkButton(
-              "Rerun ${resultDetailModel.totalFailures} failures",
-              "/test-rerun?build-slug=${resultDetailModel.buildSlug}"
+      materialHeader()
+      materialBody(
+        title = "Bitrise Test Result",
+        linksFunc = { mode: MaterialLinkMode ->
+          if (mode == MaterialLinkMode.DRAWER) {
+            materialStandardLink(
+              text = "Home",
+              href = "/",
+              icon = "home",
+              newWindow = false
+            )
+            materialStandardLink(
+              text = "Test Results",
+              href = "/test-results",
+              icon = "poll",
+              newWindow = false
+            )
+            materialStandardLink(
+              text = "Test Runner",
+              href = "/test-runner",
+              icon = "directions_run",
+              newWindow = false
             )
           }
+          materialStandardLink(
+            text = "Bitrise",
+            href = resultDetailModel.bitriseUrl,
+            icon = "build",
+            newWindow = true
+          )
+          materialStandardLink(
+            text = "Firebase",
+            href = resultDetailModel.firebaseUrl,
+            icon = "local_fire_department",
+            newWindow = true
+          )
+          materialJavascriptLink(
+            text = "YAML",
+            onClick = "openDialog('Yaml')",
+            icon = "text_snippet"
+          )
+          if (resultDetailModel.totalFailures > 0) {
+            materialStandardLink(
+              text = "Rerun ${resultDetailModel.totalFailures} failures",
+              href = "/test-rerun?build-slug=${resultDetailModel.buildSlug}",
+              icon = "replay",
+              newWindow = true
+            )
+          }
+        },
+        contentFunc = {
+          resultDetailModel.yaml?.also { yaml ->
+            dialog("dialogYaml", "YAML", yaml.split("\n"))
+          }
+          extraContentFunc()
         }
-        br()
-        extraContentFunc()
-      }
+      )
     }
   }
 
-  private fun BODY.testSuiteElement(testSuite: TestSuiteModel) {
+  private fun HtmlBlockTag.testSuiteElement(testSuite: TestSuiteModel) {
     div {
       p {
         classes = setOf("heading")
@@ -144,7 +171,13 @@ internal class TestResultScreen(
         }
       }
       tbody {
-        testSuite.testCases.forEachIndexed { index, testCase -> this@table.testCaseElement(testSuite, testCase, index) }
+        testSuite.testCases.forEachIndexed { index, testCase ->
+          this@table.testCaseElement(
+            testSuite,
+            testCase,
+            index
+          )
+        }
       }
     }
   }

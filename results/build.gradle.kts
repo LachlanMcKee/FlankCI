@@ -7,8 +7,6 @@ plugins {
 dependencies {
   api(project(":core"))
 
-  implementation(Dependencies.Ktor.htmlBuilder)
-
   implementation(Dependencies.Dagger.dagger)
   kapt(Dependencies.Dagger.daggerCompiler)
 

@@ -34,7 +34,6 @@ dependencies {
 
   implementation(Dependencies.Ktor.serverNetty)
   implementation(Dependencies.logbackClassic)
-  implementation(Dependencies.Ktor.htmlBuilder)
   implementation(Dependencies.Ktor.clientCore)
   implementation(Dependencies.Ktor.clientCoreJvm)
   implementation(Dependencies.Ktor.clientApache)

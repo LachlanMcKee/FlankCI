@@ -17,10 +17,8 @@ fieldset {
 form {
   font-family: sans-serif;
 }
-body {
+.page-content {
   margin: 20px;
-  background: #fafafa;
-  position: relative;
 }
 p {
   white-space: pre-wrap;
@@ -122,4 +120,8 @@ p {
 .failure-dialog-content {
  height: 400px;
  overflow: auto;
+}
+
+.mdl-navigation__link--icon>.material-icons{
+ margin-right:8px;
 }
