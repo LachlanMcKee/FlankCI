@@ -10,8 +10,6 @@ dependencies {
   implementation(Dependencies.androidDexParser)
   implementation(Dependencies.yamlParser)
 
-  implementation(Dependencies.Ktor.htmlBuilder)
-
   implementation(Dependencies.Dagger.dagger)
   kapt(Dependencies.Dagger.daggerCompiler)
 

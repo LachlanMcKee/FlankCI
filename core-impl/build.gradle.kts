@@ -6,7 +6,6 @@ plugins {
 
 dependencies {
   api(project(":core"))
-  implementation(Dependencies.Ktor.htmlBuilder)
   implementation(Dependencies.Ktor.clientCore)
   implementation(Dependencies.Ktor.clientCoreJvm)
   implementation(Dependencies.Ktor.clientApache)

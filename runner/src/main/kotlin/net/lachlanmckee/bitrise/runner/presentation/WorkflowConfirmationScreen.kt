@@ -3,6 +3,7 @@ package net.lachlanmckee.bitrise.runner.presentation
 import io.ktor.application.ApplicationCall
 import io.ktor.html.respondHtml
 import kotlinx.html.*
+import net.lachlanmckee.bitrise.core.presentation.*
 import net.lachlanmckee.bitrise.runner.domain.entity.FlankDataModel
 import java.util.*
 
@@ -14,60 +15,80 @@ internal class WorkflowConfirmationScreen {
     yaml: String
   ) {
     call.respondHtml {
-      head {
-        link(rel = "stylesheet", href = "https://fonts.googleapis.com/icon?family=Material+Icons")
-        link(rel = "stylesheet", href = "https://code.getmdl.io/1.3.0/material.indigo-pink.min.css")
-        script {
-          src = "https://code.getmdl.io/1.3.0/material.min.js"
+      materialHeader()
+      materialBody(
+        title = "Confirm Test Details",
+        linksFunc = { mode: MaterialLinkMode ->
+          if (mode == MaterialLinkMode.DRAWER) {
+            materialStandardLink(
+              text = "Home",
+              href = "/",
+              icon = "home",
+              newWindow = false
+            )
+            materialStandardLink(
+              text = "Test Runner",
+              href = "/test-runner",
+              icon = "directions_run",
+              newWindow = false
+            )
+            materialStandardLink(
+              text = "Test Results",
+              href = "/test-results",
+              icon = "poll",
+              newWindow = false
+            )
+          }
+          materialJavascriptLink(
+            text = "Trigger",
+            onClick = "document.forms[0].submit()",
+            icon = "done"
+          )
+        },
+        contentFunc = { content(flankDataModel, jobName, yaml) }
+      )
+    }
+  }
+
+  private fun HtmlBlockTag.content(flankDataModel: FlankDataModel, jobName: String, yaml: String) {
+    h4 { +"Branch" }
+    p { +flankDataModel.branch }
+    h4 { +"Job Name" }
+    p { +jobName }
+    h4 { +"YAML" }
+    p {
+      yaml
+        .split("\n")
+        .forEach { body ->
+          text(body)
+          br()
         }
-        link(rel = "stylesheet", href = "/static/styles.css", type = "text/css")
+    }
+    form("/confirm-test-trigger", encType = FormEncType.multipartFormData, method = FormMethod.post) {
+      hiddenInput {
+        id = "branch"
+        name = "branch"
+        value = flankDataModel.branch
       }
-      body {
-        h1 { +"Confirm Test Details" }
-        h3 { +"Branch" }
-        p { +flankDataModel.branch }
-        h3 { +"Job Name" }
-        p { +jobName }
-        h3 { +"YAML" }
-        p {
-          yaml
-            .split("\n")
-            .forEach { body ->
-              text(body)
-              br()
-            }
-        }
-        form("/confirm-test-trigger", encType = FormEncType.multipartFormData, method = FormMethod.post) {
-          hiddenInput {
-            id = "branch"
-            name = "branch"
-            value = flankDataModel.branch
-          }
-          hiddenInput {
-            id = "build-slug"
-            name = "build-slug"
-            value = flankDataModel.buildSlug
-          }
-          hiddenInput {
-            id = "commit-hash"
-            name = "commit-hash"
-            value = flankDataModel.commitHash
-          }
-          hiddenInput {
-            id = "job-name"
-            name = "job-name"
-            value = jobName
-          }
-          hiddenInput {
-            id = "yaml-base64"
-            name = "yaml-base64"
-            value = Base64.getEncoder().encodeToString(yaml.toByteArray())
-          }
-          submitInput {
-            classes = setOf("mdl-button mdl-button--colored", "mdl-js-button", "mdl-js-ripple-effect", "green-button")
-            value = "Trigger"
-          }
-        }
+      hiddenInput {
+        id = "build-slug"
+        name = "build-slug"
+        value = flankDataModel.buildSlug
+      }
+      hiddenInput {
+        id = "commit-hash"
+        name = "commit-hash"
+        value = flankDataModel.commitHash
+      }
+      hiddenInput {
+        id = "job-name"
+        name = "job-name"
+        value = jobName
+      }
+      hiddenInput {
+        id = "yaml-base64"
+        name = "yaml-base64"
+        value = Base64.getEncoder().encodeToString(yaml.toByteArray())
       }
     }
   }

@@ -30,7 +30,7 @@ internal class TestRerunScreen(
       .onFailure { errorScreenFactory.respondHtml(call, "Failed to parse content", it.message!!) }
   }
 
-  private fun BODY.addTestRerunOptions(rerunModel: RerunModel) {
+  private fun HtmlBlockTag.addTestRerunOptions(rerunModel: RerunModel) {
     input {
       id = "defaultBranch"
       name = "defaultBranch"

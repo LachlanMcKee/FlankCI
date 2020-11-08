@@ -3,7 +3,7 @@ package net.lachlanmckee.bitrise.results.presentation
 import io.ktor.application.*
 import io.ktor.html.*
 import kotlinx.html.*
-import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
+import net.lachlanmckee.bitrise.core.presentation.*
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
 import net.lachlanmckee.bitrise.results.domain.interactor.TestResultsListInteractor
 
@@ -23,27 +23,31 @@ internal class TestResultsListScreen(
     testResultModelList: List<TestResultModel>
   ) {
     call.respondHtml {
-      head {
-        link(rel = "stylesheet", href = "https://fonts.googleapis.com/icon?family=Material+Icons")
-        link(rel = "stylesheet", href = "https://code.getmdl.io/1.3.0/material.indigo-pink.min.css")
-        script {
-          src = "https://code.getmdl.io/1.3.0/material.min.js"
-        }
-        link(rel = "stylesheet", href = "/static/styles.css", type = "text/css")
-      }
-      body {
-        h1 { +"Bitrise Test Results" }
-        p {
-          classes = setOf("heading")
-        }
-        div {
+      materialHeader()
+      materialBody(
+        title = "Bitrise Test Results",
+        linksFunc = {
+          materialStandardLink(
+            text = "Home",
+            href = "/",
+            icon = "home",
+            newWindow = false
+          )
+          materialStandardLink(
+            text = "Test Runner",
+            href = "/test-runner",
+            icon = "directions_run",
+            newWindow = false
+          )
+        },
+        contentFunc = {
           testResultModelList.forEach { build -> testResult(build) }
         }
-      }
+      )
     }
   }
 
-  private fun DIV.testResult(build: TestResultModel) {
+  private fun HtmlBlockTag.testResult(build: TestResultModel) {
     div {
       classes = when (build.status) {
         "success" -> setOf("job-result-card", "mdl-card", "mdl-shadow--2dp", "job-success")

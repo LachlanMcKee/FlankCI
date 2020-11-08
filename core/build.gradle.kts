@@ -7,6 +7,7 @@ dependencies {
   implementation(Dependencies.Kotlin.stdlib)
   api(Dependencies.Ktor.serverCore)
   implementation(Dependencies.Ktor.serverCore)
+  api(Dependencies.Ktor.htmlBuilder)
   api(Dependencies.Ktor.gson)
   implementation(Dependencies.Ktor.clientJson)
   implementation(Dependencies.Ktor.clientGson)
