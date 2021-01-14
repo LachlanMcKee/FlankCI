@@ -1,5 +1,6 @@
 package net.lachlanmckee.flankci.core.data.datasource.remote
 
+import net.lachlanmckee.flankci.core.data.entity.BuildType
 import net.lachlanmckee.flankci.core.data.entity.WorkflowTriggerData
 import net.lachlanmckee.flankci.core.data.entity.generic.ArtifactResponse
 import net.lachlanmckee.flankci.core.data.entity.generic.ArtifactsListResponse
@@ -8,7 +9,7 @@ import net.lachlanmckee.flankci.core.data.entity.generic.TriggerResponse
 import net.lachlanmckee.flankci.core.data.entity.junit.TestSuite
 
 interface CIDataSource {
-  suspend fun getBuilds(workflow: String): Result<List<BuildDataResponse>>
+  suspend fun getBuilds(buildType: BuildType): Result<List<BuildDataResponse>>
 
   suspend fun getBuildDetails(buildSlug: String): Result<BuildDataResponse>
 

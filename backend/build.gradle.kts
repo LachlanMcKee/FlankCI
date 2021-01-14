@@ -31,6 +31,7 @@ dependencies {
   implementation(project(":core-impl"))
   implementation(project(":runner"))
   implementation(project(":results"))
+  implementation(project(":integration-bitrise"))
 
   implementation(Dependencies.Ktor.serverNetty)
   implementation(Dependencies.logbackClassic)

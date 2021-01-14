@@ -4,6 +4,7 @@ import com.google.gson.TypeAdapterFactory
 import dagger.Component
 import net.lachlanmckee.flankci.core.presentation.CorePresentationModule
 import net.lachlanmckee.flankci.core.presentation.RouteProvider
+import net.lachlanmckee.flankci.integration.bitrise.BitriseIntegrationModule
 import net.lachlanmckee.flankci.runner.presentation.TestRunnerPresentationModule
 import javax.inject.Singleton
 
@@ -11,7 +12,10 @@ import javax.inject.Singleton
 @Component(
   modules = [
     CorePresentationModule::class,
-    TestRunnerPresentationModule::class
+    TestRunnerPresentationModule::class,
+
+    // Integrations
+    BitriseIntegrationModule::class
   ]
 )
 interface RunnerTestComponent {

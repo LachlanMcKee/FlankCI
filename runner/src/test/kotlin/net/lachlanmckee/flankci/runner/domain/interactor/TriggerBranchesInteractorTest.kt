@@ -5,11 +5,9 @@ import io.ktor.response.respond
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.flankci.core.data.datasource.remote.CIDataSource
+import net.lachlanmckee.flankci.core.data.entity.BuildType
 import net.lachlanmckee.flankci.core.data.entity.BuildsData
-import net.lachlanmckee.flankci.core.data.entity.Config
-import net.lachlanmckee.flankci.core.data.entity.ConfigModel
 import net.lachlanmckee.flankci.core.domain.mapper.BuildsMapper
-import net.lachlanmckee.flankci.data.datasource.local.TestConfigDataSource
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
@@ -18,19 +16,6 @@ class TriggerBranchesInteractorTest {
   private val buildsMapper: BuildsMapper = mockk()
   private val interactor = TriggerBranchesInteractor(
     ciDataSource,
-    TestConfigDataSource(
-      Config(
-        configModel = ConfigModel(
-          bitrise = ConfigModel.Bitrise(
-            appId = "",
-            testApkSourceWorkflow = "source-workflow",
-            testTriggerWorkflow = ""
-          ),
-          testData = mockk()
-        ),
-        secretProperties = mockk()
-      )
-    ),
     buildsMapper
   )
 
@@ -43,7 +28,7 @@ class TriggerBranchesInteractorTest {
 
   @Test
   fun givenGetBuildsSuccessAndMappingSuccess_whenExecute_thenRespond() = runBlocking {
-    coEvery { ciDataSource.getBuilds("source-workflow") } returns Result.success(emptyList())
+    coEvery { ciDataSource.getBuilds(BuildType.APK_SOURCE) } returns Result.success(emptyList())
 
     val buildsData = BuildsData(emptyList(), emptyMap())
     every { buildsMapper.mapBuilds(emptyList()) } returns buildsData
@@ -51,7 +36,7 @@ class TriggerBranchesInteractorTest {
     interactor.execute(applicationCall)
 
     coVerifySequence {
-      ciDataSource.getBuilds("source-workflow")
+      ciDataSource.getBuilds(BuildType.APK_SOURCE)
       buildsMapper.mapBuilds(emptyList())
       applicationCall.respond(buildsData)
     }
@@ -59,25 +44,25 @@ class TriggerBranchesInteractorTest {
 
   @Test
   fun givenGetBuildsSuccessAndMappingFailure_whenExecute_thenDoNotRespond() = runBlocking {
-    coEvery { ciDataSource.getBuilds("source-workflow") } returns Result.success(emptyList())
+    coEvery { ciDataSource.getBuilds(BuildType.APK_SOURCE) } returns Result.success(emptyList())
     every { buildsMapper.mapBuilds(emptyList()) } throws RuntimeException()
 
     interactor.execute(applicationCall)
 
     coVerifySequence {
-      ciDataSource.getBuilds("source-workflow")
+      ciDataSource.getBuilds(BuildType.APK_SOURCE)
       buildsMapper.mapBuilds(emptyList())
     }
   }
 
   @Test
   fun givenGetBuildsFailure_whenExecute_thenDoNotRespond() = runBlocking {
-    coEvery { ciDataSource.getBuilds("source-workflow") } returns Result.failure(RuntimeException())
+    coEvery { ciDataSource.getBuilds(BuildType.APK_SOURCE) } returns Result.failure(RuntimeException())
 
     interactor.execute(applicationCall)
 
     coVerifySequence {
-      ciDataSource.getBuilds("source-workflow")
+      ciDataSource.getBuilds(BuildType.APK_SOURCE)
     }
   }
 }

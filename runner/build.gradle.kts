@@ -15,6 +15,7 @@ dependencies {
 
   testImplementation(project(":core-test"))
   testImplementation(project(":core-impl"))
+  testImplementation(project(":integration-bitrise"))
   testImplementation(Dependencies.Dagger.dagger)
   kaptTest(Dependencies.Dagger.daggerCompiler)
 }

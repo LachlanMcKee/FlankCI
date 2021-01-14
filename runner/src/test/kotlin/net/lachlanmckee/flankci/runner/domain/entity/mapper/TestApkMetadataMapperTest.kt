@@ -1,5 +1,6 @@
 package net.lachlanmckee.flankci.runner.domain.entity.mapper
 
+import com.google.gson.JsonObject
 import com.linkedin.dex.parser.TestAnnotation
 import com.linkedin.dex.parser.TestMethod
 import kotlinx.coroutines.runBlocking
@@ -311,11 +312,7 @@ class TestApkMetadataMapperTest {
   private fun createConfig(testData: ConfigModel.TestData): Config {
     return Config(
       configModel = ConfigModel(
-        bitrise = ConfigModel.Bitrise(
-          appId = "",
-          testApkSourceWorkflow = "",
-          testTriggerWorkflow = ""
-        ),
+        ci = JsonObject(),
         testData = testData
       ),
       secretProperties = Properties().apply { put("bitriseToken", "unused") }

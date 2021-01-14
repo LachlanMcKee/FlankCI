@@ -1,7 +1,6 @@
 package net.lachlanmckee.flankci.core.data.datasource.local
 
-import com.google.gson.GsonBuilder
-import com.google.gson.TypeAdapterFactory
+import com.google.gson.Gson
 import net.lachlanmckee.flankci.core.data.FileReader
 import net.lachlanmckee.flankci.core.data.entity.Config
 import net.lachlanmckee.flankci.core.data.entity.ConfigModel
@@ -9,17 +8,12 @@ import java.util.*
 import javax.inject.Inject
 
 internal class ConfigDataSourceImpl @Inject constructor(
-  typeAdapterFactories: Set<@JvmSuppressWildcards TypeAdapterFactory>,
+  gson: Gson,
   fileReader: FileReader
 ) : ConfigDataSource {
   private val config: Config by lazy {
     Config(
-      configModel = GsonBuilder()
-        .apply {
-          typeAdapterFactories.forEach { registerTypeAdapterFactory(it) }
-        }
-        .create()
-        .fromJson(fileReader.read("config.json"), ConfigModel::class.java),
+      configModel = gson.fromJson(fileReader.read("config.json"), ConfigModel::class.java),
       secretProperties = Properties().also {
         it.load(fileReader.read("secrets.properties"))
       }

@@ -1,6 +1,6 @@
 package net.lachlanmckee.flankci.core.data.datasource.remote
 
-import net.lachlanmckee.flankci.core.data.datasource.local.ConfigDataSource
+import net.lachlanmckee.flankci.core.data.entity.BuildType
 import net.lachlanmckee.flankci.core.data.entity.WorkflowTriggerData
 import net.lachlanmckee.flankci.core.data.entity.generic.*
 import net.lachlanmckee.flankci.core.data.entity.junit.TestSuite
@@ -9,12 +9,11 @@ import javax.inject.Inject
 
 internal class CIDataSourceImpl @Inject constructor(
   private val ciService: CIService,
-  private val configDataSource: ConfigDataSource,
   private val testSuitesMapper: TestSuitesMapper
 ) : CIDataSource {
 
-  override suspend fun getBuilds(workflow: String): Result<List<BuildDataResponse>> {
-    return ciService.getBuilds(workflow)
+  override suspend fun getBuilds(buildType: BuildType): Result<List<BuildDataResponse>> {
+    return ciService.getBuilds(buildType)
   }
 
   override suspend fun getBuildDetails(buildSlug: String): Result<BuildDataResponse> {
@@ -52,11 +51,7 @@ internal class CIDataSourceImpl @Inject constructor(
   }
 
   override suspend fun triggerWorkflow(triggerData: WorkflowTriggerData): Result<TriggerResponse> {
-    val flankWorkflowId = configDataSource.getConfig().bitrise.testTriggerWorkflow
-    return ciService.triggerWorkflow(
-      triggerData = triggerData,
-      workflowId = flankWorkflowId
-    )
+    return ciService.triggerWorkflow(triggerData)
   }
 
   override suspend fun getTestResults(buildSlug: String): Result<List<TestSuite>> {

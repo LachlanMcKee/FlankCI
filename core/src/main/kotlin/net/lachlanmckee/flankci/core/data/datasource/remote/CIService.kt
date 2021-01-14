@@ -1,11 +1,11 @@
 package net.lachlanmckee.flankci.core.data.datasource.remote
 
+import net.lachlanmckee.flankci.core.data.entity.BuildType
 import net.lachlanmckee.flankci.core.data.entity.WorkflowTriggerData
 import net.lachlanmckee.flankci.core.data.entity.generic.*
-import java.io.File
 
 interface CIService {
-  suspend fun getBuilds(workflow: String): Result<List<BuildDataResponse>>
+  suspend fun getBuilds(buildType: BuildType): Result<List<BuildDataResponse>>
 
   suspend fun getBuildDetails(buildSlug: String): Result<BuildDataResponse>
 
@@ -17,10 +17,5 @@ interface CIService {
 
   suspend fun getArtifactText(url: String): Result<String>
 
-  suspend fun <T> getUsingTempFile(url: String, callback: suspend (file: File) -> T): T
-
-  suspend fun triggerWorkflow(
-    triggerData: WorkflowTriggerData,
-    workflowId: String
-  ): Result<TriggerResponse>
+  suspend fun triggerWorkflow(triggerData: WorkflowTriggerData): Result<TriggerResponse>
 }
