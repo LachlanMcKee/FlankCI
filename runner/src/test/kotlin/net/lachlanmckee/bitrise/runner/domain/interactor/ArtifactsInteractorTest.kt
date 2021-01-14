@@ -8,7 +8,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
-import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactsListResponse
+import net.lachlanmckee.bitrise.core.data.entity.generic.ArtifactsListResponse
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
@@ -26,14 +26,14 @@ class ArtifactsInteractorTest {
   @Test
   fun givenArtifactSuccess_whenExecute_thenRespond() = runBlocking {
     coEvery { ciDataSource.getArtifactDetails("buildSlug") } returns Result.success(
-      BitriseArtifactsListResponse(emptyList())
+      ArtifactsListResponse(emptyList())
     )
 
     interactor.execute(applicationCall, "buildSlug")
 
     coVerifySequence {
       ciDataSource.getArtifactDetails("buildSlug")
-      applicationCall.respond(BitriseArtifactsListResponse(emptyList()))
+      applicationCall.respond(ArtifactsListResponse(emptyList()))
     }
   }
 

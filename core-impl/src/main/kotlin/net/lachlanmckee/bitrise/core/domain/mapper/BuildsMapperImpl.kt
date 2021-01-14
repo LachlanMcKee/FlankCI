@@ -1,7 +1,7 @@
 package net.lachlanmckee.bitrise.core.domain.mapper
 
-import net.lachlanmckee.bitrise.core.data.entity.BuildDataResponse
 import net.lachlanmckee.bitrise.core.data.entity.BuildsData
+import net.lachlanmckee.bitrise.core.data.entity.generic.BuildDataResponse
 import javax.inject.Inject
 
 internal class BuildsMapperImpl @Inject constructor() : BuildsMapper {

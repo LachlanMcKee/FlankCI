@@ -8,7 +8,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
-import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactResponse
+import net.lachlanmckee.bitrise.core.data.entity.generic.ArtifactResponse
 import net.lachlanmckee.bitrise.runner.data.datasource.remote.ApkDataSource
 import net.lachlanmckee.bitrise.runner.domain.entity.TestApkMetadata
 import net.lachlanmckee.bitrise.runner.domain.mapper.TestApkMetadataMapper
@@ -32,7 +32,7 @@ class TestApkMetadataInteractorTest {
   @Test
   fun givenArtifactAndTestApkMethodsSucceed_whenExecute_thenRespond() = runBlocking {
     coEvery { ciDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
-      BitriseArtifactResponse("apk-url")
+      ArtifactResponse("apk-url")
     )
     coEvery { apkDataSource.getTestApkTestMethods("apk-url") } returns Result.success(emptyList())
 
@@ -68,7 +68,7 @@ class TestApkMetadataInteractorTest {
   @Test
   fun givenArtifactSucceedsAndTestApkMethodsFails_whenExecute_thenDoNotRespond() = runBlocking {
     coEvery { ciDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
-      BitriseArtifactResponse("apk-url")
+      ArtifactResponse("apk-url")
     )
     coEvery { apkDataSource.getTestApkTestMethods("apk-url") } returns Result.failure(RuntimeException())
 
@@ -83,7 +83,7 @@ class TestApkMetadataInteractorTest {
   @Test
   fun givenArtifactAndTestApkMethodsSucceedAndMappingFails_whenExecute_thenDoNotRespond() = runBlocking {
     coEvery { ciDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
-      BitriseArtifactResponse("apk-url")
+      ArtifactResponse("apk-url")
     )
     coEvery { apkDataSource.getTestApkTestMethods("apk-url") } returns Result.success(emptyList())
 

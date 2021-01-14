@@ -5,8 +5,8 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
-import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactsListResponse
-import net.lachlanmckee.bitrise.core.data.entity.TestSuite
+import net.lachlanmckee.bitrise.core.data.entity.generic.ArtifactsListResponse
+import net.lachlanmckee.bitrise.core.data.entity.junit.TestSuite
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.TestResultType
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.TestSuiteModel
@@ -22,7 +22,7 @@ internal class TestResultInteractorTest {
 
   @Test
   fun givenAllResponsesSucceed_whenExecute_thenExpectTestResultDetailModel() = runBlocking {
-    val artifactsResponse = BitriseArtifactsListResponse(listOf())
+    val artifactsResponse = ArtifactsListResponse(listOf())
     coEvery { ciDataSource.getArtifactDetails("buildSlug") } returns Result.success(artifactsResponse)
     mockArtifactText(artifactsResponse, "flank.yml", "flank")
     mockArtifactText(artifactsResponse, "CostReport.txt", "cost")
@@ -68,7 +68,7 @@ internal class TestResultInteractorTest {
   }
 
   private fun mockArtifactText(
-    artifactsResponse: BitriseArtifactsListResponse,
+    artifactsResponse: ArtifactsListResponse,
     fileName: String,
     content: String
   ) {

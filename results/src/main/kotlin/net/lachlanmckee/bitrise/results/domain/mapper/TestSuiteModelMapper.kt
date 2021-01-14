@@ -1,7 +1,7 @@
 package net.lachlanmckee.bitrise.results.domain.mapper
 
-import net.lachlanmckee.bitrise.core.data.entity.TestCase
-import net.lachlanmckee.bitrise.core.data.entity.TestSuite
+import net.lachlanmckee.bitrise.core.data.entity.junit.TestCase
+import net.lachlanmckee.bitrise.core.data.entity.junit.TestSuite
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.*
 import javax.inject.Inject
 

@@ -18,8 +18,8 @@ import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSourceImpl
 import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
 import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSourceImpl
-import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseService
-import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseServiceImpl
+import net.lachlanmckee.bitrise.core.data.datasource.remote.CIService
+import net.lachlanmckee.bitrise.core.data.datasource.remote.CIServiceImpl
 import net.lachlanmckee.bitrise.core.data.mapper.TestSuitesMapper
 import net.lachlanmckee.bitrise.core.data.mapper.TestSuitesMapperImpl
 import javax.inject.Singleton
@@ -41,8 +41,8 @@ internal abstract class CoreDataModule {
       configDataSource: ConfigDataSource,
       httpClientFactory: HttpClientFactory,
       typeAdapterFactories: Set<@JvmSuppressWildcards TypeAdapterFactory>
-    ): BitriseService {
-      return BitriseServiceImpl(
+    ): CIService {
+      return CIServiceImpl(
         client = HttpClient(httpClientFactory.engineFactory) {
           install(JsonFeature) {
             serializer = GsonSerializer {

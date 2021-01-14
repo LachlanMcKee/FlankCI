@@ -1,39 +1,41 @@
 package net.lachlanmckee.bitrise.core.data.datasource.remote
 
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
-import net.lachlanmckee.bitrise.core.data.entity.*
+import net.lachlanmckee.bitrise.core.data.entity.WorkflowTriggerData
+import net.lachlanmckee.bitrise.core.data.entity.generic.*
+import net.lachlanmckee.bitrise.core.data.entity.junit.TestSuite
 import net.lachlanmckee.bitrise.core.data.mapper.TestSuitesMapper
 import javax.inject.Inject
 
 internal class CIDataSourceImpl @Inject constructor(
-  private val bitriseService: BitriseService,
+  private val ciService: CIService,
   private val configDataSource: ConfigDataSource,
   private val testSuitesMapper: TestSuitesMapper
 ) : CIDataSource {
 
   override suspend fun getBuilds(workflow: String): Result<List<BuildDataResponse>> {
-    return bitriseService.getBuilds(workflow)
+    return ciService.getBuilds(workflow)
   }
 
   override suspend fun getBuildDetails(buildSlug: String): Result<BuildDataResponse> {
-    return bitriseService.getBuildDetails(buildSlug)
+    return ciService.getBuildDetails(buildSlug)
   }
 
   override suspend fun getBuildLog(buildSlug: String): Result<String> {
-    return bitriseService.getBuildLog(buildSlug)
-      .mapCatching { bitriseService.getArtifactText(it.expiringRawLogUrl).getOrThrow() }
+    return ciService.getBuildLog(buildSlug)
+      .mapCatching { ciService.getArtifactText(it.expiringRawLogUrl).getOrThrow() }
   }
 
-  override suspend fun getArtifactDetails(buildSlug: String): Result<BitriseArtifactsListResponse> {
-    return bitriseService.getArtifactDetails(buildSlug)
+  override suspend fun getArtifactDetails(buildSlug: String): Result<ArtifactsListResponse> {
+    return ciService.getArtifactDetails(buildSlug)
   }
 
-  override suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<BitriseArtifactResponse> {
-    return bitriseService.getArtifact(buildSlug, artifactSlug)
+  override suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<ArtifactResponse> {
+    return ciService.getArtifact(buildSlug, artifactSlug)
   }
 
   override suspend fun getArtifactText(
-    artifactDetails: BitriseArtifactsListResponse,
+    artifactDetails: ArtifactsListResponse,
     buildSlug: String,
     fileName: String
   ): Result<String> = runCatching {
@@ -45,13 +47,13 @@ internal class CIDataSourceImpl @Inject constructor(
     val artifact = getArtifact(buildSlug, artifactDetail.slug)
       .getOrThrow()
 
-    bitriseService.getArtifactText(artifact.expiringDownloadUrl)
+    ciService.getArtifactText(artifact.expiringDownloadUrl)
       .getOrThrow()
   }
 
-  override suspend fun triggerWorkflow(triggerData: WorkflowTriggerData): Result<BitriseTriggerResponse> {
+  override suspend fun triggerWorkflow(triggerData: WorkflowTriggerData): Result<TriggerResponse> {
     val flankWorkflowId = configDataSource.getConfig().bitrise.testTriggerWorkflow
-    return bitriseService.triggerWorkflow(
+    return ciService.triggerWorkflow(
       triggerData = triggerData,
       workflowId = flankWorkflowId
     )

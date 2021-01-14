@@ -8,8 +8,8 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
-import net.lachlanmckee.bitrise.core.data.entity.BitriseTriggerResponse
 import net.lachlanmckee.bitrise.core.data.entity.WorkflowTriggerData
+import net.lachlanmckee.bitrise.core.data.entity.generic.TriggerResponse
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.domain.interactor.ImmediateMultipartCallFactory
 import net.lachlanmckee.bitrise.runner.domain.entity.ConfirmModel
@@ -101,7 +101,7 @@ class WorkflowTriggerInteractorTest {
         )
       )
     )
-    givenTriggerWorkflowResult(Result.success(BitriseTriggerResponse("not-ok", "url")))
+    givenTriggerWorkflowResult(Result.success(TriggerResponse("not-ok", "url")))
 
     interactor.execute(applicationCall)
 
@@ -137,7 +137,7 @@ class WorkflowTriggerInteractorTest {
         )
       )
     )
-    givenTriggerWorkflowResult(Result.success(BitriseTriggerResponse("ok", "url")))
+    givenTriggerWorkflowResult(Result.success(TriggerResponse("ok", "url")))
 
     interactor.execute(applicationCall)
 
@@ -160,7 +160,7 @@ class WorkflowTriggerInteractorTest {
     coEvery { confirmDataMapper.mapToConfirmModel(any()) } returns result
   }
 
-  private fun givenTriggerWorkflowResult(result: Result<BitriseTriggerResponse>) {
+  private fun givenTriggerWorkflowResult(result: Result<TriggerResponse>) {
     coEvery {
       ciDataSource.triggerWorkflow(
         WorkflowTriggerData(

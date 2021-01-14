@@ -1,4 +1,4 @@
-package net.lachlanmckee.bitrise.core.data.entity
+package net.lachlanmckee.bitrise.core.data.entity.bitrise
 
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.annotations.SerializedName
@@ -6,7 +6,7 @@ import gsonpath.GsonSafeList
 import gsonpath.annotation.AutoGsonAdapter
 
 @AutoGsonAdapter(fieldNamingPolicy = [FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES])
-data class BuildDataResponse(
+data class BitriseBuildDataResponse(
   val branch: String,
   val statusText: String,
   val commitHash: String,
@@ -16,5 +16,5 @@ data class BuildDataResponse(
   val triggeredAt: String,
   val finishedAt: String?,
   @SerializedName("original_build_params.environments")
-  val originalEnvironmentValueList: GsonSafeList<EnvironmentValueResponse>?
+  val originalEnvironmentValueList: GsonSafeList<BitriseEnvironmentValueResponse>?
 )

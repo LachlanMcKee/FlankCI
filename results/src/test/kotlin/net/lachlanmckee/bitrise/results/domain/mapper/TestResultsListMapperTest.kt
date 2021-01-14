@@ -1,8 +1,8 @@
 package net.lachlanmckee.bitrise.results.domain.mapper
 
 import gsonpath.GsonSafeList
-import net.lachlanmckee.bitrise.core.data.entity.BuildDataResponse
-import net.lachlanmckee.bitrise.core.data.entity.EnvironmentValueResponse
+import net.lachlanmckee.bitrise.core.data.entity.generic.BuildDataResponse
+import net.lachlanmckee.bitrise.core.data.entity.generic.EnvironmentValueResponse
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

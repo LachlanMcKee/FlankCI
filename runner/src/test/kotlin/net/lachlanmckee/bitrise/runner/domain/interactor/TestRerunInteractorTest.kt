@@ -3,8 +3,8 @@ package net.lachlanmckee.bitrise.runner.domain.interactor
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
-import net.lachlanmckee.bitrise.core.data.entity.TestCase
-import net.lachlanmckee.bitrise.core.data.entity.TestSuite
+import net.lachlanmckee.bitrise.core.data.entity.junit.TestCase
+import net.lachlanmckee.bitrise.core.data.entity.junit.TestSuite
 import net.lachlanmckee.bitrise.runner.domain.entity.RerunModel
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
