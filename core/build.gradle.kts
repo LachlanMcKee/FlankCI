@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-  implementation(Dependencies.Kotlin.stdlib)
+  api(Dependencies.Kotlin.stdlib)
   api(Dependencies.Ktor.serverCore)
   implementation(Dependencies.Ktor.serverCore)
   api(Dependencies.Ktor.htmlBuilder)

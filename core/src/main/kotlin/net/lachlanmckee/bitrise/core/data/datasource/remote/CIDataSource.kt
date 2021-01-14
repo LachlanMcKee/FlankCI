@@ -2,7 +2,7 @@ package net.lachlanmckee.bitrise.core.data.datasource.remote
 
 import net.lachlanmckee.bitrise.core.data.entity.*
 
-interface BitriseDataSource {
+interface CIDataSource {
   suspend fun getBuilds(workflow: String): Result<List<BuildDataResponse>>
 
   suspend fun getBuildDetails(buildSlug: String): Result<BuildDataResponse>

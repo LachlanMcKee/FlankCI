@@ -16,8 +16,8 @@ import io.ktor.client.features.logging.Logging
 import net.lachlanmckee.bitrise.core.CoreSerializationModule
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSource
 import net.lachlanmckee.bitrise.core.data.datasource.local.ConfigDataSourceImpl
-import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
-import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSourceImpl
+import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
+import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSourceImpl
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseService
 import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseServiceImpl
 import net.lachlanmckee.bitrise.core.data.mapper.TestSuitesMapper
@@ -32,7 +32,7 @@ internal abstract class CoreDataModule {
 
   @Binds
   @Singleton
-  abstract fun bindBitriseDataSource(impl: BitriseDataSourceImpl): BitriseDataSource
+  abstract fun bindCIDataSource(impl: CIDataSourceImpl): CIDataSource
 
   companion object {
     @Provides

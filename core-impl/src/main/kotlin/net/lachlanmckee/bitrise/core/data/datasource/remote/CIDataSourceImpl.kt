@@ -5,11 +5,11 @@ import net.lachlanmckee.bitrise.core.data.entity.*
 import net.lachlanmckee.bitrise.core.data.mapper.TestSuitesMapper
 import javax.inject.Inject
 
-internal class BitriseDataSourceImpl @Inject constructor(
+internal class CIDataSourceImpl @Inject constructor(
   private val bitriseService: BitriseService,
   private val configDataSource: ConfigDataSource,
   private val testSuitesMapper: TestSuitesMapper
-) : BitriseDataSource {
+) : CIDataSource {
 
   override suspend fun getBuilds(workflow: String): Result<List<BuildDataResponse>> {
     return bitriseService.getBuilds(workflow)
