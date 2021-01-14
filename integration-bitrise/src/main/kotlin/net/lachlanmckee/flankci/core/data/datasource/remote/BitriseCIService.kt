@@ -1,30 +1,40 @@
 package net.lachlanmckee.flankci.core.data.datasource.remote
 
+import com.google.gson.Gson
 import gsonpath.GsonResult
 import io.ktor.client.HttpClient
 import io.ktor.client.request.*
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import net.lachlanmckee.flankci.core.data.api.withTempFile
+import kotlinx.coroutines.*
 import net.lachlanmckee.flankci.core.data.datasource.local.ConfigDataSource
 import net.lachlanmckee.flankci.core.data.entity.*
+import net.lachlanmckee.flankci.core.data.entity.BuildType.*
 import net.lachlanmckee.flankci.core.data.entity.bitrise.*
 import net.lachlanmckee.flankci.core.data.entity.generic.*
-import java.io.File
 
 internal class BitriseCIService(
   private val client: HttpClient,
+  private val gson: Gson,
   private val configDataSource: ConfigDataSource
 ) : CIService {
 
-  private suspend fun createAppUrl(): String {
-    return "https://api.bitrise.io/v0.1/apps/${configDataSource.getConfig().bitrise.appId}"
+  private suspend fun getBitriseConfigModel(): BitriseConfigModel {
+    return gson.fromJson(configDataSource.getConfig().ci, BitriseConfigModel::class.java)
   }
 
-  override suspend fun getBuilds(workflow: String): Result<List<BuildDataResponse>> =
+  private suspend fun createAppUrl(): String {
+    return "https://api.bitrise.io/v0.1/apps/${getBitriseConfigModel().appId}"
+  }
+
+  override suspend fun getBuilds(buildType: BuildType): Result<List<BuildDataResponse>> =
     kotlin.runCatching {
+      val workflowId = when (buildType) {
+        APK_SOURCE -> getBitriseConfigModel().testApkSourceWorkflow
+        TEST_TRIGGER -> getBitriseConfigModel().testTriggerWorkflow
+      }
       client
-        .get<BitriseMultipleBuildsResponse>("${createAppUrl()}/builds?workflow=$workflow&sort_by=created_at") {
+        .get<BitriseMultipleBuildsResponse>("${createAppUrl()}/builds?workflow=$workflowId&sort_by=created_at") {
           auth()
         }
         .data
@@ -104,28 +114,12 @@ internal class BitriseCIService(
         .let { ArtifactResponse(it.expiringDownloadUrl) }
     }
 
-  override suspend fun <T> getUsingTempFile(url: String, callback: suspend (file: File) -> T): T {
-    var startTime = System.currentTimeMillis()
-    println("Download started")
-    return client.withTempFile(url) {
-      println("Download finished. Time: ${System.currentTimeMillis() - startTime}")
-
-      startTime = System.currentTimeMillis()
-      callback(it).also {
-        println("Parsing finished. Time: ${System.currentTimeMillis() - startTime}")
-      }
-    }
-  }
-
   override suspend fun getArtifactText(url: String): Result<String> =
     kotlin.runCatching {
       client.get<String>(url)
     }
 
-  override suspend fun triggerWorkflow(
-    triggerData: WorkflowTriggerData,
-    workflowId: String
-  ): Result<TriggerResponse> = kotlin.runCatching {
+  override suspend fun triggerWorkflow(triggerData: WorkflowTriggerData): Result<TriggerResponse> = kotlin.runCatching {
     client
       .post<BitriseTriggerResponse> {
         url("${createAppUrl()}/builds")
@@ -149,7 +143,7 @@ internal class BitriseCIService(
             ),
             branch = triggerData.branch,
             commitHash = triggerData.commitHash,
-            workflowId = workflowId
+            workflowId = getBitriseConfigModel().testTriggerWorkflow
           )
         )
         println("Triggering workflow with content: $bitriseTriggerRequest")

@@ -1,21 +1,15 @@
 package net.lachlanmckee.flankci.core.data.entity
 
+import com.google.gson.JsonObject
 import gsonpath.annotation.AutoGsonAdapter
 import gsonpath.annotation.GsonSubtype
 import gsonpath.annotation.GsonSubtypeGetter
 
 @AutoGsonAdapter
 data class ConfigModel(
-  val bitrise: Bitrise,
+  val ci: JsonObject,
   val testData: TestData
 ) {
-  @AutoGsonAdapter
-  data class Bitrise(
-    val appId: String,
-    val testApkSourceWorkflow: String,
-    val testTriggerWorkflow: String
-  )
-
   @AutoGsonAdapter
   data class TestData(
     val hiddenAnnotations: List<String>,

@@ -1,5 +1,6 @@
 {
-  "bitrise": {
+  "ci": {
+    "type": "bitrise",
     "appId": "APP_ID",
     "testApkSourceWorkflow": "build_test_apk",
     "testTriggerWorkflow": "trigger_tests"
