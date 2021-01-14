@@ -28,7 +28,7 @@
       "pull_request_id": 0,
       "pull_request_target_branch": null,
       "pull_request_view_url": null,
-      "commit_view_url": "https://github.com/LachlanMcKee/BitriseTestRunner/commit/HASH_1"
+      "commit_view_url": "https://github.com/LachlanMcKee/FlankCI/commit/HASH_1"
     },
     {
       "triggered_at": "2020-10-05T12:00:00Z",
@@ -63,7 +63,7 @@
       "pull_request_id": 0,
       "pull_request_target_branch": null,
       "pull_request_view_url": null,
-      "commit_view_url": "https://github.com/LachlanMcKee/BitriseTestRunner/commit/HASH_2"
+      "commit_view_url": "https://github.com/LachlanMcKee/FlankCI/commit/HASH_2"
     }
   ],
   "paging": {
