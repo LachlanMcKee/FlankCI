@@ -1,4 +1,4 @@
-package net.lachlanmckee.bitrise.core.data.entity
+package net.lachlanmckee.bitrise.core.data.entity.bitrise
 
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.annotations.SerializedName

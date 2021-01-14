@@ -4,9 +4,9 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
-import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactsListResponse
-import net.lachlanmckee.bitrise.core.data.entity.TestSuite
+import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
+import net.lachlanmckee.bitrise.core.data.entity.generic.ArtifactsListResponse
+import net.lachlanmckee.bitrise.core.data.entity.junit.TestSuite
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.TestResultType
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.TestSuiteModel
@@ -16,17 +16,17 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 internal class TestResultInteractorTest {
-  private val bitriseDataSource: BitriseDataSource = mockk()
+  private val ciDataSource: CIDataSource = mockk()
   private val testSuiteModelMapper: TestSuiteModelMapper = mockk()
   private val firebaseUrlMapper: FirebaseUrlMapper = mockk()
 
   @Test
   fun givenAllResponsesSucceed_whenExecute_thenExpectTestResultDetailModel() = runBlocking {
-    val artifactsResponse = BitriseArtifactsListResponse(listOf())
-    coEvery { bitriseDataSource.getArtifactDetails("buildSlug") } returns Result.success(artifactsResponse)
+    val artifactsResponse = ArtifactsListResponse(listOf())
+    coEvery { ciDataSource.getArtifactDetails("buildSlug") } returns Result.success(artifactsResponse)
     mockArtifactText(artifactsResponse, "flank.yml", "flank")
     mockArtifactText(artifactsResponse, "CostReport.txt", "cost")
-    coEvery { bitriseDataSource.getBuildLog("buildSlug") } returns Result.success("buildLog")
+    coEvery { ciDataSource.getBuildLog("buildSlug") } returns Result.success("buildLog")
 
     val testResults = listOf<TestSuite>()
     val testSuiteModelList = listOf(
@@ -38,18 +38,18 @@ internal class TestResultInteractorTest {
         testCases = listOf(mockk())
       )
     )
-    coEvery { bitriseDataSource.getTestResults("buildSlug") } returns Result.success(testResults)
+    coEvery { ciDataSource.getTestResults("buildSlug") } returns Result.success(testResults)
     coEvery { testSuiteModelMapper.mapToTestSuiteModelList(testResults) } returns testSuiteModelList
     coEvery { firebaseUrlMapper.mapBuildLogToFirebaseUrl("buildLog") } returns "firebaseUrl"
 
-    val result = TestResultInteractor(bitriseDataSource, testSuiteModelMapper, firebaseUrlMapper)
+    val result = TestResultInteractor(ciDataSource, testSuiteModelMapper, firebaseUrlMapper)
       .execute("buildSlug")
 
     coVerify {
-      bitriseDataSource.getArtifactDetails("buildSlug")
-      bitriseDataSource.getTestResults("buildSlug")
-      bitriseDataSource.getArtifactText(artifactsResponse, "buildSlug", "CostReport.txt")
-      bitriseDataSource.getBuildLog("buildSlug")
+      ciDataSource.getArtifactDetails("buildSlug")
+      ciDataSource.getTestResults("buildSlug")
+      ciDataSource.getArtifactText(artifactsResponse, "buildSlug", "CostReport.txt")
+      ciDataSource.getBuildLog("buildSlug")
       testSuiteModelMapper.mapToTestSuiteModelList(testResults)
     }
 
@@ -68,12 +68,12 @@ internal class TestResultInteractorTest {
   }
 
   private fun mockArtifactText(
-    artifactsResponse: BitriseArtifactsListResponse,
+    artifactsResponse: ArtifactsListResponse,
     fileName: String,
     content: String
   ) {
     coEvery {
-      bitriseDataSource.getArtifactText(artifactsResponse, "buildSlug", fileName)
+      ciDataSource.getArtifactText(artifactsResponse, "buildSlug", fileName)
     } returns Result.success(content)
   }
 }

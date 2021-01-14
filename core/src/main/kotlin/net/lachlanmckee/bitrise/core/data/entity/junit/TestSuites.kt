@@ -1,4 +1,4 @@
-package net.lachlanmckee.bitrise.core.data.entity
+package net.lachlanmckee.bitrise.core.data.entity.junit
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 

@@ -2,55 +2,55 @@ package net.lachlanmckee.bitrise.runner.domain.interactor
 
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
-import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
-import net.lachlanmckee.bitrise.core.data.entity.TestCase
-import net.lachlanmckee.bitrise.core.data.entity.TestSuite
+import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
+import net.lachlanmckee.bitrise.core.data.entity.junit.TestCase
+import net.lachlanmckee.bitrise.core.data.entity.junit.TestSuite
 import net.lachlanmckee.bitrise.runner.domain.entity.RerunModel
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class TestRerunInteractorTest {
-  private val bitriseDataSource: BitriseDataSource = mockk()
-  private val interactor = TestRerunInteractor(bitriseDataSource)
+  private val ciDataSource: CIDataSource = mockk()
+  private val interactor = TestRerunInteractor(ciDataSource)
 
   @AfterEach
   fun verifyNoMoreInteractions() {
-    confirmVerified(bitriseDataSource)
+    confirmVerified(ciDataSource)
   }
 
   @Test
   fun givenBuildDetailsFails_whenExecute_thenReturnFailure() = runBlocking {
     val exception = RuntimeException()
-    coEvery { bitriseDataSource.getBuildDetails("buildSlug") } returns Result.failure(exception)
+    coEvery { ciDataSource.getBuildDetails("buildSlug") } returns Result.failure(exception)
 
     val result = interactor.execute("buildSlug")
 
     assertEquals(exception, result.exceptionOrNull())
 
     coVerify {
-      bitriseDataSource.getBuildDetails("buildSlug")
-      bitriseDataSource.getTestResults("buildSlug")
+      ciDataSource.getBuildDetails("buildSlug")
+      ciDataSource.getTestResults("buildSlug")
     }
   }
 
   @Test
   fun givenTestResultsFails_whenExecute_thenReturnFailure() = runBlocking {
     val exception = RuntimeException()
-    coEvery { bitriseDataSource.getBuildDetails("buildSlug") } returns Result.success(
+    coEvery { ciDataSource.getBuildDetails("buildSlug") } returns Result.success(
       mockk {
         every { branch } returns "branch"
       }
     )
-    coEvery { bitriseDataSource.getTestResults("buildSlug") } returns Result.failure(exception)
+    coEvery { ciDataSource.getTestResults("buildSlug") } returns Result.failure(exception)
 
     val result = interactor.execute("buildSlug")
 
     assertEquals(exception, result.exceptionOrNull())
 
     coVerify {
-      bitriseDataSource.getBuildDetails("buildSlug")
-      bitriseDataSource.getTestResults("buildSlug")
+      ciDataSource.getBuildDetails("buildSlug")
+      ciDataSource.getTestResults("buildSlug")
     }
   }
 
@@ -103,12 +103,12 @@ internal class TestRerunInteractorTest {
   }
 
   private fun testWithContentSuccess(testSuites: List<TestSuite>, expectedTests: List<String>) = runBlocking {
-    coEvery { bitriseDataSource.getBuildDetails("buildSlug") } returns Result.success(
+    coEvery { ciDataSource.getBuildDetails("buildSlug") } returns Result.success(
       mockk {
         every { branch } returns "branch"
       }
     )
-    coEvery { bitriseDataSource.getTestResults("buildSlug") } returns Result.success(testSuites)
+    coEvery { ciDataSource.getTestResults("buildSlug") } returns Result.success(testSuites)
 
     val result = interactor.execute("buildSlug")
 
@@ -121,8 +121,8 @@ internal class TestRerunInteractorTest {
     )
 
     coVerify {
-      bitriseDataSource.getBuildDetails("buildSlug")
-      bitriseDataSource.getTestResults("buildSlug")
+      ciDataSource.getBuildDetails("buildSlug")
+      ciDataSource.getTestResults("buildSlug")
     }
   }
 

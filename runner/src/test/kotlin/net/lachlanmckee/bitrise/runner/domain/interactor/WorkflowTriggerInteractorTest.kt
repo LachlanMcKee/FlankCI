@@ -7,9 +7,9 @@ import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
-import net.lachlanmckee.bitrise.core.data.entity.BitriseTriggerResponse
+import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
 import net.lachlanmckee.bitrise.core.data.entity.WorkflowTriggerData
+import net.lachlanmckee.bitrise.core.data.entity.generic.TriggerResponse
 import net.lachlanmckee.bitrise.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.bitrise.domain.interactor.ImmediateMultipartCallFactory
 import net.lachlanmckee.bitrise.runner.domain.entity.ConfirmModel
@@ -19,13 +19,13 @@ import org.junit.jupiter.api.Test
 
 class WorkflowTriggerInteractorTest {
   private val errorScreenFactory: ErrorScreenFactory = mockk()
-  private val bitriseDataSource: BitriseDataSource = mockk()
+  private val ciDataSource: CIDataSource = mockk()
   private val confirmDataMapper: ConfirmDataMapper = mockk()
   private val interactor: WorkflowTriggerInteractor =
     WorkflowTriggerInteractor(
       ImmediateMultipartCallFactory(),
       errorScreenFactory,
-      bitriseDataSource,
+      ciDataSource,
       confirmDataMapper
     )
 
@@ -33,7 +33,7 @@ class WorkflowTriggerInteractorTest {
 
   @AfterEach
   fun verifyNoMoreInteractions() {
-    confirmVerified(errorScreenFactory, bitriseDataSource, confirmDataMapper, applicationCall)
+    confirmVerified(errorScreenFactory, ciDataSource, confirmDataMapper, applicationCall)
   }
 
   @Test
@@ -71,7 +71,7 @@ class WorkflowTriggerInteractorTest {
 
     coVerifySequence {
       confirmDataMapper.mapToConfirmModel(any())
-      bitriseDataSource.triggerWorkflow(
+      ciDataSource.triggerWorkflow(
         WorkflowTriggerData(
           branch = "branch",
           buildSlug = "slug",
@@ -101,13 +101,13 @@ class WorkflowTriggerInteractorTest {
         )
       )
     )
-    givenTriggerWorkflowResult(Result.success(BitriseTriggerResponse("not-ok", "url")))
+    givenTriggerWorkflowResult(Result.success(TriggerResponse("not-ok", "url")))
 
     interactor.execute(applicationCall)
 
     coVerifySequence {
       confirmDataMapper.mapToConfirmModel(any())
-      bitriseDataSource.triggerWorkflow(
+      ciDataSource.triggerWorkflow(
         WorkflowTriggerData(
           branch = "branch",
           buildSlug = "slug",
@@ -137,13 +137,13 @@ class WorkflowTriggerInteractorTest {
         )
       )
     )
-    givenTriggerWorkflowResult(Result.success(BitriseTriggerResponse("ok", "url")))
+    givenTriggerWorkflowResult(Result.success(TriggerResponse("ok", "url")))
 
     interactor.execute(applicationCall)
 
     coVerifySequence {
       confirmDataMapper.mapToConfirmModel(any())
-      bitriseDataSource.triggerWorkflow(
+      ciDataSource.triggerWorkflow(
         WorkflowTriggerData(
           branch = "branch",
           buildSlug = "slug",
@@ -160,9 +160,9 @@ class WorkflowTriggerInteractorTest {
     coEvery { confirmDataMapper.mapToConfirmModel(any()) } returns result
   }
 
-  private fun givenTriggerWorkflowResult(result: Result<BitriseTriggerResponse>) {
+  private fun givenTriggerWorkflowResult(result: Result<TriggerResponse>) {
     coEvery {
-      bitriseDataSource.triggerWorkflow(
+      ciDataSource.triggerWorkflow(
         WorkflowTriggerData(
           branch = "branch",
           buildSlug = "slug",

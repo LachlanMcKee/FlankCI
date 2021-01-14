@@ -2,7 +2,7 @@ package net.lachlanmckee.bitrise.results.domain.interactor
 
 import kotlinx.coroutines.*
 import net.lachlanmckee.bitrise.core.awaitGetOrThrow
-import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
+import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.TestResultType
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultDetailModel.WithResults.TestSuiteModel
@@ -11,7 +11,7 @@ import net.lachlanmckee.bitrise.results.domain.mapper.TestSuiteModelMapper
 import javax.inject.Inject
 
 internal class TestResultInteractor @Inject constructor(
-  private val bitriseDataSource: BitriseDataSource,
+  private val ciDataSource: CIDataSource,
   private val testSuiteModelMapper: TestSuiteModelMapper,
   private val firebaseUrlMapper: FirebaseUrlMapper
 ) {
@@ -65,10 +65,10 @@ internal class TestResultInteractor @Inject constructor(
     fileName: String
   ): Deferred<Result<String>> {
     return GlobalScope.async {
-      bitriseDataSource
+      ciDataSource
         .getArtifactDetails(buildSlug)
         .mapCatching { artifactDetails ->
-          bitriseDataSource
+          ciDataSource
             .getArtifactText(artifactDetails, buildSlug, fileName)
             .getOrThrow()
         }
@@ -79,7 +79,7 @@ internal class TestResultInteractor @Inject constructor(
     buildSlug: String
   ): Deferred<Result<List<TestSuiteModel>>> {
     return GlobalScope.async {
-      bitriseDataSource.getTestResults(buildSlug)
+      ciDataSource.getTestResults(buildSlug)
         .mapCatching(testSuiteModelMapper::mapToTestSuiteModelList)
     }
   }
@@ -88,7 +88,7 @@ internal class TestResultInteractor @Inject constructor(
     buildSlug: String
   ): Deferred<Result<String>> {
     return GlobalScope.async {
-      bitriseDataSource.getBuildLog(buildSlug)
+      ciDataSource.getBuildLog(buildSlug)
         .mapCatching(firebaseUrlMapper::mapBuildLogToFirebaseUrl)
     }
   }

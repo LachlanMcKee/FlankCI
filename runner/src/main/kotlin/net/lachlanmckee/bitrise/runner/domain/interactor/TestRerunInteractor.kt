@@ -4,14 +4,14 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import net.lachlanmckee.bitrise.core.awaitGetOrThrow
-import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
-import net.lachlanmckee.bitrise.core.data.entity.TestCase
-import net.lachlanmckee.bitrise.core.data.entity.TestSuite
+import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
+import net.lachlanmckee.bitrise.core.data.entity.junit.TestCase
+import net.lachlanmckee.bitrise.core.data.entity.junit.TestSuite
 import net.lachlanmckee.bitrise.runner.domain.entity.RerunModel
 import javax.inject.Inject
 
 class TestRerunInteractor @Inject constructor(
-  private val bitriseDataSource: BitriseDataSource
+  private val ciDataSource: CIDataSource
 ) {
   suspend fun execute(buildSlug: String): Result<RerunModel> = kotlin.runCatching {
     val branchName = getBranchNameAsync(buildSlug)
@@ -25,7 +25,7 @@ class TestRerunInteractor @Inject constructor(
 
   private fun getBranchNameAsync(buildSlug: String): Deferred<Result<String>> {
     return GlobalScope.async {
-      bitriseDataSource
+      ciDataSource
         .getBuildDetails(buildSlug)
         .map { it.branch }
     }
@@ -33,7 +33,7 @@ class TestRerunInteractor @Inject constructor(
 
   private fun getFailedTestsAsync(buildSlug: String): Deferred<Result<List<String>>> {
     return GlobalScope.async {
-      bitriseDataSource
+      ciDataSource
         .getTestResults(buildSlug)
         .mapCatching(::getFailedTestClassNames)
     }

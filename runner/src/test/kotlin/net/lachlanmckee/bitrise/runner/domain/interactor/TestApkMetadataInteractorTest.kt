@@ -7,8 +7,8 @@ import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
-import net.lachlanmckee.bitrise.core.data.entity.BitriseArtifactResponse
+import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
+import net.lachlanmckee.bitrise.core.data.entity.generic.ArtifactResponse
 import net.lachlanmckee.bitrise.runner.data.datasource.remote.ApkDataSource
 import net.lachlanmckee.bitrise.runner.domain.entity.TestApkMetadata
 import net.lachlanmckee.bitrise.runner.domain.mapper.TestApkMetadataMapper
@@ -16,23 +16,23 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 class TestApkMetadataInteractorTest {
-  private val bitriseDataSource: BitriseDataSource = mockk()
+  private val ciDataSource: CIDataSource = mockk()
   private val apkDataSource: ApkDataSource = mockk()
   private val testApkMetadataMapper: TestApkMetadataMapper = mockk()
   private val interactor: TestApkMetadataInteractor =
-    TestApkMetadataInteractor(bitriseDataSource, apkDataSource, testApkMetadataMapper)
+    TestApkMetadataInteractor(ciDataSource, apkDataSource, testApkMetadataMapper)
 
   private val applicationCall: ApplicationCall = mockk()
 
   @AfterEach
   fun verifyNoMoreInteractions() {
-    confirmVerified(bitriseDataSource, testApkMetadataMapper, applicationCall)
+    confirmVerified(ciDataSource, testApkMetadataMapper, applicationCall)
   }
 
   @Test
   fun givenArtifactAndTestApkMethodsSucceed_whenExecute_thenRespond() = runBlocking {
-    coEvery { bitriseDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
-      BitriseArtifactResponse("apk-url")
+    coEvery { ciDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
+      ArtifactResponse("apk-url")
     )
     coEvery { apkDataSource.getTestApkTestMethods("apk-url") } returns Result.success(emptyList())
 
@@ -42,7 +42,7 @@ class TestApkMetadataInteractorTest {
     interactor.execute(applicationCall, "buildSlug", "artifactSlug")
 
     coVerifySequence {
-      bitriseDataSource.getArtifact("buildSlug", "artifactSlug")
+      ciDataSource.getArtifact("buildSlug", "artifactSlug")
       apkDataSource.getTestApkTestMethods("apk-url")
       testApkMetadataMapper.mapTestApkMetadata(emptyList())
       applicationCall.respond(testApkMetadata)
@@ -52,7 +52,7 @@ class TestApkMetadataInteractorTest {
   @Test
   fun givenArtifactFails_whenExecute_thenDoNotRespond() = runBlocking {
     coEvery {
-      bitriseDataSource.getArtifact(
+      ciDataSource.getArtifact(
         "buildSlug",
         "artifactSlug"
       )
@@ -61,29 +61,29 @@ class TestApkMetadataInteractorTest {
     interactor.execute(applicationCall, "buildSlug", "artifactSlug")
 
     coVerifySequence {
-      bitriseDataSource.getArtifact("buildSlug", "artifactSlug")
+      ciDataSource.getArtifact("buildSlug", "artifactSlug")
     }
   }
 
   @Test
   fun givenArtifactSucceedsAndTestApkMethodsFails_whenExecute_thenDoNotRespond() = runBlocking {
-    coEvery { bitriseDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
-      BitriseArtifactResponse("apk-url")
+    coEvery { ciDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
+      ArtifactResponse("apk-url")
     )
     coEvery { apkDataSource.getTestApkTestMethods("apk-url") } returns Result.failure(RuntimeException())
 
     interactor.execute(applicationCall, "buildSlug", "artifactSlug")
 
     coVerifySequence {
-      bitriseDataSource.getArtifact("buildSlug", "artifactSlug")
+      ciDataSource.getArtifact("buildSlug", "artifactSlug")
       apkDataSource.getTestApkTestMethods("apk-url")
     }
   }
 
   @Test
   fun givenArtifactAndTestApkMethodsSucceedAndMappingFails_whenExecute_thenDoNotRespond() = runBlocking {
-    coEvery { bitriseDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
-      BitriseArtifactResponse("apk-url")
+    coEvery { ciDataSource.getArtifact("buildSlug", "artifactSlug") } returns Result.success(
+      ArtifactResponse("apk-url")
     )
     coEvery { apkDataSource.getTestApkTestMethods("apk-url") } returns Result.success(emptyList())
 
@@ -92,7 +92,7 @@ class TestApkMetadataInteractorTest {
     interactor.execute(applicationCall, "buildSlug", "artifactSlug")
 
     coVerifySequence {
-      bitriseDataSource.getArtifact("buildSlug", "artifactSlug")
+      ciDataSource.getArtifact("buildSlug", "artifactSlug")
       apkDataSource.getTestApkTestMethods("apk-url")
       testApkMetadataMapper.mapTestApkMetadata(emptyList())
     }

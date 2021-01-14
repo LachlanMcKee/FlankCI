@@ -4,7 +4,7 @@ import io.ktor.application.ApplicationCall
 import io.ktor.response.respond
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
-import net.lachlanmckee.bitrise.core.data.datasource.remote.BitriseDataSource
+import net.lachlanmckee.bitrise.core.data.datasource.remote.CIDataSource
 import net.lachlanmckee.bitrise.core.data.entity.BuildsData
 import net.lachlanmckee.bitrise.core.data.entity.Config
 import net.lachlanmckee.bitrise.core.data.entity.ConfigModel
@@ -14,10 +14,10 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 class TriggerBranchesInteractorTest {
-  private val bitriseDataSource: BitriseDataSource = mockk()
+  private val ciDataSource: CIDataSource = mockk()
   private val buildsMapper: BuildsMapper = mockk()
   private val interactor = TriggerBranchesInteractor(
-    bitriseDataSource,
+    ciDataSource,
     TestConfigDataSource(
       Config(
         configModel = ConfigModel(
@@ -38,12 +38,12 @@ class TriggerBranchesInteractorTest {
 
   @AfterEach
   fun verifyNoMoreInteractions() {
-    confirmVerified(bitriseDataSource, buildsMapper, applicationCall)
+    confirmVerified(ciDataSource, buildsMapper, applicationCall)
   }
 
   @Test
   fun givenGetBuildsSuccessAndMappingSuccess_whenExecute_thenRespond() = runBlocking {
-    coEvery { bitriseDataSource.getBuilds("source-workflow") } returns Result.success(emptyList())
+    coEvery { ciDataSource.getBuilds("source-workflow") } returns Result.success(emptyList())
 
     val buildsData = BuildsData(emptyList(), emptyMap())
     every { buildsMapper.mapBuilds(emptyList()) } returns buildsData
@@ -51,7 +51,7 @@ class TriggerBranchesInteractorTest {
     interactor.execute(applicationCall)
 
     coVerifySequence {
-      bitriseDataSource.getBuilds("source-workflow")
+      ciDataSource.getBuilds("source-workflow")
       buildsMapper.mapBuilds(emptyList())
       applicationCall.respond(buildsData)
     }
@@ -59,25 +59,25 @@ class TriggerBranchesInteractorTest {
 
   @Test
   fun givenGetBuildsSuccessAndMappingFailure_whenExecute_thenDoNotRespond() = runBlocking {
-    coEvery { bitriseDataSource.getBuilds("source-workflow") } returns Result.success(emptyList())
+    coEvery { ciDataSource.getBuilds("source-workflow") } returns Result.success(emptyList())
     every { buildsMapper.mapBuilds(emptyList()) } throws RuntimeException()
 
     interactor.execute(applicationCall)
 
     coVerifySequence {
-      bitriseDataSource.getBuilds("source-workflow")
+      ciDataSource.getBuilds("source-workflow")
       buildsMapper.mapBuilds(emptyList())
     }
   }
 
   @Test
   fun givenGetBuildsFailure_whenExecute_thenDoNotRespond() = runBlocking {
-    coEvery { bitriseDataSource.getBuilds("source-workflow") } returns Result.failure(RuntimeException())
+    coEvery { ciDataSource.getBuilds("source-workflow") } returns Result.failure(RuntimeException())
 
     interactor.execute(applicationCall)
 
     coVerifySequence {
-      bitriseDataSource.getBuilds("source-workflow")
+      ciDataSource.getBuilds("source-workflow")
     }
   }
 }

@@ -1,6 +1,6 @@
 package net.lachlanmckee.bitrise.results.domain.mapper
 
-import net.lachlanmckee.bitrise.core.data.entity.BuildDataResponse
+import net.lachlanmckee.bitrise.core.data.entity.generic.BuildDataResponse
 import net.lachlanmckee.bitrise.results.domain.entity.TestResultModel
 import javax.inject.Inject
 
