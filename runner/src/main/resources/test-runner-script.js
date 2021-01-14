@@ -2,7 +2,7 @@ let branchSelectDropDown = document.getElementById('branch-select');
 let buildSelectDropDown = document.getElementById('build-select');
 
 async function load() {
-    let branchData = await (await fetch('http://127.0.0.1:8080/bitrise-data')).json();
+    let branchData = await (await fetch('http://127.0.0.1:8080/ci-data')).json();
 
     let branches = branchData.branches;
     console.log("Branch data loaded:");
