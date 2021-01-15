@@ -3,16 +3,14 @@ package net.lachlanmckee.flankci.runner.presentation
 import io.ktor.application.*
 import kotlinx.html.*
 import net.lachlanmckee.flankci.core.data.datasource.local.ConfigDataSource
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 
 internal class TestRunnerScreen(private val configDataSource: ConfigDataSource) {
-  private val delegate by lazy {
+  suspend fun respondHtml(call: ApplicationCall, configurationId: ConfigurationId) {
+    val configuration = configDataSource.getConfig().configuration(configurationId)
     TestRunnerScreenDelegate {
-      configDataSource.getConfig().testData.options.standard
-    }
-  }
-
-  suspend fun respondHtml(call: ApplicationCall) {
-    delegate.respondHtml(call) {
+      configuration.testData.options.standard
+    }.respondHtml(call, configurationId, "${configuration.displayName} Test Runner") {
       addTestRunOptions()
     }
   }

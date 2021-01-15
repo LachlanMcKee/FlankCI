@@ -5,6 +5,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import net.lachlanmckee.flankci.core.awaitGetOrThrow
 import net.lachlanmckee.flankci.core.data.datasource.remote.CIDataSource
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.core.data.entity.junit.TestCase
 import net.lachlanmckee.flankci.core.data.entity.junit.TestSuite
 import net.lachlanmckee.flankci.runner.domain.entity.RerunModel
@@ -13,9 +14,9 @@ import javax.inject.Inject
 class TestRerunInteractor @Inject constructor(
   private val ciDataSource: CIDataSource
 ) {
-  suspend fun execute(buildSlug: String): Result<RerunModel> = kotlin.runCatching {
-    val branchName = getBranchNameAsync(buildSlug)
-    val failedTests = getFailedTestsAsync(buildSlug)
+  suspend fun execute(configurationId: ConfigurationId, buildSlug: String): Result<RerunModel> = kotlin.runCatching {
+    val branchName = getBranchNameAsync(configurationId, buildSlug)
+    val failedTests = getFailedTestsAsync(configurationId, buildSlug)
 
     RerunModel(
       branch = branchName.awaitGetOrThrow(),
@@ -23,18 +24,18 @@ class TestRerunInteractor @Inject constructor(
     )
   }
 
-  private fun getBranchNameAsync(buildSlug: String): Deferred<Result<String>> {
+  private fun getBranchNameAsync(configurationId: ConfigurationId, buildSlug: String): Deferred<Result<String>> {
     return GlobalScope.async {
       ciDataSource
-        .getBuildDetails(buildSlug)
+        .getBuildDetails(configurationId, buildSlug)
         .map { it.branch }
     }
   }
 
-  private fun getFailedTestsAsync(buildSlug: String): Deferred<Result<List<String>>> {
+  private fun getFailedTestsAsync(configurationId: ConfigurationId, buildSlug: String): Deferred<Result<List<String>>> {
     return GlobalScope.async {
       ciDataSource
-        .getTestResults(buildSlug)
+        .getTestResults(configurationId, buildSlug)
         .mapCatching(::getFailedTestClassNames)
     }
   }

@@ -3,6 +3,7 @@ package net.lachlanmckee.flankci.runner.domain.interactor
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.flankci.core.data.datasource.remote.CIDataSource
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.core.data.entity.junit.TestCase
 import net.lachlanmckee.flankci.core.data.entity.junit.TestSuite
 import net.lachlanmckee.flankci.runner.domain.entity.RerunModel
@@ -22,35 +23,40 @@ internal class TestRerunInteractorTest {
   @Test
   fun givenBuildDetailsFails_whenExecute_thenReturnFailure() = runBlocking {
     val exception = RuntimeException()
-    coEvery { ciDataSource.getBuildDetails("buildSlug") } returns Result.failure(exception)
+    coEvery {
+      ciDataSource.getBuildDetails(
+        ConfigurationId("config-id"),
+        "buildSlug"
+      )
+    } returns Result.failure(exception)
 
-    val result = interactor.execute("buildSlug")
+    val result = interactor.execute(ConfigurationId("config-id"), "buildSlug")
 
     assertEquals(exception, result.exceptionOrNull())
 
     coVerify {
-      ciDataSource.getBuildDetails("buildSlug")
-      ciDataSource.getTestResults("buildSlug")
+      ciDataSource.getBuildDetails(ConfigurationId("config-id"), "buildSlug")
+      ciDataSource.getTestResults(ConfigurationId("config-id"), "buildSlug")
     }
   }
 
   @Test
   fun givenTestResultsFails_whenExecute_thenReturnFailure() = runBlocking {
     val exception = RuntimeException()
-    coEvery { ciDataSource.getBuildDetails("buildSlug") } returns Result.success(
+    coEvery { ciDataSource.getBuildDetails(ConfigurationId("config-id"), "buildSlug") } returns Result.success(
       mockk {
         every { branch } returns "branch"
       }
     )
-    coEvery { ciDataSource.getTestResults("buildSlug") } returns Result.failure(exception)
+    coEvery { ciDataSource.getTestResults(ConfigurationId("config-id"), "buildSlug") } returns Result.failure(exception)
 
-    val result = interactor.execute("buildSlug")
+    val result = interactor.execute(ConfigurationId("config-id"), "buildSlug")
 
     assertEquals(exception, result.exceptionOrNull())
 
     coVerify {
-      ciDataSource.getBuildDetails("buildSlug")
-      ciDataSource.getTestResults("buildSlug")
+      ciDataSource.getBuildDetails(ConfigurationId("config-id"), "buildSlug")
+      ciDataSource.getTestResults(ConfigurationId("config-id"), "buildSlug")
     }
   }
 
@@ -103,14 +109,19 @@ internal class TestRerunInteractorTest {
   }
 
   private fun testWithContentSuccess(testSuites: List<TestSuite>, expectedTests: List<String>) = runBlocking {
-    coEvery { ciDataSource.getBuildDetails("buildSlug") } returns Result.success(
+    coEvery { ciDataSource.getBuildDetails(ConfigurationId("config-id"), "buildSlug") } returns Result.success(
       mockk {
         every { branch } returns "branch"
       }
     )
-    coEvery { ciDataSource.getTestResults("buildSlug") } returns Result.success(testSuites)
+    coEvery {
+      ciDataSource.getTestResults(
+        ConfigurationId("config-id"),
+        "buildSlug"
+      )
+    } returns Result.success(testSuites)
 
-    val result = interactor.execute("buildSlug")
+    val result = interactor.execute(ConfigurationId("config-id"), "buildSlug")
 
     assertEquals(
       RerunModel(
@@ -121,8 +132,8 @@ internal class TestRerunInteractorTest {
     )
 
     coVerify {
-      ciDataSource.getBuildDetails("buildSlug")
-      ciDataSource.getTestResults("buildSlug")
+      ciDataSource.getBuildDetails(ConfigurationId("config-id"), "buildSlug")
+      ciDataSource.getTestResults(ConfigurationId("config-id"), "buildSlug")
     }
   }
 

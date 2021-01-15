@@ -3,6 +3,7 @@ package net.lachlanmckee.flankci.runner.presentation
 import io.ktor.application.ApplicationCall
 import io.ktor.html.respondHtml
 import kotlinx.html.*
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.core.presentation.*
 import net.lachlanmckee.flankci.runner.domain.entity.FlankDataModel
 import java.util.*
@@ -10,6 +11,7 @@ import java.util.*
 internal class WorkflowConfirmationScreen {
   suspend fun respondHtml(
     call: ApplicationCall,
+    configurationId: ConfigurationId,
     flankDataModel: FlankDataModel,
     jobName: String,
     yaml: String
@@ -28,13 +30,13 @@ internal class WorkflowConfirmationScreen {
             )
             materialStandardLink(
               text = "Test Runner",
-              href = "/test-runner",
+              href = "/$configurationId/test-runner",
               icon = "directions_run",
               newWindow = false
             )
             materialStandardLink(
               text = "Test Results",
-              href = "/test-results",
+              href = "/$configurationId/test-results",
               icon = "poll",
               newWindow = false
             )

@@ -21,7 +21,7 @@ internal class ResultsApplicationTest {
       }
     }
   ) {
-    with(handleRequest(HttpMethod.Get, "/test-results")) {
+    with(handleRequest(HttpMethod.Get, "/bitrise-sample/test-results")) {
       assertEquals(HttpStatusCode.OK, response.status())
       assertContentEquals(response, "output/test-results-list/expected.html")
     }
@@ -56,7 +56,7 @@ internal class ResultsApplicationTest {
       }
     }
   ) {
-    with(handleRequest(HttpMethod.Get, "/test-results/BUILD_SLUG")) {
+    with(handleRequest(HttpMethod.Get, "/bitrise-sample/test-results/BUILD_SLUG")) {
       assertEquals(HttpStatusCode.OK, response.status())
       assertContentEquals(response, "output/test-result/success.html")
     }
@@ -79,7 +79,7 @@ internal class ResultsApplicationTest {
       }
     }
   ) {
-    with(handleRequest(HttpMethod.Get, "/test-results/BUILD_SLUG")) {
+    with(handleRequest(HttpMethod.Get, "/bitrise-sample/test-results/BUILD_SLUG")) {
       assertEquals(HttpStatusCode.OK, response.status())
       assertContentEquals(response, "output/test-result/failure-no-tests-found.html")
     }

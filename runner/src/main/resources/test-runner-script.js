@@ -1,8 +1,9 @@
+let configurationId = document.getElementById('configurationId').value;
 let branchSelectDropDown = document.getElementById('branch-select');
 let buildSelectDropDown = document.getElementById('build-select');
 
 async function load() {
-    let branchData = await (await fetch('http://127.0.0.1:8080/ci-data')).json();
+    let branchData = await (await fetch('http://127.0.0.1:8080/' + configurationId + '/ci-data')).json();
 
     let branches = branchData.branches;
     console.log("Branch data loaded:");
@@ -62,7 +63,7 @@ async function onBuildChanged(buildsData) {
     let buildSlugInput = document.getElementById('build-slug');
     buildSlugInput.value = buildData.buildSlug;
 
-    let artifactData = await (await fetch('http://127.0.0.1:8080/artifact-data/' + buildSlug)).json();
+    let artifactData = await (await fetch('http://127.0.0.1:8080/' + configurationId + '/artifact-data/' + buildSlug)).json();
     console.log("Artifact data:");
     console.log(artifactData);
 
@@ -83,7 +84,7 @@ async function onBuildChanged(buildsData) {
 }
 
 async function onTestDataRequested(buildSlug, artifactSlug) {
-    let testData = await (await fetch('http://127.0.0.1:8080/test-apk-metadata/' + buildSlug + '/' + artifactSlug)).json();
+    let testData = await (await fetch('http://127.0.0.1:8080/' + configurationId + '/test-apk-metadata/' + buildSlug + '/' + artifactSlug)).json();
     console.log("Test data:");
     console.log(testData);
 

@@ -6,6 +6,7 @@ import com.linkedin.dex.parser.TestMethod
 import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.flankci.core.data.entity.Config
 import net.lachlanmckee.flankci.core.data.entity.ConfigModel
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.data.datasource.local.TestConfigDataSource
 import net.lachlanmckee.flankci.runner.domain.entity.PathWithAnnotationGroups
 import net.lachlanmckee.flankci.runner.domain.entity.TestApkMetadata
@@ -306,16 +307,22 @@ class TestApkMetadataMapperTest {
     originalTestMethods: List<TestMethod>
   ): TestApkMetadata {
     return TestApkMetadataMapper(TestConfigDataSource(createConfig(testData)))
-      .mapTestApkMetadata(originalTestMethods)
+      .mapTestApkMetadata(ConfigurationId("ci-example"), originalTestMethods)
   }
 
   private fun createConfig(testData: ConfigModel.TestData): Config {
     return Config(
       configModel = ConfigModel(
-        ci = JsonObject(),
-        testData = testData
+        configurations = listOf(
+          ConfigModel.Configuration(
+            id = "ci-example",
+            displayName = "CI Example",
+            ci = JsonObject(),
+            testData = testData
+          )
+        )
       ),
-      secretProperties = Properties().apply { put("bitriseToken", "unused") }
+      secretProperties = Properties().apply { put(ConfigurationId("ci-example"), "unused") }
     )
   }
 }

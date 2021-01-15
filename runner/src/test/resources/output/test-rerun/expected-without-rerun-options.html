@@ -9,16 +9,16 @@
 <body>
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <header class="mdl-layout__header">
-        <div class="mdl-layout__header-row"><span class="mdl-layout-title">Flank CI</span>
-            <nav class="mdl-navigation"><a href="/" target="_self" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">home</i><span>Home</span></a><a href="/test-results" target="_self" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">poll</i><span>Test Results</span></a></nav>
+        <div class="mdl-layout__header-row"><span class="mdl-layout-title">Bitrise Sample Test Rerun</span>
+            <nav class="mdl-navigation"><a href="/" target="_self" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">home</i><span>Home</span></a><a href="/bitrise-sample/test-results" target="_self" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">poll</i><span>Test Results</span></a></nav>
         </div>
     </header>
-    <div class="mdl-layout__drawer"><span class="mdl-layout-title">Flank CI</span>
-        <nav class="mdl-navigation"><a href="/" target="_self" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">home</i><span>Home</span></a><a href="/test-results" target="_self" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">poll</i><span>Test Results</span></a></nav>
+    <div class="mdl-layout__drawer"><span class="mdl-layout-title">Bitrise Sample Test Rerun</span>
+        <nav class="mdl-navigation"><a href="/" target="_self" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">home</i><span>Home</span></a><a href="/bitrise-sample/test-results" target="_self" class="mdl-navigation__link mdl-navigation__link--icon"><i class="material-icons">poll</i><span>Test Results</span></a></nav>
     </div>
     <main class="mdl-layout__content">
         <div class="page-content">
-            <form action="/trigger-tests" enctype="multipart/form-data" method="post" accept-charset="utf-8" target="_blank">
+            <form action="/bitrise-sample/trigger-tests" enctype="multipart/form-data" method="post" accept-charset="utf-8" target="_blank">
                 <div class="test-runner-group"><label class="inline-label" for="branch-select">Branch: </label><select id="branch-select" name="branch-select"></select></div>
                 <div class="test-runner-group"><label class="inline-label" for="build-select">Build: </label><select id="build-select" name="build-select"></select></div>
                 <div class="test-runner-group">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="test-runner-group"><label class="inline-label" for="option-checkbox-0">Feature1:</label><input type="hidden" id="option-checkbox-0-hidden" name="option-checkbox-0-hidden" value="off"><input type="checkbox" id="option-checkbox-0" name="option-checkbox-0"></div>
                 <div class="test-runner-group"><label class="inline-label" for="option-drop-down-1">Presets:</label><select id="option-drop-down-1" name="option-drop-down-1"><option value="0"></option><option value="1">Smoke</option></select></div>
-                <input id="root-package" name="rootPackage" type="hidden"><input id="build-slug" name="buildSlug" type="hidden"><input id="commit-hash" name="commitHash" type="hidden"><input id="defaultBranch" name="defaultBranch" type="hidden" value="BRANCH"><input id="isRerun" name="isRerun" type="hidden" value="true">
+                <input id="configurationId" name="configurationId" type="hidden" value="bitrise-sample"><input id="root-package" name="rootPackage" type="hidden"><input id="build-slug" name="buildSlug" type="hidden"><input id="commit-hash" name="commitHash" type="hidden"><input id="defaultBranch" name="defaultBranch" type="hidden" value="BRANCH"><input id="isRerun" name="isRerun" type="hidden" value="true">
                 <p id="classes-heading" class="heading">Classes</p>
                 <div class="test-runner-group classes data-list content">
                     <fieldset id="classes-field-set">

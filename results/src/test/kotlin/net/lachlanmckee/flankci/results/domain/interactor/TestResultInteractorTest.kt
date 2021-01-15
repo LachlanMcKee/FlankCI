@@ -5,6 +5,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.flankci.core.data.datasource.remote.CIDataSource
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.core.data.entity.generic.ArtifactsListResponse
 import net.lachlanmckee.flankci.core.data.entity.junit.TestSuite
 import net.lachlanmckee.flankci.results.domain.entity.TestResultDetailModel
@@ -23,10 +24,10 @@ internal class TestResultInteractorTest {
   @Test
   fun givenAllResponsesSucceed_whenExecute_thenExpectTestResultDetailModel() = runBlocking {
     val artifactsResponse = ArtifactsListResponse(listOf())
-    coEvery { ciDataSource.getArtifactDetails("buildSlug") } returns Result.success(artifactsResponse)
+    coEvery { ciDataSource.getArtifactDetails(ConfigurationId("config-id"), "buildSlug") } returns Result.success(artifactsResponse)
     mockArtifactText(artifactsResponse, "flank.yml", "flank")
     mockArtifactText(artifactsResponse, "CostReport.txt", "cost")
-    coEvery { ciDataSource.getBuildLog("buildSlug") } returns Result.success("buildLog")
+    coEvery { ciDataSource.getBuildLog(ConfigurationId("config-id"), "buildSlug") } returns Result.success("buildLog")
 
     val testResults = listOf<TestSuite>()
     val testSuiteModelList = listOf(
@@ -38,18 +39,18 @@ internal class TestResultInteractorTest {
         testCases = listOf(mockk())
       )
     )
-    coEvery { ciDataSource.getTestResults("buildSlug") } returns Result.success(testResults)
+    coEvery { ciDataSource.getTestResults(ConfigurationId("config-id"), "buildSlug") } returns Result.success(testResults)
     coEvery { testSuiteModelMapper.mapToTestSuiteModelList(testResults) } returns testSuiteModelList
     coEvery { firebaseUrlMapper.mapBuildLogToFirebaseUrl("buildLog") } returns "firebaseUrl"
 
     val result = TestResultInteractor(ciDataSource, testSuiteModelMapper, firebaseUrlMapper)
-      .execute("buildSlug")
+      .execute(ConfigurationId("config-id"), "buildSlug")
 
     coVerify {
-      ciDataSource.getArtifactDetails("buildSlug")
-      ciDataSource.getTestResults("buildSlug")
-      ciDataSource.getArtifactText(artifactsResponse, "buildSlug", "CostReport.txt")
-      ciDataSource.getBuildLog("buildSlug")
+      ciDataSource.getArtifactDetails(ConfigurationId("config-id"), "buildSlug")
+      ciDataSource.getTestResults(ConfigurationId("config-id"), "buildSlug")
+      ciDataSource.getArtifactText(ConfigurationId("config-id"), artifactsResponse, "buildSlug", "CostReport.txt")
+      ciDataSource.getBuildLog(ConfigurationId("config-id"), "buildSlug")
       testSuiteModelMapper.mapToTestSuiteModelList(testResults)
     }
 
@@ -73,7 +74,7 @@ internal class TestResultInteractorTest {
     content: String
   ) {
     coEvery {
-      ciDataSource.getArtifactText(artifactsResponse, "buildSlug", fileName)
+      ciDataSource.getArtifactText(ConfigurationId("config-id"), artifactsResponse, "buildSlug", fileName)
     } returns Result.success(content)
   }
 }

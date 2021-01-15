@@ -3,6 +3,7 @@ package net.lachlanmckee.flankci.results.presentation
 import io.ktor.application.*
 import io.ktor.html.*
 import kotlinx.html.*
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.core.presentation.*
 import net.lachlanmckee.flankci.results.domain.entity.TestResultDetailModel
 import net.lachlanmckee.flankci.results.domain.entity.TestResultDetailModel.WithResults.*
@@ -12,16 +13,16 @@ internal class TestResultScreen(
   private val testResultInteractor: TestResultInteractor,
   private val errorScreenFactory: ErrorScreenFactory
 ) {
-  suspend fun respondHtml(call: ApplicationCall, buildSlug: String) {
+  suspend fun respondHtml(call: ApplicationCall, configurationId: ConfigurationId, buildSlug: String) {
     testResultInteractor
-      .execute(buildSlug)
+      .execute(configurationId, buildSlug)
       .onSuccess { testResultModel ->
         when (testResultModel) {
           is TestResultDetailModel.WithResults -> {
-            renderWithResults(call, testResultModel)
+            renderWithResults(call, configurationId, testResultModel)
           }
           is TestResultDetailModel.NoResults -> {
-            renderNoResults(call, testResultModel)
+            renderNoResults(call, configurationId, testResultModel)
           }
         }
       }
@@ -30,9 +31,10 @@ internal class TestResultScreen(
 
   private suspend fun renderWithResults(
     call: ApplicationCall,
+    configurationId: ConfigurationId,
     resultDetailModel: TestResultDetailModel.WithResults
   ) {
-    renderTemplate(call, resultDetailModel) {
+    renderTemplate(call, configurationId, resultDetailModel) {
       div {
         span {
           classes = setOf("content")
@@ -54,9 +56,10 @@ internal class TestResultScreen(
 
   private suspend fun renderNoResults(
     call: ApplicationCall,
+    configurationId: ConfigurationId,
     resultDetailModel: TestResultDetailModel.NoResults
   ) {
-    renderTemplate(call, resultDetailModel) {
+    renderTemplate(call, configurationId, resultDetailModel) {
       div {
         span {
           classes = setOf("content")
@@ -70,6 +73,7 @@ internal class TestResultScreen(
 
   private suspend fun renderTemplate(
     call: ApplicationCall,
+    configurationId: ConfigurationId,
     resultDetailModel: TestResultDetailModel,
     extraContentFunc: HtmlBlockTag.() -> Unit
   ) {
@@ -87,13 +91,13 @@ internal class TestResultScreen(
             )
             materialStandardLink(
               text = "Test Results",
-              href = "/test-results",
+              href = "/$configurationId/test-results",
               icon = "poll",
               newWindow = false
             )
             materialStandardLink(
               text = "Test Runner",
-              href = "/test-runner",
+              href = "/$configurationId/test-runner",
               icon = "directions_run",
               newWindow = false
             )
@@ -118,7 +122,7 @@ internal class TestResultScreen(
           if (resultDetailModel.totalFailures > 0) {
             materialStandardLink(
               text = "Rerun ${resultDetailModel.totalFailures} failures",
-              href = "/test-rerun?build-slug=${resultDetailModel.buildSlug}",
+              href = "/$configurationId/test-rerun?build-slug=${resultDetailModel.buildSlug}",
               icon = "replay",
               newWindow = true
             )

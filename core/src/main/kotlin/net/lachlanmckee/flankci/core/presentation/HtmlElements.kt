@@ -16,10 +16,10 @@ fun HtmlBlockTag.button(label: String, gray: Boolean, func: A.() -> Unit) {
   text(" ")
 }
 
-fun HtmlBlockTag.linkButton(label: String, url: String, gray: Boolean = true) {
+fun HtmlBlockTag.linkButton(label: String, url: String, gray: Boolean = true, target: String = "_blank") {
   button(label, gray) {
     href = url
-    target = "_blank"
+    this.target = target
   }
 }
 

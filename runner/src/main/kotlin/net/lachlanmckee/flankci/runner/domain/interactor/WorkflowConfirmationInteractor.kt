@@ -1,6 +1,7 @@
 package net.lachlanmckee.flankci.runner.domain.interactor
 
 import io.ktor.application.ApplicationCall
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.core.domain.ktor.MultipartCallFactory
 import net.lachlanmckee.flankci.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.flankci.runner.domain.entity.FlankDataModel
@@ -18,14 +19,14 @@ internal class WorkflowConfirmationInteractor @Inject constructor(
   private val flankDataMapper: FlankDataMapper,
   private val flankConfigMapper: FlankConfigMapper
 ) {
-  suspend fun execute(call: ApplicationCall) {
+  suspend fun execute(call: ApplicationCall, configurationId: ConfigurationId) {
     multipartCallFactory.handleMultipart(call) { multipart ->
       val flankDataModel = flankDataMapper.mapToFlankData(multipart)
       flankConfigMapper
-        .mapToFlankYaml(flankDataModel)
+        .mapToFlankYaml(configurationId, flankDataModel)
         .onSuccess { generatedConfig ->
-          if (!validationErrorHandled(call, generatedConfig)) {
-            triggerWorkflowConfirmation(call, flankDataModel, generatedConfig)
+          if (!validationErrorHandled(call, configurationId, generatedConfig)) {
+            triggerWorkflowConfirmation(call, configurationId, flankDataModel, generatedConfig)
           }
         }
         .onFailure {
@@ -38,8 +39,12 @@ internal class WorkflowConfirmationInteractor @Inject constructor(
     }
   }
 
-  private suspend fun validationErrorHandled(call: ApplicationCall, generatedConfig: GeneratedFlankConfig): Boolean {
-    val error = generatedFlankConfigValidator.getValidationErrorMessage(generatedConfig)
+  private suspend fun validationErrorHandled(
+    call: ApplicationCall,
+    configurationId: ConfigurationId,
+    generatedConfig: GeneratedFlankConfig
+  ): Boolean {
+    val error = generatedFlankConfigValidator.getValidationErrorMessage(configurationId, generatedConfig)
     return if (error != null) {
       errorScreenFactory.respondHtml(
         call = call,
@@ -54,11 +59,13 @@ internal class WorkflowConfirmationInteractor @Inject constructor(
 
   private suspend fun triggerWorkflowConfirmation(
     call: ApplicationCall,
+    configurationId: ConfigurationId,
     flankDataModel: FlankDataModel,
     generatedConfig: GeneratedFlankConfig
   ) {
     WorkflowConfirmationScreen().respondHtml(
       call = call,
+      configurationId = configurationId,
       flankDataModel = flankDataModel,
       jobName = generatedConfig.jobName,
       yaml = generatedConfig.contentAsString
