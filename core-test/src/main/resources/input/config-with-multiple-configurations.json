@@ -1,0 +1,102 @@
+{
+  "configurations": [
+    {
+      "id": "bitrise-sample",
+      "displayName": "Bitrise Sample",
+      "ci": {
+        "type": "bitrise",
+        "appId": "APP_ID",
+        "testApkSourceWorkflow": "build_test_apk",
+        "testTriggerWorkflow": "trigger_tests"
+      },
+      "testData": {
+        "hiddenAnnotations": [
+          "org.junit.runner.RunWith"
+        ],
+        "ignoreTestsWithAnnotations": [
+          "org.junit.Ignore"
+        ],
+        "allowTestingWithoutFilters": false,
+        "commonYamlFiles": [
+          "flank-template.yaml"
+        ],
+        "annotationBasedYaml": {
+          "options": [
+            {
+              "annotation": "com.example.Annotation1",
+              "jobLabel": "annotation1",
+              "yamlFiles": [
+                "flank-annotation1.yaml"
+              ]
+            }
+          ],
+          "fallbackYamlFiles": []
+        },
+        "options": {
+          "standard": [
+            {
+              "type": "checkbox",
+              "label": "Feature1",
+              "checkedCheckBoxContent": {
+                "jobLabel": "feature1",
+                "yamlFiles": [
+                  "flank-other.yaml"
+                ]
+              },
+              "uncheckedCheckBoxContent": {
+                "jobLabel": "",
+                "yamlFiles": []
+              }
+            },
+            {
+              "type": "drop-down",
+              "label": "Presets",
+              "values": [
+                {
+                  "label": "",
+                  "jobLabel": "",
+                  "yamlFiles": []
+                },
+                {
+                  "label": "Smoke",
+                  "jobLabel": "smoke",
+                  "yamlFiles": [
+                    "flank-smoke-devices.yaml",
+                    "flank-smoke-preset.yaml"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "bitrise-sample-2",
+      "displayName": "Bitrise Sample 2",
+      "ci": {
+        "type": "bitrise",
+        "appId": "APP_ID",
+        "testApkSourceWorkflow": "build_test_apk",
+        "testTriggerWorkflow": "trigger_tests"
+      },
+      "testData": {
+        "hiddenAnnotations": [
+        ],
+        "ignoreTestsWithAnnotations": [
+        ],
+        "allowTestingWithoutFilters": false,
+        "commonYamlFiles": [
+          "flank-template.yaml"
+        ],
+        "annotationBasedYaml": {
+          "options": [],
+          "fallbackYamlFiles": []
+        },
+        "options": {
+          "standard": []
+        }
+      }
+    }
+  ]
+}
