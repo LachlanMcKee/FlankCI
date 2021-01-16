@@ -59,7 +59,8 @@ subprojects {
     kotlinOptions {
       jvmTarget = "1.8"
       freeCompilerArgs = listOf(
-        "-Xallow-result-return-type"
+        "-Xallow-result-return-type",
+        "-Xinline-classes"
       )
     }
   }

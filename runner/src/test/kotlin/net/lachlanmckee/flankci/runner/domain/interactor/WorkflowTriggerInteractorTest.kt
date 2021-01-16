@@ -8,6 +8,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.flankci.core.data.datasource.remote.CIDataSource
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.core.data.entity.WorkflowTriggerData
 import net.lachlanmckee.flankci.core.data.entity.generic.TriggerResponse
 import net.lachlanmckee.flankci.core.presentation.ErrorScreenFactory
@@ -40,7 +41,7 @@ class WorkflowTriggerInteractorTest {
   fun givenConfirmDataMapperFails_whenExecute_thenRespondErrorHtml() = runBlocking {
     givenMapToConfirmModelResult(Result.failure(RuntimeException("Reason")))
 
-    interactor.execute(applicationCall)
+    interactor.execute(applicationCall, ConfigurationId("config-id"))
 
     coVerifySequence {
       confirmDataMapper.mapToConfirmModel(any())
@@ -67,11 +68,12 @@ class WorkflowTriggerInteractorTest {
     )
     givenTriggerWorkflowResult(Result.failure(RuntimeException("Reason")))
 
-    interactor.execute(applicationCall)
+    interactor.execute(applicationCall, ConfigurationId("config-id"))
 
     coVerifySequence {
       confirmDataMapper.mapToConfirmModel(any())
       ciDataSource.triggerWorkflow(
+        ConfigurationId("config-id"),
         WorkflowTriggerData(
           branch = "branch",
           buildSlug = "slug",
@@ -103,11 +105,12 @@ class WorkflowTriggerInteractorTest {
     )
     givenTriggerWorkflowResult(Result.success(TriggerResponse("not-ok", "url")))
 
-    interactor.execute(applicationCall)
+    interactor.execute(applicationCall, ConfigurationId("config-id"))
 
     coVerifySequence {
       confirmDataMapper.mapToConfirmModel(any())
       ciDataSource.triggerWorkflow(
+        ConfigurationId("config-id"),
         WorkflowTriggerData(
           branch = "branch",
           buildSlug = "slug",
@@ -139,11 +142,12 @@ class WorkflowTriggerInteractorTest {
     )
     givenTriggerWorkflowResult(Result.success(TriggerResponse("ok", "url")))
 
-    interactor.execute(applicationCall)
+    interactor.execute(applicationCall, ConfigurationId("config-id"))
 
     coVerifySequence {
       confirmDataMapper.mapToConfirmModel(any())
       ciDataSource.triggerWorkflow(
+        ConfigurationId("config-id"),
         WorkflowTriggerData(
           branch = "branch",
           buildSlug = "slug",
@@ -163,6 +167,7 @@ class WorkflowTriggerInteractorTest {
   private fun givenTriggerWorkflowResult(result: Result<TriggerResponse>) {
     coEvery {
       ciDataSource.triggerWorkflow(
+        ConfigurationId("config-id"),
         WorkflowTriggerData(
           branch = "branch",
           buildSlug = "slug",

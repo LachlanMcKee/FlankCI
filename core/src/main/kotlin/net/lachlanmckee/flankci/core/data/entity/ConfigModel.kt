@@ -7,9 +7,16 @@ import gsonpath.annotation.GsonSubtypeGetter
 
 @AutoGsonAdapter
 data class ConfigModel(
-  val ci: JsonObject,
-  val testData: TestData
+  val configurations: List<Configuration>
 ) {
+  @AutoGsonAdapter
+  data class Configuration(
+    val id: String,
+    val displayName: String,
+    val ci: JsonObject,
+    val testData: TestData
+  )
+
   @AutoGsonAdapter
   data class TestData(
     val hiddenAnnotations: List<String>,

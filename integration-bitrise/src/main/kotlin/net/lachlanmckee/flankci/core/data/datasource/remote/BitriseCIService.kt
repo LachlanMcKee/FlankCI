@@ -19,23 +19,26 @@ internal class BitriseCIService(
   private val configDataSource: ConfigDataSource
 ) : CIService {
 
-  private suspend fun getBitriseConfigModel(): BitriseConfigModel {
-    return gson.fromJson(configDataSource.getConfig().ci, BitriseConfigModel::class.java)
+  private suspend fun getBitriseConfigModel(configurationId: ConfigurationId): BitriseConfigModel {
+    return gson.fromJson(
+      configDataSource.getConfig().configuration(configurationId).ci,
+      BitriseConfigModel::class.java
+    )
   }
 
-  private suspend fun createAppUrl(): String {
-    return "https://api.bitrise.io/v0.1/apps/${getBitriseConfigModel().appId}"
+  private suspend fun createAppUrl(configurationId: ConfigurationId): String {
+    return "https://api.bitrise.io/v0.1/apps/${getBitriseConfigModel(configurationId).appId}"
   }
 
-  override suspend fun getBuilds(buildType: BuildType): Result<List<BuildDataResponse>> =
+  override suspend fun getBuilds(configurationId: ConfigurationId, buildType: BuildType): Result<List<BuildDataResponse>> =
     kotlin.runCatching {
       val workflowId = when (buildType) {
-        APK_SOURCE -> getBitriseConfigModel().testApkSourceWorkflow
-        TEST_TRIGGER -> getBitriseConfigModel().testTriggerWorkflow
+        APK_SOURCE -> getBitriseConfigModel(configurationId).testApkSourceWorkflow
+        TEST_TRIGGER -> getBitriseConfigModel(configurationId).testTriggerWorkflow
       }
       client
-        .get<BitriseMultipleBuildsResponse>("${createAppUrl()}/builds?workflow=$workflowId&sort_by=created_at") {
-          auth()
+        .get<BitriseMultipleBuildsResponse>("${createAppUrl(configurationId)}/builds?workflow=$workflowId&sort_by=created_at") {
+          auth(configurationId)
         }
         .data
         .flatMap {
@@ -49,11 +52,11 @@ internal class BitriseCIService(
         }
     }
 
-  override suspend fun getBuildDetails(buildSlug: String): Result<BuildDataResponse> =
+  override suspend fun getBuildDetails(configurationId: ConfigurationId, buildSlug: String): Result<BuildDataResponse> =
     kotlin.runCatching {
       client
-        .get<BitriseSingleBuildResponse>("${createAppUrl()}/builds/$buildSlug") {
-          auth()
+        .get<BitriseSingleBuildResponse>("${createAppUrl(configurationId)}/builds/$buildSlug") {
+          auth(configurationId)
         }
         .data
         .let(::mapBitriseBuildDataResponse)
@@ -75,20 +78,20 @@ internal class BitriseCIService(
     )
   }
 
-  override suspend fun getBuildLog(buildSlug: String): Result<BuildLogResponse> =
+  override suspend fun getBuildLog(configurationId: ConfigurationId, buildSlug: String): Result<BuildLogResponse> =
     kotlin.runCatching {
       client
-        .get<BitriseBuildLogResponse>("${createAppUrl()}/builds/$buildSlug/log") {
-          auth()
+        .get<BitriseBuildLogResponse>("${createAppUrl(configurationId)}/builds/$buildSlug/log") {
+          auth(configurationId)
         }
         .let { BuildLogResponse(it.expiringRawLogUrl) }
     }
 
-  override suspend fun getArtifactDetails(buildSlug: String): Result<ArtifactsListResponse> =
+  override suspend fun getArtifactDetails(configurationId: ConfigurationId, buildSlug: String): Result<ArtifactsListResponse> =
     kotlin.runCatching {
       client
-        .get<BitriseArtifactsListResponse>("${createAppUrl()}/builds/$buildSlug/artifacts") {
-          auth()
+        .get<BitriseArtifactsListResponse>("${createAppUrl(configurationId)}/builds/$buildSlug/artifacts") {
+          auth(configurationId)
         }
         .let {
           ArtifactsListResponse(
@@ -105,11 +108,11 @@ internal class BitriseCIService(
         }
     }
 
-  override suspend fun getArtifact(buildSlug: String, artifactSlug: String): Result<ArtifactResponse> =
+  override suspend fun getArtifact(configurationId: ConfigurationId, buildSlug: String, artifactSlug: String): Result<ArtifactResponse> =
     kotlin.runCatching {
       client
-        .get<BitriseArtifactResponse>("${createAppUrl()}/builds/$buildSlug/artifacts/$artifactSlug") {
-          auth()
+        .get<BitriseArtifactResponse>("${createAppUrl(configurationId)}/builds/$buildSlug/artifacts/$artifactSlug") {
+          auth(configurationId)
         }
         .let { ArtifactResponse(it.expiringDownloadUrl) }
     }
@@ -119,12 +122,12 @@ internal class BitriseCIService(
       client.get<String>(url)
     }
 
-  override suspend fun triggerWorkflow(triggerData: WorkflowTriggerData): Result<TriggerResponse> = kotlin.runCatching {
+  override suspend fun triggerWorkflow(configurationId: ConfigurationId, triggerData: WorkflowTriggerData): Result<TriggerResponse> = kotlin.runCatching {
     client
       .post<BitriseTriggerResponse> {
-        url("${createAppUrl()}/builds")
+        url("${createAppUrl(configurationId)}/builds")
         contentType(ContentType.Application.Json)
-        auth()
+        auth(configurationId)
         val bitriseTriggerRequest = BitriseTriggerRequest(
           buildParams = BitriseTriggerRequest.BuildParams(
             environments = listOf(
@@ -143,7 +146,7 @@ internal class BitriseCIService(
             ),
             branch = triggerData.branch,
             commitHash = triggerData.commitHash,
-            workflowId = getBitriseConfigModel().testTriggerWorkflow
+            workflowId = getBitriseConfigModel(configurationId).testTriggerWorkflow
           )
         )
         println("Triggering workflow with content: $bitriseTriggerRequest")
@@ -154,7 +157,7 @@ internal class BitriseCIService(
       }
   }
 
-  private suspend fun HttpRequestBuilder.auth() {
-    header("Authorization", configDataSource.getConfig().bitriseToken)
+  private suspend fun HttpRequestBuilder.auth(configurationId: ConfigurationId) {
+    header("Authorization", configDataSource.getConfig().token(configurationId))
   }
 }

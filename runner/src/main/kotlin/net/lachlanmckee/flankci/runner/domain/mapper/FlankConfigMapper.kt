@@ -3,6 +3,7 @@ package net.lachlanmckee.flankci.runner.domain.mapper
 import net.lachlanmckee.flankci.core.data.datasource.local.ConfigDataSource
 import net.lachlanmckee.flankci.core.data.entity.Config
 import net.lachlanmckee.flankci.core.data.entity.ConfigModel
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.runner.domain.entity.FlankDataModel
 import net.lachlanmckee.flankci.runner.domain.entity.GeneratedFlankConfig
 import org.yaml.snakeyaml.Yaml
@@ -12,9 +13,12 @@ import javax.inject.Inject
 internal class FlankConfigMapper @Inject constructor(
   private val configDataSource: ConfigDataSource
 ) {
-  suspend fun mapToFlankYaml(flankDataModel: FlankDataModel): Result<GeneratedFlankConfig> = kotlin.runCatching {
+  suspend fun mapToFlankYaml(
+    configurationId: ConfigurationId,
+    flankDataModel: FlankDataModel
+  ): Result<GeneratedFlankConfig> = kotlin.runCatching {
     val config = configDataSource.getConfig()
-    val testData = config.testData
+    val testData = config.configuration(configurationId).testData
 
     val annotationBasedYamlFileNames: List<String> = (
       testData.annotationBasedYaml.options
@@ -38,7 +42,7 @@ internal class FlankConfigMapper @Inject constructor(
     addYaml(yaml, mergedYaml, testData.commonYamlFiles)
     addYaml(yaml, mergedYaml, annotationBasedYamlFileNames)
 
-    val configOptions = getConfigOptions(config, flankDataModel)
+    val configOptions = getConfigOptions(configurationId, config, flankDataModel)
     flankDataModel.checkboxOptions.forEach { (indexKey, isChecked) ->
       val checkboxOption = configOptions[indexKey] as ConfigModel.Option.Checkbox
       if (isChecked) {
@@ -71,8 +75,12 @@ internal class FlankConfigMapper @Inject constructor(
     )
   }
 
-  private fun getConfigOptions(config: Config, flankDataModel: FlankDataModel): List<ConfigModel.Option> {
-    return config.testData.options.run {
+  private fun getConfigOptions(
+    configurationId: ConfigurationId,
+    config: Config,
+    flankDataModel: FlankDataModel
+  ): List<ConfigModel.Option> {
+    return config.configuration(configurationId).testData.options.run {
       if (flankDataModel.isRerun) {
         rerun ?: standard
       } else {

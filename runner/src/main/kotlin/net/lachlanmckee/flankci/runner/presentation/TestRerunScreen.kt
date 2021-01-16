@@ -3,6 +3,7 @@ package net.lachlanmckee.flankci.runner.presentation
 import io.ktor.application.*
 import kotlinx.html.*
 import net.lachlanmckee.flankci.core.data.datasource.local.ConfigDataSource
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.flankci.runner.domain.entity.RerunModel
 import net.lachlanmckee.flankci.runner.domain.interactor.TestRerunInteractor
@@ -12,18 +13,15 @@ internal class TestRerunScreen(
   private val errorScreenFactory: ErrorScreenFactory,
   private val testRerunInteractor: TestRerunInteractor
 ) {
-  private val delegate by lazy {
-    TestRunnerScreenDelegate {
-      val options = configDataSource.getConfig().testData.options
-      options.rerun ?: options.standard
-    }
-  }
-
-  suspend fun respondHtml(call: ApplicationCall, buildSlug: String) {
+  suspend fun respondHtml(call: ApplicationCall, configurationId: ConfigurationId, buildSlug: String) {
     testRerunInteractor
-      .execute(buildSlug)
+      .execute(configurationId, buildSlug)
       .onSuccess {
-        delegate.respondHtml(call) {
+        val configuration = configDataSource.getConfig().configuration(configurationId)
+        TestRunnerScreenDelegate {
+          val options = configuration.testData.options
+          options.rerun ?: options.standard
+        }.respondHtml(call, configurationId, "${configuration.displayName} Test Rerun") {
           addTestRerunOptions(it)
         }
       }

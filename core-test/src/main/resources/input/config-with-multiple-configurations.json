@@ -70,6 +70,33 @@
           ]
         }
       }
+    },
+    {
+      "id": "bitrise-sample-2",
+      "displayName": "Bitrise Sample 2",
+      "ci": {
+        "type": "bitrise",
+        "appId": "APP_ID",
+        "testApkSourceWorkflow": "build_test_apk",
+        "testTriggerWorkflow": "trigger_tests"
+      },
+      "testData": {
+        "hiddenAnnotations": [
+        ],
+        "ignoreTestsWithAnnotations": [
+        ],
+        "allowTestingWithoutFilters": false,
+        "commonYamlFiles": [
+          "flank-template.yaml"
+        ],
+        "annotationBasedYaml": {
+          "options": [],
+          "fallbackYamlFiles": []
+        },
+        "options": {
+          "standard": []
+        }
+      }
     }
   ]
 }

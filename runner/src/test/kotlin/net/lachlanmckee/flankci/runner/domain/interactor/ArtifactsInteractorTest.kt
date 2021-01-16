@@ -1,13 +1,14 @@
 package net.lachlanmckee.flankci.runner.domain.interactor
 
-import io.ktor.application.ApplicationCall
-import io.ktor.response.respond
+import io.ktor.application.*
+import io.ktor.response.*
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import net.lachlanmckee.flankci.core.data.datasource.remote.CIDataSource
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.core.data.entity.generic.ArtifactsListResponse
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -25,26 +26,28 @@ class ArtifactsInteractorTest {
 
   @Test
   fun givenArtifactSuccess_whenExecute_thenRespond() = runBlocking {
-    coEvery { ciDataSource.getArtifactDetails("buildSlug") } returns Result.success(
+    coEvery { ciDataSource.getArtifactDetails(ConfigurationId("config-id"), "buildSlug") } returns Result.success(
       ArtifactsListResponse(emptyList())
     )
 
-    interactor.execute(applicationCall, "buildSlug")
+    interactor.execute(applicationCall, ConfigurationId("config-id"), "buildSlug")
 
     coVerifySequence {
-      ciDataSource.getArtifactDetails("buildSlug")
+      ciDataSource.getArtifactDetails(ConfigurationId("config-id"), "buildSlug")
       applicationCall.respond(ArtifactsListResponse(emptyList()))
     }
   }
 
   @Test
   fun givenArtifactSuccess_whenExecute_thenDoNotRespond() = runBlocking {
-    coEvery { ciDataSource.getArtifactDetails("buildSlug") } returns Result.failure(RuntimeException())
+    coEvery { ciDataSource.getArtifactDetails(ConfigurationId("config-id"), "buildSlug") } returns Result.failure(
+      RuntimeException()
+    )
 
-    interactor.execute(applicationCall, "buildSlug")
+    interactor.execute(applicationCall, ConfigurationId("config-id"), "buildSlug")
 
     coVerifySequence {
-      ciDataSource.getArtifactDetails("buildSlug")
+      ciDataSource.getArtifactDetails(ConfigurationId("config-id"), "buildSlug")
     }
   }
 }

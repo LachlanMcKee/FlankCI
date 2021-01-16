@@ -7,6 +7,7 @@ import io.ktor.application.*
 import io.ktor.http.content.*
 import io.ktor.routing.*
 import net.lachlanmckee.flankci.core.data.datasource.local.ConfigDataSource
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.core.presentation.ErrorScreenFactory
 import net.lachlanmckee.flankci.core.presentation.RouteProvider
 import net.lachlanmckee.flankci.runner.domain.TestRunnerDomainModule
@@ -33,9 +34,9 @@ object TestRunnerPresentationModule {
     configDataSource: ConfigDataSource
   ): RouteProvider = object : RouteProvider {
     override fun provideRoute(): Routing.() -> Unit = {
-      get("/test-runner") {
+      get("/{configuration-id}/test-runner") {
         TestRunnerScreen(configDataSource)
-          .respondHtml(call)
+          .respondHtml(call, call.getConfigurationId())
       }
     }
   }
@@ -49,11 +50,11 @@ object TestRunnerPresentationModule {
     testRerunInteractor: TestRerunInteractor
   ): RouteProvider = object : RouteProvider {
     override fun provideRoute(): Routing.() -> Unit = {
-      get("/test-rerun") {
+      get("/{configuration-id}/test-rerun") {
         val buildSlug: String = call.parameters["build-slug"]!!
 
         TestRerunScreen(configDataSource, errorScreenFactory, testRerunInteractor)
-          .respondHtml(call, buildSlug)
+          .respondHtml(call, call.getConfigurationId(), buildSlug)
       }
     }
   }
@@ -65,8 +66,8 @@ object TestRunnerPresentationModule {
     triggerBranchesInteractor: TriggerBranchesInteractor
   ): RouteProvider = object : RouteProvider {
     override fun provideRoute(): Routing.() -> Unit = {
-      get("/ci-data") {
-        triggerBranchesInteractor.execute(call)
+      get("/{configuration-id}/ci-data") {
+        triggerBranchesInteractor.execute(call, call.getConfigurationId())
       }
     }
   }
@@ -78,9 +79,9 @@ object TestRunnerPresentationModule {
     artifactsInteractor: ArtifactsInteractor
   ): RouteProvider = object : RouteProvider {
     override fun provideRoute(): Routing.() -> Unit = {
-      get("/artifact-data/{build-slug}") {
+      get("/{configuration-id}/artifact-data/{build-slug}") {
         val buildSlug: String = call.parameters["build-slug"]!!
-        artifactsInteractor.execute(call, buildSlug)
+        artifactsInteractor.execute(call, call.getConfigurationId(), buildSlug)
       }
     }
   }
@@ -92,12 +93,12 @@ object TestRunnerPresentationModule {
     testApkMetadataInteractor: TestApkMetadataInteractor
   ): RouteProvider = object : RouteProvider {
     override fun provideRoute(): Routing.() -> Unit = {
-      get("/test-apk-metadata/{build-slug}/{artifact-slug}") {
+      get("/{configuration-id}/test-apk-metadata/{build-slug}/{artifact-slug}") {
         val buildSlug: String = call.parameters["build-slug"]!!
         val artifactSlug: String = call.parameters["artifact-slug"]!!
 
         testApkMetadataInteractor
-          .execute(call, buildSlug, artifactSlug)
+          .execute(call, call.getConfigurationId(), buildSlug, artifactSlug)
       }
     }
   }
@@ -109,8 +110,8 @@ object TestRunnerPresentationModule {
     workflowConfirmationInteractor: WorkflowConfirmationInteractor
   ): RouteProvider = object : RouteProvider {
     override fun provideRoute(): Routing.() -> Unit = {
-      post("/trigger-tests") {
-        workflowConfirmationInteractor.execute(call)
+      post("/{configuration-id}/trigger-tests") {
+        workflowConfirmationInteractor.execute(call, call.getConfigurationId())
       }
     }
   }
@@ -122,9 +123,13 @@ object TestRunnerPresentationModule {
     workflowTriggerInteractor: WorkflowTriggerInteractor
   ): RouteProvider = object : RouteProvider {
     override fun provideRoute(): Routing.() -> Unit = {
-      post("/confirm-test-trigger") {
-        workflowTriggerInteractor.execute(call)
+      post("/{configuration-id}/confirm-test-trigger") {
+        workflowTriggerInteractor.execute(call, call.getConfigurationId())
       }
     }
+  }
+
+  private fun ApplicationCall.getConfigurationId(): ConfigurationId {
+    return ConfigurationId(parameters["configuration-id"]!!)
   }
 }

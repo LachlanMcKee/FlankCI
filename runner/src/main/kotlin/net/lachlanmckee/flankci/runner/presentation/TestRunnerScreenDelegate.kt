@@ -4,15 +4,21 @@ import io.ktor.application.*
 import io.ktor.html.*
 import kotlinx.html.*
 import net.lachlanmckee.flankci.core.data.entity.ConfigModel
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.core.presentation.*
 
 internal class TestRunnerScreenDelegate(private val optionsProviderFunc: suspend () -> List<ConfigModel.Option>) {
-  suspend fun respondHtml(call: ApplicationCall, extraContentProvider: HtmlBlockTag.() -> Unit) {
+  suspend fun respondHtml(
+    call: ApplicationCall,
+    configurationId: ConfigurationId,
+    screenName: String,
+    extraContentProvider: HtmlBlockTag.() -> Unit
+  ) {
     val options: List<ConfigModel.Option> = optionsProviderFunc()
     call.respondHtml {
       materialHeader()
       materialBody(
-        title = "Flank CI",
+        title = screenName,
         linksFunc = {
           materialStandardLink(
             text = "Home",
@@ -22,18 +28,22 @@ internal class TestRunnerScreenDelegate(private val optionsProviderFunc: suspend
           )
           materialStandardLink(
             text = "Test Results",
-            href = "/test-results",
+            href = "/$configurationId/test-results",
             icon = "poll",
             newWindow = false
           )
         },
-        contentFunc = { content(options, extraContentProvider) }
+        contentFunc = { content(configurationId, options, extraContentProvider) }
       )
     }
   }
 
-  private fun HtmlBlockTag.content(options: List<ConfigModel.Option>, extraContentProvider: HtmlBlockTag.() -> Unit) {
-    form("/trigger-tests", encType = FormEncType.multipartFormData, method = FormMethod.post) {
+  private fun HtmlBlockTag.content(
+    configurationId: ConfigurationId,
+    options: List<ConfigModel.Option>,
+    extraContentProvider: HtmlBlockTag.() -> Unit
+  ) {
+    form("/$configurationId/trigger-tests", encType = FormEncType.multipartFormData, method = FormMethod.post) {
       acceptCharset = "utf-8"
       target = "_blank"
 
@@ -76,6 +86,13 @@ internal class TestRunnerScreenDelegate(private val optionsProviderFunc: suspend
       }
 
       addOptions(options)
+
+      input {
+        id = "configurationId"
+        name = "configurationId"
+        type = InputType.hidden
+        value = configurationId.id
+      }
 
       input {
         id = "root-package"

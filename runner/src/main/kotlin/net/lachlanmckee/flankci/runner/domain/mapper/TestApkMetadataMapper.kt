@@ -3,6 +3,7 @@ package net.lachlanmckee.flankci.runner.domain.mapper
 import com.linkedin.dex.parser.TestMethod
 import net.lachlanmckee.flankci.core.data.datasource.local.ConfigDataSource
 import net.lachlanmckee.flankci.core.data.entity.Config
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.runner.domain.entity.PathWithAnnotationGroups
 import net.lachlanmckee.flankci.runner.domain.entity.TestApkMetadata
 import javax.inject.Inject
@@ -10,13 +11,16 @@ import javax.inject.Inject
 internal class TestApkMetadataMapper @Inject constructor(
   private val configDataSource: ConfigDataSource
 ) {
-  suspend fun mapTestApkMetadata(originalTestMethods: List<TestMethod>): TestApkMetadata {
+  suspend fun mapTestApkMetadata(
+    configurationId: ConfigurationId,
+    originalTestMethods: List<TestMethod>
+  ): TestApkMetadata {
     val config = configDataSource.getConfig()
-    val testMethods: List<TestMethod> = getValidTestMethods(config, originalTestMethods)
+    val testMethods: List<TestMethod> = getValidTestMethods(config, configurationId, originalTestMethods)
 
     val rootPackage: String = findRootPackage(testMethods)
     val classNamesWithAnnotations: List<PathWithAnnotationGroups> =
-      getClassNamesWithAnnotations(config, testMethods, rootPackage)
+      getClassNamesWithAnnotations(config, configurationId, testMethods, rootPackage)
 
     val packages: List<String> = getPackages(testMethods, rootPackage)
 
@@ -40,12 +44,13 @@ internal class TestApkMetadataMapper @Inject constructor(
 
   private fun getValidTestMethods(
     config: Config,
+    configurationId: ConfigurationId,
     originalTestMethods: List<TestMethod>
   ): List<TestMethod> {
     return originalTestMethods
       .sortedBy { testMethod -> testMethod.testName }
       .filter { testMethod ->
-        config.testData.ignoreTestsWithAnnotations
+        config.configuration(configurationId).testData.ignoreTestsWithAnnotations
           .intersect(testMethod.annotations.map { it.name })
           .isEmpty()
       }
@@ -79,6 +84,7 @@ internal class TestApkMetadataMapper @Inject constructor(
 
   private fun getClassNamesWithAnnotations(
     config: Config,
+    configurationId: ConfigurationId,
     testMethods: List<TestMethod>,
     rootPackage: String
   ): List<PathWithAnnotationGroups> {
@@ -86,7 +92,7 @@ internal class TestApkMetadataMapper @Inject constructor(
       .map { method ->
         PathWithAnnotationGroups(
           path = method.testName.removeRange(0, rootPackage.length + 1),
-          annotationGroups = getAnnotations(config, method)?.let { listOf(it) }
+          annotationGroups = getAnnotations(config, configurationId, method)?.let { listOf(it) }
         )
       }
 
@@ -156,6 +162,7 @@ internal class TestApkMetadataMapper @Inject constructor(
 
   private fun getAnnotations(
     config: Config,
+    configurationId: ConfigurationId,
     testMethod: TestMethod
   ): List<String>? {
     return testMethod.annotations
@@ -167,8 +174,9 @@ internal class TestApkMetadataMapper @Inject constructor(
           name != "org.junit.Test"
       }
       .filter { name ->
-        !config.testData.hiddenAnnotations.contains(name) &&
-          !config.testData.ignoreTestsWithAnnotations.contains(name)
+        val testData = config.configuration(configurationId).testData
+        !testData.hiddenAnnotations.contains(name) &&
+          !testData.ignoreTestsWithAnnotations.contains(name)
       }
       .toList()
       .let {

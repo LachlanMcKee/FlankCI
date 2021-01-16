@@ -17,7 +17,7 @@ fun HTML.materialHeader(contentFunc: HEAD.() -> Unit = {}) {
 
 fun HTML.materialBody(
   title: String,
-  linksFunc: NAV.(MaterialLinkMode) -> Unit = {},
+  linksFunc: (NAV.(MaterialLinkMode) -> Unit)? = {},
   contentFunc: HtmlBlockTag.() -> Unit
 ) {
   body {
@@ -27,18 +27,22 @@ fun HTML.materialBody(
         div("mdl-layout__header-row") {
           span("mdl-layout-title") { +title }
 
-          nav {
-            classes = setOf("mdl-navigation")
-            linksFunc(MaterialLinkMode.TOOLBAR)
+          if (linksFunc != null) {
+            nav {
+              classes = setOf("mdl-navigation")
+              linksFunc(MaterialLinkMode.TOOLBAR)
+            }
           }
         }
       }
-      div("mdl-layout__drawer") {
-        span("mdl-layout-title") { +title }
+      if (linksFunc != null) {
+        div("mdl-layout__drawer") {
+          span("mdl-layout-title") { +title }
 
-        nav {
-          classes = setOf("mdl-navigation")
-          linksFunc(MaterialLinkMode.DRAWER)
+          nav {
+            classes = setOf("mdl-navigation")
+            linksFunc(MaterialLinkMode.DRAWER)
+          }
         }
       }
       main("mdl-layout__content") {

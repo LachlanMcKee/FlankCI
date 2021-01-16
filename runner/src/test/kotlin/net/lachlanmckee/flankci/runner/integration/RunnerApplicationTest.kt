@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 internal class RunnerApplicationTest {
   @Test
   fun testTestRunnerRequest() = withTestApplication(createTestHttpClientFactory()) {
-    with(handleRequest(HttpMethod.Get, "/test-runner")) {
+    with(handleRequest(HttpMethod.Get, "/bitrise-sample/test-runner")) {
       assertEquals(HttpStatusCode.OK, response.status())
       assertContentEquals(response, "output/test-runner/expected.html")
     }
@@ -36,7 +36,7 @@ internal class RunnerApplicationTest {
       }
     }
   ) {
-    with(handleRequest(HttpMethod.Get, "/test-rerun?build-slug=BUILD_SLUG")) {
+    with(handleRequest(HttpMethod.Get, "/bitrise-sample/test-rerun?build-slug=BUILD_SLUG")) {
       assertEquals(HttpStatusCode.OK, response.status())
       assertContentEquals(response, "output/test-rerun/expected-without-rerun-options.html")
     }
@@ -63,7 +63,7 @@ internal class RunnerApplicationTest {
     },
     configFileName = "config-with-rerun.json"
   ) {
-    with(handleRequest(HttpMethod.Get, "/test-rerun?build-slug=BUILD_SLUG")) {
+    with(handleRequest(HttpMethod.Get, "/bitrise-sample/test-rerun?build-slug=BUILD_SLUG")) {
       assertEquals(HttpStatusCode.OK, response.status())
       assertContentEquals(response, "output/test-rerun/expected-with-rerun-options.html")
     }

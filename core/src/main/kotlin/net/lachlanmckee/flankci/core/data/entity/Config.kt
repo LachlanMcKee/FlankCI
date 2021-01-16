@@ -1,13 +1,19 @@
 package net.lachlanmckee.flankci.core.data.entity
 
-import com.google.gson.JsonObject
 import java.util.*
 
 class Config(
-  configModel: ConfigModel,
-  secretProperties: Properties
+  private val configModel: ConfigModel,
+  private val secretProperties: Properties
 ) {
-  val ci: JsonObject = configModel.ci
-  val testData: ConfigModel.TestData = configModel.testData
-  val bitriseToken: String = secretProperties.getProperty("bitriseToken")
+  val configurations: List<ConfigModel.Configuration>
+    get() = configModel.configurations
+
+  fun configuration(configurationId: ConfigurationId): ConfigModel.Configuration {
+    return configModel.configurations.single { it.id == configurationId.id }
+  }
+
+  fun token(configurationId: ConfigurationId): String {
+    return secretProperties.getProperty(configurationId.id)
+  }
 }

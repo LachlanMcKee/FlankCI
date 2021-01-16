@@ -3,6 +3,7 @@ package net.lachlanmckee.flankci.runner.domain.interactor
 import io.ktor.application.ApplicationCall
 import io.ktor.response.respondRedirect
 import net.lachlanmckee.flankci.core.data.datasource.remote.CIDataSource
+import net.lachlanmckee.flankci.core.data.entity.ConfigurationId
 import net.lachlanmckee.flankci.core.data.entity.WorkflowTriggerData
 import net.lachlanmckee.flankci.core.domain.ktor.MultipartCallFactory
 import net.lachlanmckee.flankci.core.presentation.ErrorScreenFactory
@@ -16,11 +17,11 @@ internal class WorkflowTriggerInteractor @Inject constructor(
   private val ciDataSource: CIDataSource,
   private val confirmDataMapper: ConfirmDataMapper
 ) {
-  suspend fun execute(call: ApplicationCall) {
+  suspend fun execute(call: ApplicationCall, configurationId: ConfigurationId) {
     multipartCallFactory.handleMultipart(call) { multipart ->
       confirmDataMapper
         .mapToConfirmModel(multipart)
-        .onSuccess { confirmModel -> triggerWorkflow(call, confirmModel) }
+        .onSuccess { confirmModel -> triggerWorkflow(call, configurationId, confirmModel) }
         .onFailure {
           errorScreenFactory.respondHtml(
             call = call,
@@ -31,9 +32,14 @@ internal class WorkflowTriggerInteractor @Inject constructor(
     }
   }
 
-  private suspend fun triggerWorkflow(call: ApplicationCall, confirmModel: ConfirmModel) {
+  private suspend fun triggerWorkflow(
+    call: ApplicationCall,
+    configurationId: ConfigurationId,
+    confirmModel: ConfirmModel
+  ) {
     ciDataSource
       .triggerWorkflow(
+        configurationId,
         WorkflowTriggerData(
           branch = confirmModel.branch,
           buildSlug = confirmModel.buildSlug,

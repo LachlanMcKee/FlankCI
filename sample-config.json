@@ -1,76 +1,82 @@
 {
-  "ci": {
-    "type": "bitrise",
-    "appId": "",
-    "testApkSourceWorkflow": "",
-    "testTriggerWorkflow": ""
-  },
-  "testData": {
-    "hiddenAnnotations": [
-      "org.junit.runner.RunWith"
-    ],
-    "ignoreTestsWithAnnotations": [
-      "org.junit.Ignore"
-    ],
-    "allowTestingWithoutFilters": false,
-    "commonYamlFiles": [
-      "flank-template.yaml"
-    ],
-    "annotationBasedYaml": {
-      "options": [
-        {
-          "annotation": "com.example.SmokeTest",
-          "jobLabel": "smoke",
-          "yamlFiles": [
-            "flank-smoke-devices.yaml"
-          ]
-        },
-        {
-          "annotation": "com.example.LeakTest",
-          "jobLabel": "leak",
-          "yamlFiles": [
-            "flank-leak-devices.yaml"
-          ]
-        }
-      ],
-      "fallbackYamlFiles": [
-        "flank-generic-devices.yaml"
-      ]
-    },
-    "options": [
-      {
-        "type": "checkbox",
-        "label": "Feature1",
-        "checkedCheckBoxContent": {
-          "jobLabel": "feature1",
-          "yamlFiles": [
-            "flank-feature1.yaml"
-          ]
-        },
-        "uncheckedCheckBoxContent": {
-          "jobLabel": "",
-          "yamlFiles": []
-        }
+  "configurations": [
+    {
+      "id": "sample",
+      "displayName": "Sample",
+      "ci": {
+        "type": "bitrise",
+        "appId": "",
+        "testApkSourceWorkflow": "",
+        "testTriggerWorkflow": ""
       },
-      {
-        "type": "drop-down",
-        "label": "Presets",
-        "values": [
+      "testData": {
+        "hiddenAnnotations": [
+          "org.junit.runner.RunWith"
+        ],
+        "ignoreTestsWithAnnotations": [
+          "org.junit.Ignore"
+        ],
+        "allowTestingWithoutFilters": false,
+        "commonYamlFiles": [
+          "flank-template.yaml"
+        ],
+        "annotationBasedYaml": {
+          "options": [
+            {
+              "annotation": "com.example.SmokeTest",
+              "jobLabel": "smoke",
+              "yamlFiles": [
+                "flank-smoke-devices.yaml"
+              ]
+            },
+            {
+              "annotation": "com.example.LeakTest",
+              "jobLabel": "leak",
+              "yamlFiles": [
+                "flank-leak-devices.yaml"
+              ]
+            }
+          ],
+          "fallbackYamlFiles": [
+            "flank-generic-devices.yaml"
+          ]
+        },
+        "options": [
           {
-            "label": "",
-            "jobLabel": "",
-            "yamlFiles": []
+            "type": "checkbox",
+            "label": "Feature1",
+            "checkedCheckBoxContent": {
+              "jobLabel": "feature1",
+              "yamlFiles": [
+                "flank-feature1.yaml"
+              ]
+            },
+            "uncheckedCheckBoxContent": {
+              "jobLabel": "",
+              "yamlFiles": []
+            }
           },
           {
-            "label": "Smoke",
-            "jobLabel": "smoke",
-            "yamlFiles": [
-              "flank-smoke-devices.yaml",
-              "flank-smoke-preset.yaml"
+            "type": "drop-down",
+            "label": "Presets",
+            "values": [
+              {
+                "label": "",
+                "jobLabel": "",
+                "yamlFiles": []
+              },
+              {
+                "label": "Smoke",
+                "jobLabel": "smoke",
+                "yamlFiles": [
+                  "flank-smoke-devices.yaml",
+                  "flank-smoke-preset.yaml"
+                ]
+              }
             ]
           }
         ]
       }
-    ]
-  }
+    }
+  ]
 }
